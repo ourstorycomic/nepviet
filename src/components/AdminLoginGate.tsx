@@ -39,10 +39,13 @@ export function AdminLoginGate() {
     }, 400);
   };
 
-  const handleFillAccount = (role: 'admin' | 'staff') => {
+  const handleFillAccount = (role: 'admin' | 'staff' | 'artisan') => {
     if (role === 'admin') {
       setEmail('admin@nepviet.vn');
       setPassword('Admin@123');
+    } else if (role === 'artisan') {
+      setEmail('nghenhan@nepviet.vn');
+      setPassword('Nghenhan@123');
     } else {
       setEmail('kho@nepviet.vn');
       setPassword('Kho@123');
@@ -144,11 +147,11 @@ export function AdminLoginGate() {
               <span>Tài khoản thử nghiệm phân quyền (Bấm để điền):</span>
             </p>
 
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-3 gap-2">
               <button
                 type="button"
                 onClick={() => handleFillAccount('admin')}
-                className={`p-2.5 rounded-xl border text-left transition-all ${
+                className={`p-2 rounded-xl border text-left transition-all ${
                   email === 'admin@nepviet.vn'
                     ? 'bg-nepred-950/60 border-nepred-500/80 text-white ring-1 ring-nepred-500/50'
                     : 'bg-stone-950/70 border-stone-800 text-stone-400 hover:border-stone-700'
@@ -156,15 +159,31 @@ export function AdminLoginGate() {
               >
                 <div className="flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-nepred-500" />
-                  <span className="font-bold text-xs text-white">Admin Master</span>
+                  <span className="font-bold text-[11px] text-white">Admin Master</span>
                 </div>
-                <p className="text-[10px] text-stone-500 mt-0.5">Toàn quyền hệ thống</p>
+                <p className="text-[9px] text-stone-500 mt-0.5">Toàn quyền hệ thống</p>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleFillAccount('artisan')}
+                className={`p-2 rounded-xl border text-left transition-all ${
+                  email === 'nghenhan@nepviet.vn'
+                    ? 'bg-blue-950/60 border-blue-500/80 text-white ring-1 ring-blue-500/50'
+                    : 'bg-stone-950/70 border-stone-800 text-stone-400 hover:border-stone-700'
+                }`}
+              >
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-blue-500" />
+                  <span className="font-bold text-[11px] text-white">Nghệ Nhân</span>
+                </div>
+                <p className="text-[9px] text-stone-500 mt-0.5">Xưởng thủ công</p>
               </button>
 
               <button
                 type="button"
                 onClick={() => handleFillAccount('staff')}
-                className={`p-2.5 rounded-xl border text-left transition-all ${
+                className={`p-2 rounded-xl border text-left transition-all ${
                   email === 'kho@nepviet.vn'
                     ? 'bg-amber-950/60 border-amber-500/80 text-white ring-1 ring-amber-500/50'
                     : 'bg-stone-950/70 border-stone-800 text-stone-400 hover:border-stone-700'
@@ -172,9 +191,9 @@ export function AdminLoginGate() {
               >
                 <div className="flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-amber-500" />
-                  <span className="font-bold text-xs text-white">Quản Lý Kho</span>
+                  <span className="font-bold text-[11px] text-white">Quản Lý Kho</span>
                 </div>
-                <p className="text-[10px] text-stone-500 mt-0.5">Xem đơn &amp; tồn kho</p>
+                <p className="text-[9px] text-stone-500 mt-0.5">Xử lý đơn &amp; kho</p>
               </button>
             </div>
           </div>

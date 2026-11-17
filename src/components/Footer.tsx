@@ -173,19 +173,24 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <span className="cursor-pointer hover:text-amber-300 transition-colors">
-                  Chính sách đóng gói chống vỡ
-                </span>
+                <Link href="/lien-he" className="hover:text-amber-300 transition-colors">
+                  Chính sách đóng gói chống vỡ & FAQ
+                </Link>
               </li>
               <li>
-                <span className="cursor-pointer hover:text-amber-300 transition-colors">
-                  Quy định đổi trả hàng 7 ngày
-                </span>
+                <Link href="/lien-he" className="hover:text-amber-300 transition-colors">
+                  Quy định đổi trả hàng 7 ngày 1:1
+                </Link>
               </li>
               <li>
-                <span className="cursor-pointer hover:text-amber-300 transition-colors">
-                  Chính sách bảo mật thông tin
-                </span>
+                <Link href="/tin-tuc" className="hover:text-amber-300 transition-colors">
+                  Tin tức & Sự kiện làng nghề
+                </Link>
+              </li>
+              <li>
+                <Link href="/van-hoa" className="hover:text-amber-300 transition-colors">
+                  Khám phá văn hóa di sản
+                </Link>
               </li>
               <li>
                 <Link href="/gioi-thieu" className="hover:text-amber-300 transition-colors">

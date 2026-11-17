@@ -374,8 +374,8 @@ export default function AdminPage() {
   };
 
   const handleDeleteProduct = (prod: Product) => {
-    if (adminUser?.role === 'staff') {
-      alert('Tài khoản của bạn là Nhân Viên Vận Hành (Staff). Chỉ Admin Master mới có quyền xóa sản phẩm khỏi cơ sở dữ liệu!');
+    if (adminUser?.role !== 'admin') {
+      alert('Tài khoản của bạn là Nghệ Nhân / Nhân Viên Vận Hành. Chỉ Admin Master mới có quyền xóa sản phẩm khỏi cơ sở dữ liệu!');
       return;
     }
     if (confirm(`Bạn có chắc chắn muốn xóa sản phẩm "${prod.name}" khỏi danh mục không?`)) {
@@ -554,7 +554,7 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-stone-100/90 text-stone-900 flex flex-col font-sans">
-      
+
       {/* Toast Alert */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 bg-stone-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border border-nepgold-500/30 animate-bounce">
@@ -573,14 +573,16 @@ export default function AdminPage() {
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-serif text-lg font-bold tracking-wide text-cream-50">
-                  NẾP VIỆT ADMIN
+                  {adminUser?.role === 'artisan' ? 'NẾP VIỆT ARTISAN' : 'NẾP VIỆT ADMIN'}
                 </span>
                 <span className="px-2 py-0.5 rounded bg-nepgold-500/20 text-nepgold-400 text-[10px] font-bold uppercase tracking-wider border border-nepgold-500/30">
-                  Hệ Thống Quản Trị
+                  {adminUser?.role === 'artisan' ? 'Cổng Nghệ Nhân & Đối Tác' : 'Hệ Thống Quản Trị'}
                 </span>
               </div>
               <p className="text-[10px] text-stone-400 -mt-0.5">
-                Bảng điều khiển theo sơ đồ phân cấp (Administrator Flow)
+                {adminUser?.role === 'artisan'
+                  ? 'Luồng Nghệ nhân / Đối tác cung cấp (Artisan/Partner Flow)'
+                  : 'Bảng điều khiển theo sơ đồ phân cấp (Administrator Flow)'}
               </p>
             </div>
           </div>
@@ -589,11 +591,10 @@ export default function AdminPage() {
             <button
               type="button"
               onClick={() => setActiveTab('settings')}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-semibold transition-all ${
-                isCloudConnected
-                  ? 'bg-emerald-950/70 border-emerald-500/50 text-emerald-300 hover:bg-emerald-900/70'
-                  : 'bg-amber-950/70 border-amber-500/50 text-amber-300 hover:bg-amber-900/70'
-              }`}
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-semibold transition-all ${isCloudConnected
+                ? 'bg-emerald-950/70 border-emerald-500/50 text-emerald-300 hover:bg-emerald-900/70'
+                : 'bg-amber-950/70 border-amber-500/50 text-amber-300 hover:bg-amber-900/70'
+                }`}
               title="Nhấn để cấu hình kết nối Supabase Cloud"
             >
               <Database className="w-3.5 h-3.5" />
@@ -612,9 +613,13 @@ export default function AdminPage() {
 
             <div className="flex items-center gap-2.5 pl-3 border-l border-stone-800">
               <div className={`w-8 h-8 rounded-full text-white flex items-center justify-center text-xs font-bold shadow ${
-                adminUser?.role === 'admin' ? 'bg-nepred-600' : 'bg-amber-600'
+                adminUser?.role === 'admin'
+                  ? 'bg-nepred-600'
+                  : adminUser?.role === 'artisan'
+                  ? 'bg-blue-600'
+                  : 'bg-amber-600'
               }`}>
-                {adminUser?.role === 'admin' ? 'AD' : 'NV'}
+                {adminUser?.role === 'admin' ? 'AD' : adminUser?.role === 'artisan' ? 'NN' : 'KH'}
               </div>
               <div className="hidden sm:block text-left">
                 <div className="flex items-center gap-1.5">
@@ -622,9 +627,11 @@ export default function AdminPage() {
                   <span className={`px-1.5 py-0.2 rounded text-[9px] font-bold ${
                     adminUser?.role === 'admin'
                       ? 'bg-nepred-500/20 text-nepred-400 border border-nepred-500/30'
+                      : adminUser?.role === 'artisan'
+                      ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
                       : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
                   }`}>
-                    {adminUser?.role === 'admin' ? 'Master' : 'Staff'}
+                    {adminUser?.role === 'admin' ? 'Master' : adminUser?.role === 'artisan' ? 'Nghệ Nhân' : 'Kho'}
                   </span>
                 </div>
                 <p className="text-[10px] text-stone-400">{adminUser?.email || 'admin@nepviet.vn'}</p>
@@ -645,15 +652,35 @@ export default function AdminPage() {
 
       {/* Main Admin Dashboard Container */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-1 space-y-6">
-        
+
         {/* Navigation Tabs Bar */}
         <div className="bg-white rounded-2xl p-2 border border-stone-200/90 shadow-sm flex items-center gap-1 overflow-x-auto">
           {[
-            { id: 'dashboard', label: 'Tổng Quan & Thống Kê', icon: LayoutDashboard },
-            { id: 'orders', label: `Quản Lý Đơn Hàng (${orders.length})`, icon: ShoppingBag },
-            { id: 'products', label: `Quản Lý Sản Phẩm (${products.length})`, icon: Package },
-            { id: 'artisans', label: `Nghệ Nhân & Làng Nghề (${CRAFT_VILLAGES.length})`, icon: Users },
-            { id: 'settings', label: 'Cài Đặt Hệ Thống', icon: Settings },
+            {
+              id: 'dashboard',
+              label: adminUser?.role === 'artisan' ? 'Tổng Quan Gian Hàng' : 'Tổng Quan & Thống Kê',
+              icon: LayoutDashboard,
+            },
+            {
+              id: 'orders',
+              label: adminUser?.role === 'artisan' ? `Đơn Hàng Làng Nghề (${orders.length})` : `Quản Lý Đơn Hàng (${orders.length})`,
+              icon: ShoppingBag,
+            },
+            {
+              id: 'products',
+              label: adminUser?.role === 'artisan' ? `Sản Phẩm & Tồn Kho (${products.length})` : `Quản Lý Sản Phẩm (${products.length})`,
+              icon: Package,
+            },
+            {
+              id: 'artisans',
+              label: adminUser?.role === 'artisan' ? 'Hồ Sơ Xưởng & Câu Chuyện' : `Nghệ Nhân & Làng Nghề (${CRAFT_VILLAGES.length})`,
+              icon: Users,
+            },
+            {
+              id: 'settings',
+              label: adminUser?.role === 'artisan' ? 'Quy Chuẩn & Hỗ Trợ' : 'Cài Đặt Hệ Thống',
+              icon: Settings,
+            },
           ].map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -661,11 +688,10 @@ export default function AdminPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
-                  isActive
-                    ? 'bg-nepred-600 text-white shadow-md shadow-nepred-600/20'
-                    : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100'
-                }`}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${isActive
+                  ? 'bg-nepred-600 text-white shadow-md shadow-nepred-600/20'
+                  : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100'
+                  }`}
               >
                 <Icon className="w-4 h-4" />
                 <span>{tab.label}</span>
@@ -677,7 +703,7 @@ export default function AdminPage() {
         {/* TAB 1: DASHBOARD OVERVIEW */}
         {activeTab === 'dashboard' && (
           <div className="space-y-6">
-            
+
             {/* Top Stat Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
               <div className="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm space-y-2">
@@ -799,13 +825,12 @@ export default function AdminPage() {
                           )}
                         </td>
                         <td className="p-3">
-                          <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
-                            order.status === 'completed'
-                              ? 'bg-emerald-50 text-emerald-700'
-                              : order.status === 'shipping'
+                          <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${order.status === 'completed'
+                            ? 'bg-emerald-50 text-emerald-700'
+                            : order.status === 'shipping'
                               ? 'bg-blue-50 text-blue-700'
                               : 'bg-amber-50 text-amber-700'
-                          }`}>
+                            }`}>
                             {order.status === 'completed' ? 'Đã giao' : order.status === 'shipping' ? 'Đang giao' : 'Chờ xác nhận'}
                           </span>
                         </td>
@@ -948,13 +973,12 @@ export default function AdminPage() {
                         )}
                       </td>
                       <td className="p-3.5">
-                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
-                          order.status === 'completed'
-                            ? 'bg-emerald-50 text-emerald-700'
-                            : order.status === 'shipping'
+                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${order.status === 'completed'
+                          ? 'bg-emerald-50 text-emerald-700'
+                          : order.status === 'shipping'
                             ? 'bg-blue-50 text-blue-700'
                             : 'bg-amber-50 text-amber-700'
-                        }`}>
+                          }`}>
                           {order.status === 'completed' ? 'Đã hoàn tất' : order.status === 'shipping' ? 'Đang giao hàng' : 'Chờ xác nhận'}
                         </span>
                       </td>
@@ -1130,11 +1154,10 @@ export default function AdminPage() {
                           <button
                             type="button"
                             onClick={() => handleToggleStock(prod)}
-                            className={`px-2 py-0.5 rounded-full text-[10px] font-bold transition-all ${
-                              prod.inStock
-                                ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
-                                : 'bg-red-100 text-red-800 hover:bg-red-200'
-                            }`}
+                            className={`px-2 py-0.5 rounded-full text-[10px] font-bold transition-all ${prod.inStock
+                              ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
+                              : 'bg-red-100 text-red-800 hover:bg-red-200'
+                              }`}
                             title="Nhấn để đổi trạng thái kho"
                           >
                             {prod.inStock ? 'Còn hàng' : 'Tạm hết'}
@@ -1216,9 +1239,8 @@ export default function AdminPage() {
             <div className="p-6 rounded-2xl border bg-stone-50/70 border-stone-200 space-y-5">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-stone-200">
                 <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-sm ${
-                    isCloudConnected ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
-                  }`}>
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-sm ${isCloudConnected ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
+                    }`}>
                     <Database className="w-5 h-5" />
                   </div>
                   <div>
@@ -1247,11 +1269,10 @@ export default function AdminPage() {
 
               {/* Status message alert if any */}
               {supabaseStatusMsg && (
-                <div className={`p-3.5 rounded-xl text-xs flex items-center gap-2 border ${
-                  supabaseStatusMsg.success
-                    ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
-                    : 'bg-red-50 text-red-800 border-red-200'
-                }`}>
+                <div className={`p-3.5 rounded-xl text-xs flex items-center gap-2 border ${supabaseStatusMsg.success
+                  ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                  : 'bg-red-50 text-red-800 border-red-200'
+                  }`}>
                   {supabaseStatusMsg.success ? (
                     <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
                   ) : (
@@ -1432,11 +1453,10 @@ export default function AdminPage() {
                           key={amt}
                           type="button"
                           onClick={() => setBankSettings({ ...bankSettings, testAmount: amt })}
-                          className={`py-1.5 px-2 rounded-lg border text-[11px] font-mono font-bold transition-all ${
-                            bankSettings.testAmount === amt
-                              ? 'border-nepred-600 bg-nepred-50 text-nepred-700'
-                              : 'border-stone-200 bg-white hover:bg-stone-50 text-stone-600'
-                          }`}
+                          className={`py-1.5 px-2 rounded-lg border text-[11px] font-mono font-bold transition-all ${bankSettings.testAmount === amt
+                            ? 'border-nepred-600 bg-nepred-50 text-nepred-700'
+                            : 'border-stone-200 bg-white hover:bg-stone-50 text-stone-600'
+                            }`}
                         >
                           {amt.toLocaleString('vi-VN')}đ
                         </button>
@@ -1609,33 +1629,30 @@ export default function AdminPage() {
                     <button
                       type="button"
                       onClick={() => setImagePickMode('upload')}
-                      className={`px-2.5 py-1 rounded-lg transition-all ${
-                        imagePickMode === 'upload'
-                          ? 'bg-white text-stone-900 shadow-sm'
-                          : 'text-stone-600 hover:text-stone-900'
-                      }`}
+                      className={`px-2.5 py-1 rounded-lg transition-all ${imagePickMode === 'upload'
+                        ? 'bg-white text-stone-900 shadow-sm'
+                        : 'text-stone-600 hover:text-stone-900'
+                        }`}
                     >
                       📤 Tải ảnh lên
                     </button>
                     <button
                       type="button"
                       onClick={() => setImagePickMode('preset')}
-                      className={`px-2.5 py-1 rounded-lg transition-all ${
-                        imagePickMode === 'preset'
-                          ? 'bg-white text-stone-900 shadow-sm'
-                          : 'text-stone-600 hover:text-stone-900'
-                      }`}
+                      className={`px-2.5 py-1 rounded-lg transition-all ${imagePickMode === 'preset'
+                        ? 'bg-white text-stone-900 shadow-sm'
+                        : 'text-stone-600 hover:text-stone-900'
+                        }`}
                     >
                       🖼️ 26 Ảnh mẫu
                     </button>
                     <button
                       type="button"
                       onClick={() => setImagePickMode('url')}
-                      className={`px-2.5 py-1 rounded-lg transition-all ${
-                        imagePickMode === 'url'
-                          ? 'bg-white text-stone-900 shadow-sm'
-                          : 'text-stone-600 hover:text-stone-900'
-                      }`}
+                      className={`px-2.5 py-1 rounded-lg transition-all ${imagePickMode === 'url'
+                        ? 'bg-white text-stone-900 shadow-sm'
+                        : 'text-stone-600 hover:text-stone-900'
+                        }`}
                     >
                       🔗 Link URL
                     </button>
@@ -1685,11 +1702,10 @@ export default function AdminPage() {
                           key={img.path}
                           type="button"
                           onClick={() => setFormData({ ...formData, image: img.path })}
-                          className={`flex items-center gap-2 p-1.5 rounded-xl border text-left transition-all ${
-                            formData.image === img.path
-                              ? 'border-nepred-600 bg-nepred-50 text-nepred-900 ring-2 ring-nepred-600/30'
-                              : 'border-stone-200 bg-white hover:border-stone-400'
-                          }`}
+                          className={`flex items-center gap-2 p-1.5 rounded-xl border text-left transition-all ${formData.image === img.path
+                            ? 'border-nepred-600 bg-nepred-50 text-nepred-900 ring-2 ring-nepred-600/30'
+                            : 'border-stone-200 bg-white hover:border-stone-400'
+                            }`}
                         >
                           <div className="relative w-8 h-8 rounded-lg overflow-hidden flex-shrink-0 bg-stone-100">
                             <Image src={img.path} alt={img.label} fill className="object-cover" />
@@ -1856,7 +1872,7 @@ export default function AdminPage() {
 
             <div className="relative">
               <pre className="bg-stone-900 text-amber-200 p-4 rounded-2xl text-[11px] font-mono h-72 overflow-y-auto whitespace-pre leading-relaxed">
-{`-- 0. XÓA SẠCH BẢNG CŨ CỦA DỰ ÁN TRƯỚC (CYBERSAFE & NẾP VIỆT)
+                {`-- 0. XÓA SẠCH BẢNG CŨ CỦA DỰ ÁN TRƯỚC (CYBERSAFE & NẾP VIỆT)
 DROP TABLE IF EXISTS public.chatbot_consultations CASCADE;
 DROP TABLE IF EXISTS public.pretest_results CASCADE;
 DROP TABLE IF EXISTS public.scenarios CASCADE;

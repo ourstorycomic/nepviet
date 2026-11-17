@@ -46,6 +46,8 @@ export function Header() {
     { href: '/', label: 'Trang chủ' },
     { href: '/san-pham', label: 'Bộ sưu tập' },
     { href: '/van-hoa', label: 'Văn hóa & Làng nghề' },
+    { href: '/tin-tuc', label: 'Tin tức & Sự kiện' },
+    { href: '/lien-he', label: 'Hỗ trợ & Liên hệ' },
     { href: '/gioi-thieu', label: 'Về Nếp Việt' },
   ];
 

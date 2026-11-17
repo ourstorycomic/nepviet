@@ -11,7 +11,7 @@ export interface AdminUser {
   id: string;
   name: string;
   email: string;
-  role: 'admin' | 'staff'; // admin: toàn quyền, staff: quản lý đơn/kho
+  role: 'admin' | 'staff' | 'artisan'; // admin: toàn quyền, staff: kho/vận hành, artisan: luồng nghệ nhân đối tác
   lastLogin: string;
 }
 
@@ -123,9 +123,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return { success: true, message: 'Đăng nhập thành công với quyền Nhân Viên Vận Hành & Kho.' };
     }
 
+    // 3. Tài khoản Nghệ Nhân / Đối Tác Làng Nghề (Artisan Partner Flow)
+    if (
+      (email === 'nghenhan@nepviet.vn' || email === 'artisan') &&
+      (pass === 'Nghenhan@123' || pass === 'artisan2026' || pass === '123456')
+    ) {
+      const artisanAdmin: AdminUser = {
+        id: 'artisan-01',
+        name: 'Nghệ Nhân Bát Tràng & Phú Vinh',
+        email: 'nghenhan@nepviet.vn',
+        role: 'artisan',
+        lastLogin: new Date().toLocaleString('vi-VN'),
+      };
+      setAdminUser(artisanAdmin);
+      localStorage.setItem(ADMIN_STORAGE_KEY, JSON.stringify(artisanAdmin));
+      return { success: true, message: 'Đăng nhập thành công với quyền Nghệ Nhân / Đối Tác Làng Nghề.' };
+    }
+
     return {
       success: false,
-      message: 'Sai email hoặc mật khẩu quản trị! Hãy dùng admin@nepviet.vn / Admin@123 hoặc kho@nepviet.vn / Kho@123',
+      message: 'Sai email hoặc mật khẩu! Hãy dùng admin@nepviet.vn, nghenhan@nepviet.vn hoặc kho@nepviet.vn',
     };
   };
 

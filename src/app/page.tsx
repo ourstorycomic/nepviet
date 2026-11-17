@@ -3,7 +3,8 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { PRODUCTS, CATEGORIES, CRAFT_VILLAGES } from '@/data/products';
+import { CATEGORIES, CRAFT_VILLAGES } from '@/data/products';
+import { useProducts } from '@/utils/productsCatalog';
 import { ProductCard } from '@/components/ProductCard';
 import {
   ArrowRight,
@@ -52,7 +53,8 @@ export default function HomePage() {
     },
   ];
 
-  const featuredProducts = PRODUCTS.filter((p) => p.isFeatured).slice(0, 4);
+  const { products } = useProducts();
+  const featuredProducts = products.filter((p) => p.isFeatured).slice(0, 4);
 
   return (
     <div className="space-y-16 sm:space-y-20 pb-20 overflow-hidden">

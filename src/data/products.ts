@@ -6,15 +6,15 @@ export const CATEGORIES: Category[] = [
     slug: 'gom-su',
     name: 'Gốm Sứ Bát Tràng',
     description: 'Tinh hoa đất sét nung và men hoả biến từ làng gốm nghìn năm tuổi ven sông Hồng.',
-    image: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=800&q=80',
-    itemCount: 4,
+    image: '/products/bo-am-chen-men-lam-bat-trang.jpg',
+    itemCount: 3,
   },
   {
     id: 'may-tre',
     slug: 'may-tre',
     name: 'Mây Tre Đan Thủ Công',
     description: 'Sản phẩm mộc mạc, bền bỉ từ tre nứa tự nhiên, kết tinh bàn tay khéo léo của nghệ nhân Phú Vinh.',
-    image: 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=800&q=80',
+    image: '/products/khay-tra-may-tre-dan-phu-vinh.webp',
     itemCount: 3,
   },
   {
@@ -22,15 +22,15 @@ export const CATEGORIES: Category[] = [
     slug: 'do-choi-qua-tang',
     name: 'Đồ Chơi & Quà Tặng Dân Gian',
     description: 'Tranh Đông Hồ, mặt nạ giấy bồi, tò he dân gian gợi nhớ ký ức tuổi thơ thanh bình.',
-    image: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80',
-    itemCount: 4,
+    image: '/products/tranh-dong-ho-dam-cuoi-chuot.jpg',
+    itemCount: 3,
   },
   {
     id: 'phu-kien-thoi-trang',
     slug: 'phu-kien-thoi-trang',
     name: 'Trang Phục & Phụ Kiện Việt',
     description: 'Lụa tơ tằm Vạn Phúc, túi thêu thổ cẩm kết hợp nét hoa văn cổ điển và phong cách hiện đại.',
-    image: 'https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&w=800&q=80',
+    image: '/products/khan-lua-to-tam-van-phuc-may-cuon.jpg',
     itemCount: 3,
   },
   {
@@ -38,7 +38,7 @@ export const CATEGORIES: Category[] = [
     slug: 'am-thuc',
     name: 'Ẩm Thực & Trà Truyền Thống',
     description: 'Hương vị trà sen Quảng Bá tao nhã, bánh cốm dẻo thơm và bánh chè lam ấm nồng ngày se lạnh.',
-    image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80',
+    image: '/products/hop-tra-sen-tay-ho-thuong-hang.jpg',
     itemCount: 2,
   },
 ];
@@ -57,8 +57,7 @@ export const PRODUCTS: Product[] = [
     reviewsCount: 42,
     inStock: true,
     images: [
-      'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=900&q=80',
+      '/products/bo-am-chen-men-lam-bat-trang.jpg',
     ],
     summary: 'Bộ ấm chén men lam cổ điển dáng đốt trúc, chế tác thủ công hoàn toàn từ đất cao lanh tinh tuyển.',
     description: 'Bộ ấm chén men lam mang đậm dấu ấn làng nghề Bát Tràng thế kỷ 16-17. Thân ấm và chén được các nghệ nhân vuốt tay tỉ mỉ, họa tiết nhành trúc thanh tao vẽ bằng mực lam tự nhiên trước khi phủ men bóng và nung ở nhiệt độ 1.300°C. Sản phẩm không chứa chì, giữ nhiệt trà thơm lâu và an toàn tuyệt đối cho sức khoẻ.',
@@ -82,8 +81,7 @@ export const PRODUCTS: Product[] = [
     reviewsCount: 28,
     inStock: true,
     images: [
-      'https://images.unsplash.com/photo-1581783342308-f792dbdd27c5?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?auto=format&fit=crop&w=900&q=80',
+      '/products/lo-hoa-men-hoa-bien-ngoc-bich.jpg',
     ],
     summary: 'Bình hoa dáng giọt ngọc với lớp men hoả biến chuyển màu diệu kỳ tự nhiên từ lò nung củi.',
     description: 'Men hỏa biến là tinh hoa độc bản của nghề gốm: màu men hình thành ngẫu nhiên do sự biến thiên nhiệt độ trong lò nung mà không có chất tạo màu nhân tạo nào sánh được. Từng chiếc bình đều mang những vệt vân ngọc bích riêng biệt, duy nhất trên đời.',
@@ -107,8 +105,7 @@ export const PRODUCTS: Product[] = [
     reviewsCount: 35,
     inStock: true,
     images: [
-      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1577937927133-66ef06acdf18?auto=format&fit=crop&w=900&q=80',
+      '/products/coc-su-hoa-tiet-hoa-sen-ve-tay.avif',
     ],
     summary: 'Cốc gốm men rạn vẽ hoa sen thanh tao, thiết kế gọn gàng phù hợp góc học tập và bàn làm việc.',
     description: 'Chiếc cốc được tạo tác từ đất phù sa sông Hồng, bề mặt phủ lớp men rạn ngà cổ kính. Họa tiết đóa sen búp vươn lên mộc mạc được vẽ tay từng nét bằng cọ lông mềm, biểu trưng cho sự thanh thuần và nghị lực của người trẻ Việt.',
@@ -132,8 +129,7 @@ export const PRODUCTS: Product[] = [
     reviewsCount: 56,
     inStock: true,
     images: [
-      'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1520072959219-c595dc870360?auto=format&fit=crop&w=900&q=80',
+      '/products/khay-tra-may-tre-dan-phu-vinh.webp',
     ],
     summary: 'Khay mây chữ nhật nan đan khít, xử lý sấy hun khói tự nhiên chống mối mọt không dùng hóa chất.',
     description: 'Được đan từ những sợi mây tuyển chọn kỹ lưỡng, trải qua công đoạn chuốt nan mỏng như sợi miến. Kỹ thuật đan mắt cáo kết hợp đường bo viền tre chắc chắn tạo nên một tác phẩm vừa mộc mạc vừa thanh lịch cho không gian trà đạo hay trang trí phòng khách.',
@@ -157,8 +153,7 @@ export const PRODUCTS: Product[] = [
     reviewsCount: 19,
     inStock: true,
     images: [
-      'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=900&q=80',
+      '/products/hop-dung-qua-dan-tre-kem-nap.jpg',
     ],
     summary: 'Hộp quà thân thiện môi trường, tôn vinh nét đẹp quà tặng văn hóa thủ công Việt Nam.',
     description: 'Mẫu hộp đan tre xinh xắn được các bạn trẻ đặc biệt ưa chuộng dùng để gói bánh trung thu, mứt tết, trà sen hay quà sinh nhật. Vừa thân thiện môi trường, có thể tái sử dụng làm hộp đựng phụ kiện, vừa gửi gắm thông điệp sống xanh bền vững.',
@@ -182,8 +177,7 @@ export const PRODUCTS: Product[] = [
     reviewsCount: 38,
     inStock: true,
     images: [
-      'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=900&q=80',
+      '/products/long-den-nan-tre-lua-hoi-an.jpg',
     ],
     summary: 'Đèn lồng nan tre bọc lụa tơ tằm dệt họa tiết hoa cúc chìm, có thể xếp gọn dễ dàng mang đi xa.',
     description: 'Khung đèn làm bằng tre già ngâm nước muối 10 ngày để chống mối mọt, sau đó uốn cong tỉ mỉ. Lớp lụa Hà Đông dẻo dai bọc ngoài tỏa ra ánh sáng ấm áp, dịu nhẹ, mang đậm phong vị hoài cổ của những đêm rằm phố Hội.',
@@ -207,8 +201,7 @@ export const PRODUCTS: Product[] = [
     reviewsCount: 47,
     inStock: true,
     images: [
-      'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=900&q=80',
+      '/products/mat-na-giay-boi-trung-thu.jpg',
     ],
     summary: 'Mặt nạ giấy bồi vẽ tay Chú Tễu mặt tròn phúc hậu, nét đồ chơi Trung Thu cổ truyền xứ Bắc.',
     description: 'Khác hẳn mặt nạ nhựa công nghiệp, mặt nạ giấy bồi Ông Hảo được bồi từ 5-6 lớp giấy tái chế phết hồ nếp trên khuôn xi măng đúc sẵn, phơi nắng tự nhiên rồi vẽ từng nét son, nét mực đen sống động. Món quà văn hóa dân dã đượm tình làng nghĩa xóm.',
@@ -232,8 +225,7 @@ export const PRODUCTS: Product[] = [
     reviewsCount: 31,
     inStock: true,
     images: [
-      'https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1566438480900-0609be27a4be?auto=format&fit=crop&w=900&q=80',
+      '/products/bo-to-he-dan-gian-5-con-giap.avif',
     ],
     summary: 'Bộ 5 nhân vật tò he nặn từ bột nếp pha màu tự nhiên (gấc, nghệ, lá chàm), phủ bóng bảo quản.',
     description: 'Tò he là món đồ chơi dân gian độc nhất vô nhị chỉ có ở Việt Nam. Từng thỏi bột dẻo quánh dưới bàn tay thoăn thoắt của nghệ nhân biến hóa thành rồng, ngựa, hoa sen, chim muông ngộ nghĩnh. Phiên bản đặc biệt của Nếp Việt đã được xử lý sấy chống ẩm giúp trưng bày bền lâu.',
@@ -257,8 +249,7 @@ export const PRODUCTS: Product[] = [
     reviewsCount: 64,
     inStock: true,
     images: [
-      'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1582561424760-0321d75e81fa?auto=format&fit=crop&w=900&q=80',
+      '/products/tranh-dong-ho-dam-cuoi-chuot.jpg',
     ],
     summary: 'Bức tranh dân gian nổi tiếng in bằng bản khắc gỗ trên giấy điệp óng ánh vỏ sò điệp tự nhiên.',
     description: 'Bức tranh trào lộng hóm hỉnh khắc họa đoàn chuột rộn ràng kèn trống đi cống phẩm cho mèo để xin đón dâu yên ổn. Màu tranh lấy từ thiên nhiên thuần túy: màu đen từ than lá tre, màu vàng hoa hòe, màu đỏ sỏi son, in trên nền giấy dó quét điệp lấp lánh như dát bạc.',
@@ -282,8 +273,7 @@ export const PRODUCTS: Product[] = [
     reviewsCount: 52,
     inStock: true,
     images: [
-      'https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?auto=format&fit=crop&w=900&q=80',
+      '/products/khan-lua-to-tam-van-phuc-may-cuon.jpg',
     ],
     summary: 'Khăn lụa tơ tằm tự nhiên 100%, dệt hoa văn mây cuộn chìm mềm mại, nhẹ nhàng và giữ ấm thanh lịch.',
     description: 'Lụa Vạn Phúc nổi danh từ ngàn năm với câu ca "The La, lĩnh Lụa, chồi Phùng". Chiếc khăn dệt từ sợi tơ tằm thiên nhiên mềm mịn, mát vào mùa hè và ấm áp vào mùa thu đông. Họa tiết vân mây thời Lý ẩn hiện tinh tế dưới ánh sáng, tôn vinh nét đài các của phụ nữ Việt.',
@@ -307,8 +297,7 @@ export const PRODUCTS: Product[] = [
     reviewsCount: 78,
     inStock: true,
     images: [
-      'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=900&q=80',
+      '/products/tui-tote-canvas-hoa-van-dong-son.jpg',
     ],
     summary: 'Túi canvas phong cách năng động cho sinh viên, in lụa họa tiết chim Lạc và mặt trời Đông Sơn.',
     description: 'Chiếc túi tote tối giản kết hợp hoàn hảo giữa nhịp sống hiện đại của học sinh, sinh viên và di sản nghìn năm văn hiến. Vải canvas mộc dệt dày dặn, có ngăn phụ đựng chìa khóa, điện thoại và khóa bấm kim loại tiện dụng, đựng vừa laptop 14-15 inch cùng tập sách vở.',
@@ -332,8 +321,7 @@ export const PRODUCTS: Product[] = [
     reviewsCount: 23,
     inStock: true,
     images: [
-      'https://images.unsplash.com/photo-1598532163257-ae3c6b2524b6?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1563178406-4cdc2923acbc?auto=format&fit=crop&w=900&q=80',
+      '/products/vi-cam-tay-tho-cam-sapa-hoa-sen.jpg',
     ],
     summary: 'Ví thổ cẩm thêu tay chỉ tơ rực rỡ từ đôi tay khéo léo của người phụ nữ Dao Đỏ vùng cao.',
     description: 'Chất liệu vải lanh dệt thủ công được nhuộm chàm tự nhiên qua hàng chục ngày nắng. Hoa văn hình hoa sen cách điệu phối cùng các đường zigzag tượng trưng cho núi rừng Tây Bắc tạo nên nét độc đáo, cá tính khi mang theo hàng ngày.',
@@ -357,8 +345,7 @@ export const PRODUCTS: Product[] = [
     reviewsCount: 45,
     inStock: true,
     images: [
-      'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=900&q=80',
+      '/products/hop-tra-sen-tay-ho-thuong-hang.jpg',
     ],
     summary: 'Trà Tân Cương ướp cùng gạo sen bách diệp hồ Tây thơm ngát đượm vị qua 7 lần sấy ủ.',
     description: 'Nghệ thuật ướp trà sen Tây Hồ là di sản văn hóa phi vật thể quý báu của đất kinh kỳ. Để ướp được 1kg trà sen thượng hạng cần tới 1.500 bông sen bách diệp hái từ tờ mờ sớm khi sương chưa tan. Nước trà vàng mật ong, tiền chát dịu hậu ngọt sâu thăm thẳm.',
@@ -382,8 +369,7 @@ export const PRODUCTS: Product[] = [
     reviewsCount: 39,
     inStock: true,
     images: [
-      'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=900&q=80',
+      '/products/hop-banh-com-hang-than-truyen-thong.jpg',
     ],
     summary: 'Hộp 6 chiếc bánh cốm xanh mướt vỏ mỏng dẻo, nhân đậu xanh dừa ngào thơm ngát hoa bưởi.',
     description: 'Bánh cốm là thức quà đặc trưng gói trọn hương vị mùa thu Hà Nội và là biểu tượng của sự son sắt, ngọt ngào trong đám hỏi truyền thống. Cốm nếp thơm dẻo xào với đường kính, bọc nhân đậu xanh giã nhuyễn thơm hương hoa bưởi tinh khôi.',
@@ -403,7 +389,7 @@ export const CRAFT_VILLAGES = [
     location: 'Gia Lâm, Hà Nội',
     history: 'Hơn 700 năm lịch sử',
     highlight: 'Kỹ nghệ men lam, men rạn và men hoả biến độc bản lưu giữ từ thời Lý - Trần.',
-    image: 'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&q=80',
+    image: '/products/bo-am-chen-men-lam-bat-trang.jpg',
   },
   {
     id: 'phu-vinh',
@@ -411,7 +397,7 @@ export const CRAFT_VILLAGES = [
     location: 'Chương Mỹ, Hà Nội',
     history: 'Khoảng 400 năm phát triển',
     highlight: 'Nổi tiếng với tài chuốt nan tre mỏng như tơ sợi và kỹ thuật đan tranh hoa văn tinh xảo.',
-    image: 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=800&q=80',
+    image: '/products/khay-tra-may-tre-dan-phu-vinh.webp',
   },
   {
     id: 'dong-ho',
@@ -419,7 +405,7 @@ export const CRAFT_VILLAGES = [
     location: 'Thuận Thành, Bắc Ninh',
     history: 'Gần 500 năm hình thành',
     highlight: 'Di sản văn hóa phi vật thể quốc gia với kỹ thuật khắc ván gỗ trên nền giấy điệp lấp lánh.',
-    image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80',
+    image: '/products/tranh-dong-ho-dam-cuoi-chuot.jpg',
   },
   {
     id: 'van-phuc',
@@ -427,7 +413,7 @@ export const CRAFT_VILLAGES = [
     location: 'Hà Đông, Hà Nội',
     history: 'Hơn 1.000 năm lịch sử',
     highlight: 'Cái nôi dệt lụa tơ tằm mềm mại, hoa văn vân mây từng được chọn may lễ phục triều đình.',
-    image: 'https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&w=800&q=80',
+    image: '/products/khan-lua-to-tam-van-phuc-may-cuon.jpg',
   },
   {
     id: 'xuan-la',
@@ -435,6 +421,6 @@ export const CRAFT_VILLAGES = [
     location: 'Phú Xuyên, Hà Nội',
     history: 'Hơn 300 năm lưu giữ',
     highlight: 'Nghệ thuật nhào nặn bột gạo nếp thành những tác phẩm đồ chơi dân gian sống động.',
-    image: 'https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=800&q=80',
+    image: '/products/bo-to-he-dan-gian-5-con-giap.avif',
   },
 ];

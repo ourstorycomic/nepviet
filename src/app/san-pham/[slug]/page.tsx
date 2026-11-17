@@ -1,14 +1,15 @@
 import React from 'react';
-import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { PRODUCTS } from '@/data/products';
-import { ProductDetailClient } from '@/components/ProductDetailClient';
+import { ProductDetailView } from '@/components/ProductDetailView';
 
 interface Props {
   params: {
     slug: string;
   };
 }
+
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
   return PRODUCTS.map((product) => ({
@@ -20,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = PRODUCTS.find((p) => p.slug === params.slug);
   if (!product) {
     return {
-      title: 'Sản phẩm không tìm thấy - Nếp Việt',
+      title: 'Chi tiết sản phẩm thủ công | Nếp Việt',
     };
   }
 
@@ -38,13 +39,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default function ProductDetailPage({ params }: Props) {
   const product = PRODUCTS.find((p) => p.slug === params.slug);
 
-  if (!product) {
-    notFound();
-  }
-
-  const relatedProducts = PRODUCTS.filter(
-    (p) => p.category === product.category && p.id !== product.id
-  ).slice(0, 4);
-
-  return <ProductDetailClient product={product} relatedProducts={relatedProducts} />;
+  return <ProductDetailView slug={params.slug} initialProduct={product} />;
 }

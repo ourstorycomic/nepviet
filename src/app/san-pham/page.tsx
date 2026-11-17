@@ -4,7 +4,8 @@ import React, { useState, useMemo, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { PRODUCTS, CATEGORIES } from '@/data/products';
+import { CATEGORIES } from '@/data/products';
+import { useProducts } from '@/utils/productsCatalog';
 import { ProductCard } from '@/components/ProductCard';
 import {
   Search,
@@ -20,6 +21,7 @@ import {
 function ProductsFilterView() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { products } = useProducts();
 
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -45,7 +47,7 @@ function ProductsFilterView() {
   ], []);
 
   const filteredProducts = useMemo(() => {
-    return PRODUCTS.filter((product) => {
+    return products.filter((product) => {
       if (selectedCategory !== 'all' && product.category !== selectedCategory) {
         return false;
       }
@@ -82,7 +84,7 @@ function ProductsFilterView() {
       if (sortBy === 'rating') return b.rating - a.rating;
       return (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0);
     });
-  }, [selectedCategory, searchQuery, priceRange, selectedMaterial, sortBy]);
+  }, [products, selectedCategory, searchQuery, priceRange, selectedMaterial, sortBy]);
 
   const handleResetFilters = () => {
     setSelectedCategory('all');
@@ -223,7 +225,7 @@ function ProductsFilterView() {
                 : 'bg-white text-stone-700 hover:bg-cream-100 border border-cream-200'
             }`}
           >
-            Tất cả sản phẩm ({PRODUCTS.length})
+            Tất cả sản phẩm ({products.length})
           </button>
           {CATEGORIES.map((cat) => (
             <button

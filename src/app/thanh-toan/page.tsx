@@ -19,6 +19,11 @@ import {
   MapPin,
   Calendar,
   Sparkles,
+  Copy,
+  Check,
+  QrCode,
+  AlertCircle,
+  HelpCircle,
 } from 'lucide-react';
 
 interface OrderSuccessData {
@@ -27,9 +32,16 @@ interface OrderSuccessData {
   phone: string;
   address: string;
   city: string;
-  paymentMethod: string;
+  paymentMethod: 'COD' | 'BANK';
   total: number;
   date: string;
+  bankInfo?: {
+    bankName: string;
+    accountNo: string;
+    accountName: string;
+    memo: string;
+    qrUrl: string;
+  };
 }
 
 export default function CheckoutPage() {
@@ -44,12 +56,31 @@ export default function CheckoutPage() {
     city: 'Hà Nội',
     address: '',
     notes: '',
-    paymentMethod: 'COD',
+    paymentMethod: 'COD' as 'COD' | 'BANK',
+    selectedBank: 'MB' as 'MB' | 'VCB',
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successOrder, setSuccessOrder] = useState<OrderSuccessData | null>(null);
+  const [copiedField, setCopiedField] = useState<string | null>(null);
+
+  const BANK_ACCOUNTS = {
+    MB: {
+      bankName: 'MB Bank (Ngân hàng Quân Đội)',
+      accountNo: '0968999888',
+      accountName: 'CONG TY TNHH NEP VIET',
+      branch: 'Chi nhánh Cầu Giấy, Hà Nội',
+    },
+    VCB: {
+      bankName: 'Vietcombank (Ngân hàng Ngoại Thương)',
+      accountNo: '1029886868',
+      accountName: 'CONG TY TNHH NEP VIET',
+      branch: 'Chi nhánh Thăng Long, Hà Nội',
+    },
+  };
+
+  const currentBank = BANK_ACCOUNTS[formData.selectedBank];
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
@@ -68,6 +99,12 @@ export default function CheckoutPage() {
     return Object.keys(newErrors).length === 0;
   };
 
+  const handleCopy = (text: string, field: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedField(field);
+    setTimeout(() => setCopiedField(null), 2500);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
@@ -80,11 +117,14 @@ export default function CheckoutPage() {
 
     setIsSubmitting(true);
 
-    // Simulate order creation
     setTimeout(() => {
       const generatedOrderId = 'NV-' + Math.floor(100000 + Math.random() * 900000);
       const now = new Date();
       const formattedDate = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')} - ${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()}`;
+
+      // Generate VietQR URL
+      const memo = `${generatedOrderId} ${formData.phone.slice(-4)}`;
+      const qrUrl = `https://img.vietqr.io/image/${formData.selectedBank}-${currentBank.accountNo}-compact2.png?amount=${subtotal}&addInfo=${encodeURIComponent(memo)}&accountName=${encodeURIComponent(currentBank.accountName)}`;
 
       const orderData: OrderSuccessData = {
         orderId: generatedOrderId,
@@ -92,18 +132,25 @@ export default function CheckoutPage() {
         phone: formData.phone.trim(),
         address: formData.address.trim(),
         city: formData.city,
-        paymentMethod: formData.paymentMethod === 'COD' ? 'Thanh toán khi nhận hàng (COD)' : 'Chuyển khoản xác nhận đơn',
+        paymentMethod: formData.paymentMethod,
         total: subtotal,
         date: formattedDate,
+        bankInfo: formData.paymentMethod === 'BANK' ? {
+          bankName: currentBank.bankName,
+          accountNo: currentBank.accountNo,
+          accountName: currentBank.accountName,
+          memo: memo,
+          qrUrl: qrUrl,
+        } : undefined,
       };
 
       setSuccessOrder(orderData);
       clearCart();
       setIsSubmitting(false);
-    }, 800);
+    }, 700);
   };
 
-  // SUCCESS SCREEN
+  // SUCCESS CONFIRMATION SCREEN
   if (successOrder) {
     return (
       <div className="bg-[#FAF8F5] min-h-screen py-12 px-4 sm:px-6">
@@ -113,48 +160,131 @@ export default function CheckoutPage() {
           </div>
 
           <div className="text-center space-y-2">
-            <span className="text-xs uppercase tracking-widest text-nepgreen-700 font-bold">
-              Xác Nhận Thành Công
+            <span className="text-xs uppercase tracking-widest text-nepgreen-800 font-bold">
+              Tiếp Nhận Đơn Hàng Thành Công
             </span>
-            <h1 className="font-serif text-2xl sm:text-3xl font-black text-nepbrown-800">
-              Cảm Ơn Bạn Đã Đặt Hàng Tại Nếp Việt!
+            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900">
+              Cảm Ơn Bạn Đã Đồng Hành Cùng Nếp Việt!
             </h1>
-            <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed max-w-lg mx-auto">
-              Đơn hàng của bạn đã được tiếp nhận. Đội ngũ Nếp Việt sẽ liên hệ qua số điện thoại để xác nhận chi tiết và thời gian giao hàng sớm nhất.
+            <p className="text-xs sm:text-sm text-stone-600 leading-relaxed max-w-lg mx-auto">
+              Đơn hàng của bạn đã được ghi nhận trên hệ thống. Mã đơn hàng của bạn là <strong className="text-nepred-600 font-mono text-sm">{successOrder.orderId}</strong>.
             </p>
           </div>
 
+          {/* If Bank Transfer, show QR & Account Details */}
+          {successOrder.paymentMethod === 'BANK' && successOrder.bankInfo && (
+            <div className="bg-gradient-to-br from-amber-50/60 to-cream-100/70 rounded-2xl p-6 border border-nepgold-500/30 space-y-5">
+              <div className="flex items-center justify-between pb-3 border-b border-nepgold-500/20">
+                <div className="flex items-center gap-2">
+                  <QrCode className="w-5 h-5 text-nepred-600" />
+                  <h3 className="font-serif font-bold text-sm text-stone-900">
+                    Thông Tin Chuyển Khoản VietQR Nhanh 24/7
+                  </h3>
+                </div>
+                <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">
+                  Quét mã tiện lợi
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
+                {/* VietQR Code Image */}
+                <div className="sm:col-span-5 flex flex-col items-center">
+                  <div className="relative w-48 h-48 bg-white rounded-2xl p-2 shadow-md border border-cream-300">
+                    <img
+                      src={successOrder.bankInfo.qrUrl}
+                      alt="Mã VietQR thanh toán Nếp Việt"
+                      className="w-full h-full object-contain rounded-xl"
+                    />
+                  </div>
+                  <p className="text-[10px] text-stone-500 mt-2 text-center">
+                    Mở app ngân hàng bất kỳ để quét mã tự động điền số tiền và nội dung
+                  </p>
+                </div>
+
+                {/* Account Details with Copy Buttons */}
+                <div className="sm:col-span-7 space-y-3 text-xs">
+                  <div className="p-2.5 bg-white rounded-xl border border-cream-200">
+                    <p className="text-[11px] text-stone-500">Ngân hàng thụ hưởng</p>
+                    <p className="font-bold text-stone-900 mt-0.5">{successOrder.bankInfo.bankName}</p>
+                  </div>
+
+                  <div className="p-2.5 bg-white rounded-xl border border-cream-200 flex items-center justify-between">
+                    <div>
+                      <p className="text-[11px] text-stone-500">Số tài khoản</p>
+                      <p className="font-mono font-bold text-sm text-stone-900 mt-0.5">{successOrder.bankInfo.accountNo}</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleCopy(successOrder.bankInfo!.accountNo, 'acc')}
+                      className="px-2.5 py-1.5 rounded-lg bg-cream-100 hover:bg-cream-200 text-stone-700 text-[11px] font-semibold flex items-center gap-1 transition-colors"
+                    >
+                      {copiedField === 'acc' ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copiedField === 'acc' ? 'Đã chép' : 'Sao chép'}</span>
+                    </button>
+                  </div>
+
+                  <div className="p-2.5 bg-white rounded-xl border border-cream-200 flex items-center justify-between">
+                    <div>
+                      <p className="text-[11px] text-stone-500">Chủ tài khoản</p>
+                      <p className="font-bold text-stone-900 mt-0.5">{successOrder.bankInfo.accountName}</p>
+                    </div>
+                  </div>
+
+                  <div className="p-2.5 bg-white rounded-xl border border-cream-200 flex items-center justify-between">
+                    <div>
+                      <p className="text-[11px] text-stone-500">Nội dung chuyển khoản (Memo)</p>
+                      <p className="font-mono font-bold text-nepred-600 mt-0.5">{successOrder.bankInfo.memo}</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleCopy(successOrder.bankInfo!.memo, 'memo')}
+                      className="px-2.5 py-1.5 rounded-lg bg-cream-100 hover:bg-cream-200 text-stone-700 text-[11px] font-semibold flex items-center gap-1 transition-colors"
+                    >
+                      {copiedField === 'memo' ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copiedField === 'memo' ? 'Đã chép' : 'Sao chép'}</span>
+                    </button>
+                  </div>
+
+                  <div className="p-2.5 bg-nepred-50 rounded-xl border border-nepred-100 flex items-center justify-between">
+                    <div>
+                      <p className="text-[11px] text-nepred-700 font-medium">Số tiền cần thanh toán</p>
+                      <p className="font-serif font-black text-base text-nepred-600">{formatCurrency(successOrder.total)}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Order Details Receipt */}
-          <div className="bg-cream-50 rounded-2xl p-6 border border-cream-200 space-y-4 text-xs">
-            <div className="flex justify-between items-center pb-3 border-b border-cream-200">
-              <span className="text-neutral-500">Mã đơn hàng:</span>
-              <span className="font-mono font-bold text-sm text-nepred-600">{successOrder.orderId}</span>
+          <div className="bg-cream-50 rounded-2xl p-6 border border-cream-200 space-y-3.5 text-xs">
+            <div className="flex justify-between items-center pb-2.5 border-b border-cream-200">
+              <span className="text-stone-500">Thời gian tạo đơn:</span>
+              <span className="font-medium text-stone-800">{successOrder.date}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-neutral-500">Thời gian đặt:</span>
-              <span className="font-medium text-nepbrown-800">{successOrder.date}</span>
+              <span className="text-stone-500">Người nhận hàng:</span>
+              <span className="font-bold text-stone-900">{successOrder.name}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-neutral-500">Người nhận hàng:</span>
-              <span className="font-bold text-nepbrown-800">{successOrder.name}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-neutral-500">Số điện thoại:</span>
-              <span className="font-medium text-nepbrown-800">{successOrder.phone}</span>
+              <span className="text-stone-500">Số điện thoại:</span>
+              <span className="font-medium text-stone-800">{successOrder.phone}</span>
             </div>
             <div className="flex justify-between items-start">
-              <span className="text-neutral-500">Địa chỉ giao hàng:</span>
-              <span className="text-right font-medium text-nepbrown-800 max-w-xs">
+              <span className="text-stone-500">Địa chỉ giao hàng:</span>
+              <span className="text-right font-medium text-stone-800 max-w-xs">
                 {successOrder.address}, {successOrder.city}
               </span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-neutral-500">Phương thức thanh toán:</span>
-              <span className="font-medium text-nepgreen-800">{successOrder.paymentMethod}</span>
+              <span className="text-stone-500">Phương thức thanh toán:</span>
+              <span className="font-semibold text-nepgreen-800">
+                {successOrder.paymentMethod === 'COD' ? 'Thanh toán tiền mặt khi nhận hàng (COD)' : 'Chuyển khoản ngân hàng VietQR'}
+              </span>
             </div>
             <div className="pt-3 border-t border-cream-200 flex justify-between items-baseline">
-              <span className="font-serif font-bold text-sm text-nepbrown-800">Tổng thanh toán dự kiến:</span>
-              <span className="font-serif text-xl font-black text-nepred-600">
+              <span className="font-serif font-bold text-sm text-stone-900">Tổng thanh toán:</span>
+              <span className="font-serif text-xl font-bold text-nepred-600">
                 {formatCurrency(successOrder.total)}
               </span>
             </div>
@@ -163,8 +293,8 @@ export default function CheckoutPage() {
           <div className="p-4 bg-nepgreen-50 rounded-xl border border-nepgreen-200 text-xs text-nepgreen-900 leading-relaxed flex items-start gap-3">
             <Sparkles className="w-4 h-4 text-nepgreen-700 flex-shrink-0 mt-0.5" />
             <div>
-              <p className="font-bold">Lưu ý quan trọng về vận chuyển:</p>
-              <p className="mt-0.5 text-neutral-600">
+              <p className="font-bold">Quy chuẩn đóng gói & đồng kiểm tra hàng:</p>
+              <p className="mt-0.5 text-stone-600">
                 Hàng thủ công mỹ nghệ và gốm sứ được Nếp Việt đóng gói theo quy chuẩn hộp kép chống va đập. Quý khách vui lòng đồng kiểm tra hàng cùng bưu tá trước khi thanh toán.
               </p>
             </div>
@@ -173,15 +303,15 @@ export default function CheckoutPage() {
           <div className="flex flex-col sm:flex-row gap-3 pt-2">
             <Link
               href="/"
-              className="flex-1 py-3 px-4 bg-white border border-cream-300 hover:bg-cream-100 text-nepbrown-800 font-semibold text-xs rounded-xl text-center transition-colors"
+              className="flex-1 py-3.5 px-4 bg-white border border-cream-300 hover:bg-cream-100 text-stone-800 font-semibold text-xs rounded-xl text-center transition-colors shadow-sm"
             >
               Về trang chủ
             </Link>
             <Link
               href="/san-pham"
-              className="flex-1 py-3 px-4 bg-nepred-600 hover:bg-nepred-700 text-white font-semibold text-xs rounded-xl text-center shadow-md transition-colors"
+              className="flex-1 py-3.5 px-4 bg-nepred-600 hover:bg-nepred-700 text-white font-semibold text-xs rounded-xl text-center shadow-md transition-colors"
             >
-              Tiếp tục mua sắm
+              Tiếp tục khám phá sản phẩm
             </Link>
           </div>
         </div>
@@ -194,11 +324,11 @@ export default function CheckoutPage() {
     return (
       <div className="bg-[#FAF8F5] min-h-[60vh] flex items-center justify-center py-16 px-4">
         <div className="max-w-md w-full bg-white rounded-3xl p-8 text-center border border-cream-200 shadow-sm space-y-4">
-          <ShoppingBag className="w-12 h-12 text-neutral-400 mx-auto" />
-          <h2 className="font-serif text-xl font-bold text-nepbrown-800">
+          <ShoppingBag className="w-12 h-12 text-stone-400 mx-auto" />
+          <h2 className="font-serif text-xl font-bold text-stone-900">
             Giỏ hàng chưa có sản phẩm
           </h2>
-          <p className="text-xs text-neutral-500">
+          <p className="text-xs text-stone-500">
             Vui lòng chọn ít nhất một sản phẩm thủ công để tiến hành đặt hàng.
           </p>
           <Link
@@ -220,15 +350,15 @@ export default function CheckoutPage() {
         <div>
           <Link
             href="/gio-hang"
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-neutral-500 hover:text-nepred-600 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-stone-500 hover:text-nepred-600 transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Quay lại giỏ hàng</span>
           </Link>
-          <h1 className="font-serif text-2xl sm:text-3xl font-black text-nepbrown-800 mt-2">
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900 mt-2">
             Thông Tin Đặt Hàng & Thanh Toán
           </h1>
-          <p className="text-xs text-neutral-500">
+          <p className="text-xs text-stone-500">
             Hoàn tất biểu mẫu dưới đây để đội ngũ Nếp Việt chuẩn bị và đóng gói sản phẩm gửi đến bạn.
           </p>
         </div>
@@ -242,7 +372,7 @@ export default function CheckoutPage() {
               
               {/* Recipient Information */}
               <div className="space-y-4">
-                <h2 className="font-serif font-bold text-base text-nepbrown-800 flex items-center gap-2 pb-2 border-b border-cream-200">
+                <h2 className="font-serif font-bold text-base text-stone-900 flex items-center gap-2 pb-2 border-b border-cream-200">
                   <span className="w-6 h-6 rounded-full bg-nepred-600 text-white text-xs flex items-center justify-center font-bold">1</span>
                   <span>Thông Tin Người Nhận</span>
                 </h2>
@@ -250,7 +380,7 @@ export default function CheckoutPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Name */}
                   <div className="space-y-1">
-                    <label className="block text-xs font-bold text-nepbrown-700">
+                    <label className="block text-xs font-bold text-stone-700">
                       Họ và tên người nhận <span className="text-nepred-600">*</span>
                     </label>
                     <input
@@ -267,7 +397,7 @@ export default function CheckoutPage() {
 
                   {/* Phone */}
                   <div className="space-y-1">
-                    <label className="block text-xs font-bold text-nepbrown-700">
+                    <label className="block text-xs font-bold text-stone-700">
                       Số điện thoại <span className="text-nepred-600">*</span>
                     </label>
                     <input
@@ -285,7 +415,7 @@ export default function CheckoutPage() {
 
                 {/* Email (Optional) */}
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-nepbrown-700">
+                  <label className="block text-xs font-bold text-stone-700">
                     Email nhận thông báo đơn hàng (không bắt buộc)
                   </label>
                   <input
@@ -300,7 +430,7 @@ export default function CheckoutPage() {
 
               {/* Delivery Address */}
               <div className="space-y-4 pt-2">
-                <h2 className="font-serif font-bold text-base text-nepbrown-800 flex items-center gap-2 pb-2 border-b border-cream-200">
+                <h2 className="font-serif font-bold text-base text-stone-900 flex items-center gap-2 pb-2 border-b border-cream-200">
                   <span className="w-6 h-6 rounded-full bg-nepred-600 text-white text-xs flex items-center justify-center font-bold">2</span>
                   <span>Địa Chỉ Giao Hàng</span>
                 </h2>
@@ -308,7 +438,7 @@ export default function CheckoutPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* City */}
                   <div className="space-y-1">
-                    <label className="block text-xs font-bold text-nepbrown-700">
+                    <label className="block text-xs font-bold text-stone-700">
                       Tỉnh / Thành phố
                     </label>
                     <select
@@ -329,12 +459,12 @@ export default function CheckoutPage() {
 
                   {/* Detailed Address */}
                   <div className="space-y-1">
-                    <label className="block text-xs font-bold text-nepbrown-700">
+                    <label className="block text-xs font-bold text-stone-700">
                       Số nhà, tên đường, phường/xã <span className="text-nepred-600">*</span>
                     </label>
                     <input
                       type="text"
-                      placeholder="Ví dụ: KTX Học viện Bưu chính Viễn thông"
+                      placeholder="Ví dụ: 122 Hoàng Quốc Việt, Cầu Giấy"
                       value={formData.address}
                       onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                       className={`w-full px-3.5 py-2.5 text-xs rounded-xl border ${
@@ -347,12 +477,12 @@ export default function CheckoutPage() {
 
                 {/* Notes */}
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-nepbrown-700">
+                  <label className="block text-xs font-bold text-stone-700">
                     Ghi chú đơn hàng (nếu có yêu cầu gói quà hoặc giao giờ cụ thể)
                   </label>
                   <textarea
                     rows={2}
-                    placeholder="Ví dụ: Xin gói kèm thiệp chúc mừng sinh nhật, giao vào giờ hành chính..."
+                    placeholder="Ví dụ: Xin bọc thiệp chúc mừng sinh nhật, giao ngoài giờ hành chính..."
                     value={formData.notes}
                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                     className="w-full px-3.5 py-2 text-xs rounded-xl border border-cream-300 bg-cream-50 focus:bg-white focus:outline-none focus:border-nepred-600 resize-none"
@@ -360,9 +490,9 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              {/* Payment Methods */}
+              {/* Payment Methods - Detailed Bank Transfer */}
               <div className="space-y-4 pt-2">
-                <h2 className="font-serif font-bold text-base text-nepbrown-800 flex items-center gap-2 pb-2 border-b border-cream-200">
+                <h2 className="font-serif font-bold text-base text-stone-900 flex items-center gap-2 pb-2 border-b border-cream-200">
                   <span className="w-6 h-6 rounded-full bg-nepred-600 text-white text-xs flex items-center justify-center font-bold">3</span>
                   <span>Phương Thức Thanh Toán</span>
                 </h2>
@@ -385,42 +515,94 @@ export default function CheckoutPage() {
                       className="mt-0.5 text-nepred-600 focus:ring-nepred-500"
                     />
                     <div className="flex-1 space-y-1 text-xs">
-                      <div className="flex items-center gap-2 font-bold text-nepbrown-800">
+                      <div className="flex items-center gap-2 font-bold text-stone-900">
                         <Banknote className="w-4 h-4 text-emerald-600" />
                         <span>Thanh toán tiền mặt khi nhận hàng (COD)</span>
                       </div>
-                      <p className="text-neutral-500 leading-relaxed">
+                      <p className="text-stone-500 leading-relaxed">
                         Bạn chỉ thanh toán khi bưu tá giao hàng tận nơi và đã đồng kiểm tra đúng sản phẩm thủ công nguyên vẹn.
                       </p>
                     </div>
                   </label>
 
-                  {/* Bank Transfer demo */}
-                  <label
-                    className={`flex items-start gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${
+                  {/* Bank Transfer (VietQR Detailed) */}
+                  <div
+                    className={`rounded-2xl border transition-all overflow-hidden ${
                       formData.paymentMethod === 'BANK'
-                        ? 'border-nepred-600 bg-nepred-50/40 ring-1 ring-nepred-600'
+                        ? 'border-nepred-600 bg-white ring-1 ring-nepred-600'
                         : 'border-cream-200 bg-white hover:bg-cream-50'
                     }`}
                   >
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="BANK"
-                      checked={formData.paymentMethod === 'BANK'}
-                      onChange={() => setFormData({ ...formData, paymentMethod: 'BANK' })}
-                      className="mt-0.5 text-nepred-600 focus:ring-nepred-500"
-                    />
-                    <div className="flex-1 space-y-1 text-xs">
-                      <div className="flex items-center gap-2 font-bold text-nepbrown-800">
-                        <CreditCard className="w-4 h-4 text-blue-600" />
-                        <span>Chuyển khoản ngân hàng (Cửa hàng sẽ gọi xác nhận)</span>
+                    <label className="flex items-start gap-3 p-4 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="paymentMethod"
+                        value="BANK"
+                        checked={formData.paymentMethod === 'BANK'}
+                        onChange={() => setFormData({ ...formData, paymentMethod: 'BANK' })}
+                        className="mt-0.5 text-nepred-600 focus:ring-nepred-500"
+                      />
+                      <div className="flex-1 space-y-1 text-xs">
+                        <div className="flex items-center gap-2 font-bold text-stone-900">
+                          <CreditCard className="w-4 h-4 text-blue-600" />
+                          <span>Chuyển khoản ngân hàng qua VietQR (Nhanh 24/7)</span>
+                        </div>
+                        <p className="text-stone-500 leading-relaxed">
+                          Hệ thống sẽ hiển thị mã VietQR tạo tự động đúng số tiền đơn hàng để bạn quét trực tiếp bằng mọi app ngân hàng.
+                        </p>
                       </div>
-                      <p className="text-neutral-500 leading-relaxed">
-                        Nhân viên CSKH Nếp Việt sẽ liên hệ qua điện thoại gửi thông tin số tài khoản và mã đơn để hoàn tất xác nhận.
-                      </p>
-                    </div>
-                  </label>
+                    </label>
+
+                    {/* Detailed Bank Selection when BANK is chosen */}
+                    {formData.paymentMethod === 'BANK' && (
+                      <div className="p-4 bg-cream-50/70 border-t border-cream-200 space-y-3 text-xs">
+                        <p className="font-bold text-stone-800">Chọn ngân hàng chuyển khoản:</p>
+                        <div className="grid grid-cols-2 gap-3">
+                          <button
+                            type="button"
+                            onClick={() => setFormData({ ...formData, selectedBank: 'MB' })}
+                            className={`p-3 rounded-xl border text-left flex flex-col justify-between transition-all ${
+                              formData.selectedBank === 'MB'
+                                ? 'border-nepred-600 bg-white shadow-sm ring-1 ring-nepred-500'
+                                : 'border-cream-300 bg-white hover:bg-cream-50'
+                            }`}
+                          >
+                            <span className="font-bold text-stone-900">MB Bank</span>
+                            <span className="text-[11px] text-stone-500">Ngân hàng Quân Đội</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => setFormData({ ...formData, selectedBank: 'VCB' })}
+                            className={`p-3 rounded-xl border text-left flex flex-col justify-between transition-all ${
+                              formData.selectedBank === 'VCB'
+                                ? 'border-nepred-600 bg-white shadow-sm ring-1 ring-nepred-500'
+                                : 'border-cream-300 bg-white hover:bg-cream-50'
+                            }`}
+                          >
+                            <span className="font-bold text-stone-900">Vietcombank</span>
+                            <span className="text-[11px] text-stone-500">Ngoại Thương Việt Nam</span>
+                          </button>
+                        </div>
+
+                        {/* Account Preview */}
+                        <div className="p-3 bg-white rounded-xl border border-cream-200 space-y-1.5 text-[11px]">
+                          <div className="flex justify-between">
+                            <span className="text-stone-500">Số tài khoản:</span>
+                            <span className="font-mono font-bold text-stone-900">{currentBank.accountNo}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-stone-500">Chủ tài khoản:</span>
+                            <span className="font-bold text-stone-900">{currentBank.accountName}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-stone-500">Chi nhánh:</span>
+                            <span className="text-stone-700">{currentBank.branch}</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -429,7 +611,7 @@ export default function CheckoutPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-4 px-6 bg-nepred-600 hover:bg-nepred-700 disabled:bg-neutral-300 text-white rounded-2xl font-bold text-sm shadow-xl shadow-nepred-600/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2"
+                  className="w-full py-4 px-6 bg-nepred-600 hover:bg-nepred-700 disabled:bg-stone-300 text-white rounded-2xl font-bold text-sm shadow-xl shadow-nepred-600/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2"
                 >
                   {isSubmitting ? (
                     <>
@@ -450,7 +632,7 @@ export default function CheckoutPage() {
 
           {/* Order Summary & Products Preview (Right 5 Cols) */}
           <div className="lg:col-span-5 bg-white rounded-3xl p-6 sm:p-8 border border-cream-200 shadow-sm space-y-6">
-            <h2 className="font-serif font-bold text-base text-nepbrown-800 pb-3 border-b border-cream-200 flex items-center justify-between">
+            <h2 className="font-serif font-bold text-base text-stone-900 pb-3 border-b border-cream-200 flex items-center justify-between">
               <span>Đơn Hàng ({totalItems} sản phẩm)</span>
               <Link href="/gio-hang" className="text-xs text-nepred-600 hover:underline font-normal">
                 Sửa
@@ -470,14 +652,14 @@ export default function CheckoutPage() {
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-serif font-bold text-xs text-nepbrown-800 truncate">
+                    <p className="font-serif font-bold text-xs text-stone-900 truncate">
                       {item.product.name}
                     </p>
-                    <p className="text-[11px] text-neutral-400">
+                    <p className="text-[11px] text-stone-400">
                       SL: {item.quantity} x {formatCurrency(item.product.price)}
                     </p>
                   </div>
-                  <span className="font-serif font-bold text-xs text-nepbrown-800 whitespace-nowrap">
+                  <span className="font-serif font-bold text-xs text-stone-900 whitespace-nowrap">
                     {formatCurrency(item.product.price * item.quantity)}
                   </span>
                 </div>
@@ -486,32 +668,32 @@ export default function CheckoutPage() {
 
             {/* Calculations */}
             <div className="space-y-2 pt-4 border-t border-cream-200 text-xs">
-              <div className="flex justify-between text-neutral-600">
-                <span>Tạm tính:</span>
-                <span className="font-bold text-nepbrown-800">{formatCurrency(subtotal)}</span>
+              <div className="flex justify-between text-stone-600">
+                <span>Tạm tính hàng hóa:</span>
+                <span className="font-bold text-stone-900">{formatCurrency(subtotal)}</span>
               </div>
-              <div className="flex justify-between text-neutral-600">
+              <div className="flex justify-between text-stone-600">
                 <span>Phí vận chuyển:</span>
                 <span className="text-emerald-700 font-bold">
-                  {subtotal >= 300000 ? 'Miễn phí' : 'Cửa hàng xác nhận sau'}
+                  {subtotal >= 300000 ? 'Miễn phí (Freeship)' : 'Cửa hàng xác nhận'}
                 </span>
               </div>
               <div className="pt-3 border-t border-cream-200 flex justify-between items-baseline">
-                <span className="font-serif font-bold text-sm text-nepbrown-800">Tổng thanh toán:</span>
-                <span className="font-serif text-2xl font-black text-nepred-600">
+                <span className="font-serif font-bold text-sm text-stone-900">Tổng thanh toán:</span>
+                <span className="font-serif text-2xl font-bold text-nepred-600">
                   {formatCurrency(subtotal)}
                 </span>
               </div>
             </div>
 
             {/* Safe packing note */}
-            <div className="p-4 bg-cream-50 rounded-2xl border border-cream-200 text-xs text-neutral-600 space-y-2">
+            <div className="p-4 bg-cream-50 rounded-2xl border border-cream-200 text-xs text-stone-600 space-y-2">
               <div className="flex items-center gap-2 font-bold text-nepgreen-900">
                 <ShieldCheck className="w-4 h-4 text-nepgreen-700" />
                 <span>Cam kết giao hàng nguyên vẹn</span>
               </div>
               <p className="text-[11px] leading-relaxed">
-                Nếp Việt cam kết hoàn tiền hoặc 1 đổi 1 ngay lập tức nếu sản phẩm thủ công mỹ nghệ bị trầy xước hoặc nứt vỡ trong quá trình vận chuyển.
+                Nếp Việt cam kết bồi thường 100% hoặc gửi bù sản phẩm mới ngay lập tức nếu hàng thủ công mỹ nghệ bị trầy xước, nứt vỡ trong quá trình vận chuyển.
               </p>
             </div>
 

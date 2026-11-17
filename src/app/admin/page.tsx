@@ -53,6 +53,7 @@ import {
   LogOut,
   Lock,
   User as UserIcon,
+  QrCode,
 } from 'lucide-react';
 
 interface MockOrder {
@@ -65,6 +66,8 @@ interface MockOrder {
   paymentMethod: 'COD' | 'VIETQR';
   status: 'pending' | 'shipping' | 'completed' | 'cancelled';
   date: string;
+  transactionCode?: string;
+  isPaid?: boolean;
 }
 
 const PRESET_IMAGES = [
@@ -138,6 +141,18 @@ export default function AdminPage() {
   // Notification Toast state
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
+  // VietQR Order Modal state
+  const [selectedVietQrOrder, setSelectedVietQrOrder] = useState<MockOrder | null>(null);
+
+  // Beneficiary Bank Settings State
+  const [bankSettings, setBankSettings] = useState({
+    bankCode: 'MB' as 'MB' | 'VCB' | 'TCB' | 'TPB',
+    accountNo: '0968999888',
+    accountName: 'CONG TY TNHH NEP VIET',
+    branch: 'Hội sở chính / PGD Cầu Giấy, Hà Nội',
+    testAmount: 250000,
+  });
+
   // Supabase Database State
   const [supabaseUrl, setSupabaseUrl] = useState('');
   const [supabaseKey, setSupabaseKey] = useState('');
@@ -147,6 +162,37 @@ export default function AdminPage() {
   const [isSeeding, setIsSeeding] = useState(false);
   const [showSchemaModal, setShowSchemaModal] = useState(false);
   const [copiedSchema, setCopiedSchema] = useState(false);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('nepviet_custom_orders');
+      if (raw) {
+        const customOrders = JSON.parse(raw);
+        if (Array.isArray(customOrders) && customOrders.length > 0) {
+          const formatted: MockOrder[] = customOrders.map((co: any) => ({
+            id: co.id,
+            customerName: co.customer,
+            phone: co.phone,
+            city: co.city,
+            itemsCount: 1,
+            total: co.total,
+            paymentMethod: 'VIETQR',
+            status: co.status === 'Đã thanh toán' ? 'completed' : 'pending',
+            date: co.date,
+            transactionCode: co.transactionCode,
+            isPaid: true,
+          }));
+          setOrders((prev) => {
+            const existingIds = new Set(prev.map(p => p.id));
+            const newOnes = formatted.filter(f => !existingIds.has(f.id));
+            return [...newOnes, ...prev];
+          });
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
 
   useEffect(() => {
     const config = getSupabaseConfig();
@@ -736,11 +782,21 @@ export default function AdminPage() {
                         <td className="p-3 text-stone-600">{order.city}</td>
                         <td className="p-3 font-bold text-stone-900 price-tag">{formatCurrency(order.total)}</td>
                         <td className="p-3">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                            order.paymentMethod === 'VIETQR' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'
-                          }`}>
-                            {order.paymentMethod}
-                          </span>
+                          {order.paymentMethod === 'VIETQR' ? (
+                            <button
+                              type="button"
+                              onClick={() => setSelectedVietQrOrder(order)}
+                              className="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 hover:bg-blue-200 text-blue-700 inline-flex items-center gap-1 transition-colors cursor-pointer"
+                              title="Bấm để xem biên lai & mã VietQR"
+                            >
+                              <QrCode className="w-3 h-3 text-blue-600" />
+                              <span>VIETQR</span>
+                            </button>
+                          ) : (
+                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-700">
+                              COD
+                            </span>
+                          )}
                         </td>
                         <td className="p-3">
                           <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
@@ -875,11 +931,21 @@ export default function AdminPage() {
                       <td className="p-3.5 text-stone-600">{order.city}</td>
                       <td className="p-3.5 font-bold text-stone-900 price-tag">{formatCurrency(order.total)}</td>
                       <td className="p-3.5">
-                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                          order.paymentMethod === 'VIETQR' ? 'bg-blue-100 text-blue-800' : 'bg-emerald-100 text-emerald-800'
-                        }`}>
-                          {order.paymentMethod}
-                        </span>
+                        {order.paymentMethod === 'VIETQR' ? (
+                          <button
+                            type="button"
+                            onClick={() => setSelectedVietQrOrder(order)}
+                            className="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 hover:bg-blue-200 text-blue-800 inline-flex items-center gap-1 transition-colors cursor-pointer"
+                            title="Bấm để xem biên lai & mã VietQR"
+                          >
+                            <QrCode className="w-3 h-3 text-blue-600" />
+                            <span>VIETQR</span>
+                          </button>
+                        ) : (
+                          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                            COD
+                          </span>
+                        )}
                       </td>
                       <td className="p-3.5">
                         <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
@@ -1288,41 +1354,150 @@ export default function AdminPage() {
               </div>
             </div>
 
-            {/* General store settings */}
-            <div className="space-y-4 pt-4 border-t border-stone-100 text-xs">
-              <h3 className="font-serif font-bold text-base text-stone-900">
-                Thông Tin Thương Hiệu & Thanh Toán
-              </h3>
+            {/* Beneficiary Bank & VietQR Configuration */}
+            <div className="space-y-5 pt-6 border-t border-stone-200 text-xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shadow-sm">
+                    <QrCode className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-serif font-bold text-base text-stone-900 flex items-center gap-2">
+                      <span>Cấu Hình Ngân Hàng Thụ Hưởng & Thanh Toán VietQR Mẫu</span>
+                      <span className="px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 text-[10px] font-bold">
+                        Napas 247
+                      </span>
+                    </h3>
+                    <p className="text-[11px] text-stone-500">
+                      Tài khoản nhận tiền tự động khi khách hàng thanh toán chuyển khoản trên website
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="font-bold text-stone-700">Tên thương hiệu doanh nghiệp</label>
-                  <input
-                    type="text"
-                    defaultValue="NẾP VIỆT – Tiệm Thủ Công Di Sản"
-                    className="w-full p-2.5 rounded-xl border border-stone-300 bg-stone-50"
-                    readOnly
-                  />
+              {/* Form config & Live Preview */}
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+                <div className="md:col-span-7 space-y-3.5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="space-y-1">
+                      <label className="font-bold text-stone-700">Ngân hàng thụ hưởng</label>
+                      <select
+                        value={bankSettings.bankCode}
+                        onChange={(e) => setBankSettings({ ...bankSettings, bankCode: e.target.value as any })}
+                        className="w-full p-2.5 rounded-xl border border-stone-300 bg-white font-medium"
+                      >
+                        <option value="MB">MB Bank (Ngân hàng Quân Đội)</option>
+                        <option value="VCB">Vietcombank (Ngoại Thương Việt Nam)</option>
+                        <option value="TCB">Techcombank (Kỹ Thương Việt Nam)</option>
+                        <option value="TPB">TPBank (Ngân hàng Tiên Phong)</option>
+                      </select>
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="font-bold text-stone-700">Số tài khoản nhận tiền</label>
+                      <input
+                        type="text"
+                        value={bankSettings.accountNo}
+                        onChange={(e) => setBankSettings({ ...bankSettings, accountNo: e.target.value })}
+                        className="w-full p-2.5 rounded-xl border border-stone-300 bg-white font-mono font-bold"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="font-bold text-stone-700">Tên chủ tài khoản (In hoa không dấu)</label>
+                    <input
+                      type="text"
+                      value={bankSettings.accountName}
+                      onChange={(e) => setBankSettings({ ...bankSettings, accountName: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-stone-300 bg-white font-bold"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="font-bold text-stone-700">Chi nhánh ngân hàng</label>
+                    <input
+                      type="text"
+                      value={bankSettings.branch}
+                      onChange={(e) => setBankSettings({ ...bankSettings, branch: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-stone-300 bg-white"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="font-bold text-stone-700">Số tiền thử nghiệm quét mã (VNĐ)</label>
+                    <div className="flex gap-2">
+                      {[100000, 250000, 500000, 1000000].map((amt) => (
+                        <button
+                          key={amt}
+                          type="button"
+                          onClick={() => setBankSettings({ ...bankSettings, testAmount: amt })}
+                          className={`py-1.5 px-2 rounded-lg border text-[11px] font-mono font-bold transition-all ${
+                            bankSettings.testAmount === amt
+                              ? 'border-nepred-600 bg-nepred-50 text-nepred-700'
+                              : 'border-stone-200 bg-white hover:bg-stone-50 text-stone-600'
+                          }`}
+                        >
+                          {amt.toLocaleString('vi-VN')}đ
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="pt-2 flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => showToast('Đã lưu cấu hình tài khoản ngân hàng thụ hưởng thành công!')}
+                      className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-nepred-600 hover:bg-nepred-700 text-white font-bold shadow-md transition-colors"
+                    >
+                      <Save className="w-4 h-4" />
+                      <span>Lưu Cấu Hình Ngân Hàng</span>
+                    </button>
+                    <span className="text-[11px] text-stone-400">Tự động đồng bộ với trang Thanh toán</span>
+                  </div>
                 </div>
 
-                <div className="space-y-1">
-                  <label className="font-bold text-stone-700">Tài khoản thụ hưởng VietQR (MB Bank)</label>
-                  <input
-                    type="text"
-                    defaultValue="0968999888 - CONG TY TNHH NEP VIET"
-                    className="w-full p-2.5 rounded-xl border border-stone-300 bg-stone-50 font-mono"
-                    readOnly
-                  />
-                </div>
+                {/* QR Live Test Card */}
+                <div className="md:col-span-5 p-5 rounded-2xl bg-stone-50 border border-stone-200 flex flex-col items-center text-center space-y-3">
+                  <div className="flex items-center justify-between w-full text-[11px] font-bold text-stone-600 pb-2 border-b border-stone-200">
+                    <span>Mã VietQR Demo Trực Tiếp</span>
+                    <span className="text-emerald-700">EMVCo 24/7</span>
+                  </div>
 
-                <div className="space-y-1 sm:col-span-2">
-                  <label className="font-bold text-stone-700">Mức miễn phí vận chuyển (Freeship Threshold)</label>
-                  <input
-                    type="text"
-                    defaultValue="300.000 VNĐ (Áp dụng tự động tại giỏ hàng)"
-                    className="w-full p-2.5 rounded-xl border border-stone-300 bg-stone-50 font-mono"
-                    readOnly
-                  />
+                  <div className="w-48 h-48 bg-white rounded-2xl p-2.5 border-2 border-stone-200 shadow-md flex items-center justify-center">
+                    <img
+                      src={`https://img.vietqr.io/image/${bankSettings.bankCode}-${bankSettings.accountNo}-compact2.png?amount=${bankSettings.testAmount}&addInfo=TEST%20NEPVIET&accountName=${encodeURIComponent(bankSettings.accountName)}`}
+                      alt="VietQR Demo"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+
+                  <div className="text-[11px] text-stone-500 space-y-0.5">
+                    <p>Mở ứng dụng ngân hàng bất kỳ để quét thử</p>
+                    <p className="font-bold text-nepred-600 price-tag text-sm">
+                      {bankSettings.testAmount.toLocaleString('vi-VN')}đ
+                    </p>
+                  </div>
+
+                  <div className="flex gap-2 w-full pt-1">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard.writeText(bankSettings.accountNo);
+                        showToast(`Đã sao chép STK: ${bankSettings.accountNo}`);
+                      }}
+                      className="flex-1 py-2 px-2 rounded-xl border border-stone-200 bg-white hover:bg-stone-100 text-[11px] font-semibold text-stone-700 transition-colors"
+                    >
+                      Sao chép STK
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => showToast('Mô phỏng khớp lệnh: Cổng Napas 247 đã nhận được thanh toán thành công!')}
+                      className="flex-1 py-2 px-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-[11px] font-bold text-white transition-colors"
+                    >
+                      Test Khớp Lệnh
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1783,6 +1958,93 @@ CREATE POLICY "Public delete products" ON public.products FOR DELETE USING (true
                 className="px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold"
               >
                 Đóng
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* VIETQR ORDER DETAILS MODAL */}
+      {selectedVietQrOrder && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fadeIn">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 border border-stone-200 shadow-2xl relative space-y-5">
+            <button
+              type="button"
+              onClick={() => setSelectedVietQrOrder(null)}
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 hover:text-stone-800 flex items-center justify-center transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <div className="flex items-center gap-2.5 pb-3 border-b border-stone-100">
+              <div className="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-sm">
+                <QrCode className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="font-serif font-bold text-base text-stone-900">
+                  Giao Dịch VietQR {selectedVietQrOrder.id}
+                </h3>
+                <p className="text-[11px] text-stone-500">
+                  Khách: {selectedVietQrOrder.customerName} • {selectedVietQrOrder.phone}
+                </p>
+              </div>
+            </div>
+
+            {/* QR Image Frame */}
+            <div className="p-4 rounded-2xl bg-cream-50 border border-cream-200 flex flex-col items-center">
+              <div className="w-48 h-48 bg-white rounded-xl p-2 shadow-sm border border-stone-200 flex items-center justify-center">
+                <img
+                  src={`https://img.vietqr.io/image/MB-0968999888-compact2.png?amount=${selectedVietQrOrder.total}&addInfo=${encodeURIComponent(selectedVietQrOrder.id.replace('-', '') + ' ' + selectedVietQrOrder.phone.slice(-4))}&accountName=CONG%20TY%20TNHH%20NEP%20VIET`}
+                  alt="VietQR Chi tiết đơn hàng"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <p className="text-[11px] text-stone-500 mt-2 text-center">
+                Cú pháp Napas 24/7: <strong>{selectedVietQrOrder.id.replace('-', '')} {selectedVietQrOrder.phone.slice(-4)}</strong>
+              </p>
+            </div>
+
+            {/* Transaction info */}
+            <div className="space-y-2 text-xs">
+              <div className="flex justify-between p-2.5 rounded-xl bg-stone-50">
+                <span className="text-stone-500">Số tiền đơn hàng:</span>
+                <span className="font-bold text-nepred-600 price-tag text-sm">{formatCurrency(selectedVietQrOrder.total)}</span>
+              </div>
+              <div className="flex justify-between p-2.5 rounded-xl bg-stone-50">
+                <span className="text-stone-500">Trạng thái thanh toán:</span>
+                <span className={`font-bold ${selectedVietQrOrder.status === 'completed' ? 'text-emerald-700' : 'text-amber-700'}`}>
+                  {selectedVietQrOrder.status === 'completed' ? '✓ Đã khớp lệnh (Thành công)' : '⏳ Chờ thanh toán'}
+                </span>
+              </div>
+              {selectedVietQrOrder.transactionCode && (
+                <div className="flex justify-between p-2.5 rounded-xl bg-emerald-50 text-emerald-900">
+                  <span className="text-stone-600">Mã chuẩn chi ngân hàng:</span>
+                  <span className="font-mono font-bold">{selectedVietQrOrder.transactionCode}</span>
+                </div>
+              )}
+            </div>
+
+            {/* Actions */}
+            <div className="flex gap-2 pt-2">
+              {selectedVietQrOrder.status !== 'completed' && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOrders(prev => prev.map(o => o.id === selectedVietQrOrder.id ? { ...o, status: 'completed' } : o));
+                    setSelectedVietQrOrder(null);
+                    showToast(`Đã duyệt xác nhận thanh toán cho đơn hàng ${selectedVietQrOrder.id}!`);
+                  }}
+                  className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition-colors"
+                >
+                  Xác Nhận Đã Nhận Tiền
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => setSelectedVietQrOrder(null)}
+                className="flex-1 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold text-xs transition-colors"
+              >
+                Đóng Cửa Sổ
               </button>
             </div>
           </div>

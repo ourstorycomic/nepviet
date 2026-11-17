@@ -21,10 +21,46 @@ import {
   Truck,
   Layers,
   ChevronLeft,
+  QrCode,
+  Smartphone,
+  MessageCircle,
+  ExternalLink,
+  X,
+  Copy,
+  Check,
+  CreditCard,
 } from 'lucide-react';
 
 export default function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  // QR Wireframe Modal state
+  const [activeQrModal, setActiveQrModal] = useState<null | {
+    id: string;
+    title: string;
+    badge: string;
+    description: string;
+    qrUrl: string;
+    type: 'vietqr' | 'app' | 'zalo' | 'ocop';
+  }>(null);
+  const [selectedBank, setSelectedBank] = useState<'MB' | 'VCB' | 'TCB' | 'TPB'>('MB');
+  const [sampleAmount, setSampleAmount] = useState<number>(100000);
+  const [copiedAcc, setCopiedAcc] = useState(false);
+  const [copiedMemo, setCopiedMemo] = useState(false);
+
+  const BANK_LIST = {
+    MB: { name: 'MB Bank (Quân Đội)', acc: '0968999888', owner: 'CONG TY TNHH NEP VIET' },
+    VCB: { name: 'Vietcombank', acc: '1029886868', owner: 'CONG TY TNHH NEP VIET' },
+    TCB: { name: 'Techcombank', acc: '1903678999', owner: 'CONG TY TNHH NEP VIET' },
+    TPB: { name: 'TPBank', acc: '0888999666', owner: 'CONG TY TNHH NEP VIET' },
+  };
+
+  const getVietQrUrl = (bank: 'MB' | 'VCB' | 'TCB' | 'TPB', amount: number) => {
+    const acc = BANK_LIST[bank].acc;
+    const owner = encodeURIComponent(BANK_LIST[bank].owner);
+    const memo = encodeURIComponent('NEPVIET DISAN');
+    return `https://img.vietqr.io/image/${bank}-${acc}-compact2.png?amount=${amount}&addInfo=${memo}&accountName=${owner}`;
+  };
 
   const heroSlides = [
     {
@@ -453,6 +489,370 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* 8. KHÔNG GIAN SỐ & MÃ QR DI SẢN (THEO SƠ ĐỒ WIREFRAME DỰ ÁN) */}
+      <section className="py-16 bg-cream-50/60 border-b border-cream-200/90 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="bg-white rounded-3xl p-6 sm:p-10 border border-cream-200/80 shadow-xl shadow-stone-200/40 relative">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 pb-6 border-b border-cream-200">
+              <div className="space-y-1.5">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-nepred-50 text-nepred-700 text-xs font-bold border border-nepred-200">
+                  <QrCode className="w-3.5 h-3.5" />
+                  <span>Cổng Kết Nối Số & Truy Xuất Di Sản</span>
+                </div>
+                <h2 className="font-serif font-bold text-2xl sm:text-3xl text-stone-900">
+                  Quét Mã QR Tiện Ích Nếp Việt
+                </h2>
+                <p className="text-xs sm:text-sm text-stone-500 max-w-xl">
+                  Theo chuẩn thiết kế đa kênh, bạn có thể quét nhanh bằng ứng dụng ngân hàng hoặc camera điện thoại để trải nghiệm dịch vụ di sản.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] text-stone-400 italic">4 Cổng mã chuẩn hóa theo Wireframe</span>
+              </div>
+            </div>
+
+            {/* 4 QR Cards Matching Wireframe */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              
+              {/* Card 1: VietQR */}
+              <div
+                onClick={() => setActiveQrModal({
+                  id: 'vietqr',
+                  title: 'Thanh Toán Nhanh VietQR (Napas 247)',
+                  badge: 'Thanh toán không dùng tiền mặt',
+                  description: 'Chuyển khoản trực tiếp liên ngân hàng 24/7 không cần nhập tay thông tin, hệ thống tự động nhận lệnh đơn hàng tức thì.',
+                  qrUrl: getVietQrUrl(selectedBank, sampleAmount),
+                  type: 'vietqr',
+                })}
+                className="group p-5 rounded-2xl bg-cream-50/50 hover:bg-white border border-cream-200 hover:border-nepred-500 hover:shadow-lg transition-all cursor-pointer flex flex-col items-center text-center"
+              >
+                <div className="w-full flex items-center justify-between text-[11px] mb-3">
+                  <span className="px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold">Napas 247</span>
+                  <span className="text-stone-400 group-hover:text-nepred-600 transition-colors flex items-center gap-0.5">
+                    Quét thử <ChevronRight className="w-3 h-3" />
+                  </span>
+                </div>
+
+                <div className="relative w-40 h-40 bg-white rounded-xl p-2 shadow-sm border border-cream-300 group-hover:border-nepred-400 group-hover:scale-105 transition-all flex items-center justify-center">
+                  <img
+                    src="https://img.vietqr.io/image/MB-0968999888-compact2.png?amount=100000&addInfo=NEPVIET%20DISAN&accountName=CONG%20TY%20TNHH%20NEP%20VIET"
+                    alt="VietQR Nếp Việt"
+                    className="w-full h-full object-contain rounded-lg"
+                  />
+                </div>
+
+                <h3 className="font-serif font-bold text-sm text-stone-900 mt-4 group-hover:text-nepred-600 transition-colors">
+                  VietQR Chuyển Khoản 24/7
+                </h3>
+                <p className="text-[11px] text-stone-500 mt-1 line-clamp-2">
+                  Quét chuyển khoản siêu tốc qua MB, Vietcombank, Techcombank, TPBank.
+                </p>
+
+                <div className="mt-4 pt-3 border-t border-cream-200/80 w-full">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-nepred-600">
+                    <CreditCard className="w-3.5 h-3.5" />
+                    <span>Mở cổng thanh toán</span>
+                  </span>
+                </div>
+              </div>
+
+              {/* Card 2: Mobile App */}
+              <div
+                onClick={() => setActiveQrModal({
+                  id: 'app',
+                  title: 'Tải Ứng Dụng Di Động Nếp Việt',
+                  badge: 'iOS & Android App',
+                  description: 'Trải nghiệm không gian thực tế ảo 3D làng nghề, theo dõi đơn hàng thời gian thực và nhận đặc quyền voucher thành viên mới.',
+                  qrUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fnepviet.vn%2Fapp',
+                  type: 'app',
+                })}
+                className="group p-5 rounded-2xl bg-cream-50/50 hover:bg-white border border-cream-200 hover:border-nepgold-500 hover:shadow-lg transition-all cursor-pointer flex flex-col items-center text-center"
+              >
+                <div className="w-full flex items-center justify-between text-[11px] mb-3">
+                  <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold">App Di Sản</span>
+                  <span className="text-stone-400 group-hover:text-nepgold-600 transition-colors flex items-center gap-0.5">
+                    Tải App <ChevronRight className="w-3 h-3" />
+                  </span>
+                </div>
+
+                <div className="relative w-40 h-40 bg-white rounded-xl p-2 shadow-sm border border-cream-300 group-hover:border-nepgold-400 group-hover:scale-105 transition-all flex items-center justify-center">
+                  <img
+                    src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fnepviet.vn%2Fapp"
+                    alt="App Nếp Việt QR"
+                    className="w-full h-full object-contain rounded-lg"
+                  />
+                </div>
+
+                <h3 className="font-serif font-bold text-sm text-stone-900 mt-4 group-hover:text-nepgold-600 transition-colors">
+                  Ứng Dụng Nếp Việt 3D
+                </h3>
+                <p className="text-[11px] text-stone-500 mt-1 line-clamp-2">
+                  Tour làng nghề 3D & gợi ý quà tặng theo ngân sách sinh viên.
+                </p>
+
+                <div className="mt-4 pt-3 border-t border-cream-200/80 w-full">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-nepgold-600">
+                    <Smartphone className="w-3.5 h-3.5" />
+                    <span>Tải về điện thoại</span>
+                  </span>
+                </div>
+              </div>
+
+              {/* Card 3: Zalo OA */}
+              <div
+                onClick={() => setActiveQrModal({
+                  id: 'zalo',
+                  title: 'Zalo Official Account & Hotline Nghệ Nhân',
+                  badge: 'Tư Vấn Trực Tuyến 24/7',
+                  description: 'Trao đổi trực tiếp cùng các nghệ nhân Bát Tràng, Đông Hồ; gửi yêu cầu gói quà theo phong cách truyền thống hoặc đặt làm theo mẫu riêng.',
+                  qrUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fzalo.me%2Fnepviet',
+                  type: 'zalo',
+                })}
+                className="group p-5 rounded-2xl bg-cream-50/50 hover:bg-white border border-cream-200 hover:border-blue-500 hover:shadow-lg transition-all cursor-pointer flex flex-col items-center text-center"
+              >
+                <div className="w-full flex items-center justify-between text-[11px] mb-3">
+                  <span className="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 font-bold border border-blue-200">Zalo OA</span>
+                  <span className="text-stone-400 group-hover:text-blue-600 transition-colors flex items-center gap-0.5">
+                    Nhắn tin <ChevronRight className="w-3 h-3" />
+                  </span>
+                </div>
+
+                <div className="relative w-40 h-40 bg-white rounded-xl p-2 shadow-sm border border-cream-300 group-hover:border-blue-400 group-hover:scale-105 transition-all flex items-center justify-center">
+                  <img
+                    src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fzalo.me%2Fnepviet"
+                    alt="Zalo Nếp Việt QR"
+                    className="w-full h-full object-contain rounded-lg"
+                  />
+                </div>
+
+                <h3 className="font-serif font-bold text-sm text-stone-900 mt-4 group-hover:text-blue-600 transition-colors">
+                  Zalo Nghệ Nhân & Hotline
+                </h3>
+                <p className="text-[11px] text-stone-500 mt-1 line-clamp-2">
+                  Tư vấn quà tặng, yêu cầu gói thiệp thủ công & bảo hành đổi trả 1:1.
+                </p>
+
+                <div className="mt-4 pt-3 border-t border-cream-200/80 w-full">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600">
+                    <MessageCircle className="w-3.5 h-3.5" />
+                    <span>Trò chuyện trực tiếp</span>
+                  </span>
+                </div>
+              </div>
+
+              {/* Card 4: OCOP & Traceability */}
+              <div
+                onClick={() => setActiveQrModal({
+                  id: 'ocop',
+                  title: 'Tem Điện Tử Truy Xuất Nguồn Gốc Di Sản',
+                  badge: 'Chứng Nhận OCOP 4-5 Sao',
+                  description: 'Mỗi sản phẩm Nếp Việt đều được cấp mã định danh điện tử gắn kèm tem chống giả để tra cứu tên nghệ nhân, xưởng chế tác và giấy chứng nhận nguyên liệu.',
+                  qrUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fnepviet.vn%2Fvan-hoa',
+                  type: 'ocop',
+                })}
+                className="group p-5 rounded-2xl bg-cream-50/50 hover:bg-white border border-cream-200 hover:border-nepgreen-600 hover:shadow-lg transition-all cursor-pointer flex flex-col items-center text-center"
+              >
+                <div className="w-full flex items-center justify-between text-[11px] mb-3">
+                  <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">OCOP Việt Nam</span>
+                  <span className="text-stone-400 group-hover:text-nepgreen-700 transition-colors flex items-center gap-0.5">
+                    Tra cứu <ChevronRight className="w-3 h-3" />
+                  </span>
+                </div>
+
+                <div className="relative w-40 h-40 bg-white rounded-xl p-2 shadow-sm border border-cream-300 group-hover:border-nepgreen-500 group-hover:scale-105 transition-all flex items-center justify-center">
+                  <img
+                    src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fnepviet.vn%2Fvan-hoa"
+                    alt="Truy xuất di sản QR"
+                    className="w-full h-full object-contain rounded-lg"
+                  />
+                </div>
+
+                <h3 className="font-serif font-bold text-sm text-stone-900 mt-4 group-hover:text-nepgreen-700 transition-colors">
+                  Truy Xuất Nguồn Gốc Làng Nghề
+                </h3>
+                <p className="text-[11px] text-stone-500 mt-1 line-clamp-2">
+                  Xác thực nguồn gốc gốm Bát Tràng, lụa Vạn Phúc, mây tre Phú Vinh chính hiệu.
+                </p>
+
+                <div className="mt-4 pt-3 border-t border-cream-200/80 w-full">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-nepgreen-700">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    <span>Kiểm chứng xuất xứ</span>
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* QR MODAL PREVIEW & BANK TRANSFER TESTING */}
+      {activeQrModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fadeIn">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 border border-stone-200 shadow-2xl relative space-y-6">
+            <button
+              type="button"
+              onClick={() => setActiveQrModal(null)}
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 hover:text-stone-800 flex items-center justify-center transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            {/* Modal Header */}
+            <div>
+              <span className="text-[11px] uppercase tracking-wider font-bold px-2.5 py-0.5 rounded-full bg-nepred-100 text-nepred-800">
+                {activeQrModal.badge}
+              </span>
+              <h3 className="font-serif font-bold text-xl text-stone-900 mt-2">
+                {activeQrModal.title}
+              </h3>
+              <p className="text-xs text-stone-500 mt-1 leading-relaxed">
+                {activeQrModal.description}
+              </p>
+            </div>
+
+            {/* QR Content */}
+            {activeQrModal.type === 'vietqr' ? (
+              <div className="space-y-4">
+                {/* Bank Selector */}
+                <div>
+                  <label className="block text-[11px] font-bold text-stone-600 mb-1.5">
+                    Chọn ngân hàng chuyển khoản mẫu:
+                  </label>
+                  <div className="grid grid-cols-4 gap-2">
+                    {(['MB', 'VCB', 'TCB', 'TPB'] as const).map((b) => (
+                      <button
+                        key={b}
+                        type="button"
+                        onClick={() => setSelectedBank(b)}
+                        className={`py-2 px-1 text-center rounded-xl border text-xs font-bold transition-all ${
+                          selectedBank === b
+                            ? 'border-nepred-600 bg-nepred-50 text-nepred-700 shadow-sm'
+                            : 'border-stone-200 hover:bg-stone-50 text-stone-600'
+                        }`}
+                      >
+                        {b}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Amount Selector */}
+                <div>
+                  <label className="block text-[11px] font-bold text-stone-600 mb-1.5">
+                    Số tiền mẫu chuyển khoản:
+                  </label>
+                  <div className="grid grid-cols-4 gap-2 text-xs">
+                    {[50000, 100000, 250000, 500000].map((amt) => (
+                      <button
+                        key={amt}
+                        type="button"
+                        onClick={() => setSampleAmount(amt)}
+                        className={`py-1.5 px-1 rounded-lg border text-center font-mono font-bold transition-all ${
+                          sampleAmount === amt
+                            ? 'border-nepgreen-700 bg-nepgreen-50 text-nepgreen-800'
+                            : 'border-stone-200 hover:bg-stone-50 text-stone-600'
+                        }`}
+                      >
+                        {amt.toLocaleString('vi-VN')}đ
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Live QR Image Box */}
+                <div className="p-4 rounded-2xl bg-cream-50 border border-cream-200 flex flex-col items-center">
+                  <div className="w-52 h-52 bg-white rounded-2xl p-2.5 shadow-md border border-cream-300">
+                    <img
+                      src={getVietQrUrl(selectedBank, sampleAmount)}
+                      alt="Mã VietQR"
+                      className="w-full h-full object-contain rounded-xl"
+                    />
+                  </div>
+                  <p className="text-[11px] text-stone-500 mt-2 text-center">
+                    Quét tự động điền: <strong>{BANK_LIST[selectedBank].name}</strong> • STK: <strong>{BANK_LIST[selectedBank].acc}</strong>
+                  </p>
+                </div>
+
+                {/* Copy info buttons */}
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigator.clipboard.writeText(BANK_LIST[selectedBank].acc);
+                      setCopiedAcc(true);
+                      setTimeout(() => setCopiedAcc(false), 2000);
+                    }}
+                    className="py-2.5 px-3 rounded-xl border border-stone-200 bg-stone-50 hover:bg-stone-100 font-semibold text-stone-700 flex items-center justify-center gap-1.5 transition-colors"
+                  >
+                    {copiedAcc ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>{copiedAcc ? 'Đã sao chép STK' : 'Sao chép STK'}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigator.clipboard.writeText('NEPVIET DISAN');
+                      setCopiedMemo(true);
+                      setTimeout(() => setCopiedMemo(false), 2000);
+                    }}
+                    className="py-2.5 px-3 rounded-xl border border-stone-200 bg-stone-50 hover:bg-stone-100 font-semibold text-stone-700 flex items-center justify-center gap-1.5 transition-colors"
+                  >
+                    {copiedMemo ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>{copiedMemo ? 'Đã sao chép nội dung' : 'Sao chép cú pháp'}</span>
+                  </button>
+                </div>
+
+                <div className="pt-2">
+                  <Link
+                    href="/thanh-toan"
+                    className="w-full py-3 rounded-xl bg-nepred-600 hover:bg-nepred-700 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-nepred-600/20 transition-all"
+                  >
+                    <span>Trải nghiệm luồng thanh toán đơn hàng thực tế</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="p-6 rounded-2xl bg-cream-50 border border-cream-200 flex flex-col items-center">
+                  <div className="w-56 h-56 bg-white rounded-2xl p-3 shadow-md border border-cream-300">
+                    <img
+                      src={activeQrModal.qrUrl}
+                      alt={activeQrModal.title}
+                      className="w-full h-full object-contain rounded-xl"
+                    />
+                  </div>
+                  <p className="text-xs text-stone-600 mt-3 text-center">
+                    Mở camera trên điện thoại iPhone hoặc Android để quét mã trực tiếp
+                  </p>
+                </div>
+
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setActiveQrModal(null)}
+                    className="flex-1 py-3 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs text-center transition-colors"
+                  >
+                    Đóng cửa sổ
+                  </button>
+                  <Link
+                    href={activeQrModal.type === 'ocop' ? '/van-hoa' : '/san-pham'}
+                    className="flex-1 py-3 rounded-xl bg-cream-200 hover:bg-cream-300 text-stone-800 font-bold text-xs text-center transition-colors flex items-center justify-center gap-1"
+                  >
+                    <span>Khám phá ngay</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
     </div>
   );

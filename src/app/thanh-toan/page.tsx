@@ -24,6 +24,10 @@ import {
   QrCode,
   AlertCircle,
   HelpCircle,
+  Download,
+  Clock,
+  RefreshCw,
+  ExternalLink,
 } from 'lucide-react';
 
 interface OrderSuccessData {
@@ -36,9 +40,11 @@ interface OrderSuccessData {
   total: number;
   date: string;
   bankInfo?: {
+    bankCode: string;
     bankName: string;
     accountNo: string;
     accountName: string;
+    branch: string;
     memo: string;
     qrUrl: string;
   };
@@ -57,7 +63,7 @@ export default function CheckoutPage() {
     address: '',
     notes: '',
     paymentMethod: 'COD' as 'COD' | 'BANK',
-    selectedBank: 'MB' as 'MB' | 'VCB',
+    selectedBank: 'MB' as 'MB' | 'VCB' | 'TCB' | 'TPB',
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -65,18 +71,63 @@ export default function CheckoutPage() {
   const [successOrder, setSuccessOrder] = useState<OrderSuccessData | null>(null);
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
+  // VietQR countdown & payment simulation
+  const [countdown, setCountdown] = useState(900); // 15:00 minutes
+  const [isVerifyingPayment, setIsVerifyingPayment] = useState(false);
+  const [isPaid, setIsPaid] = useState(false);
+  const [transactionCode, setTransactionCode] = useState('');
+  const [showLivePreview, setShowLivePreview] = useState(false);
+
+  React.useEffect(() => {
+    if (!successOrder || successOrder.paymentMethod !== 'BANK' || isPaid) return;
+    const timer = setInterval(() => {
+      setCountdown((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [successOrder, isPaid]);
+
+  const formatCountdown = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  };
+
   const BANK_ACCOUNTS = {
     MB: {
+      code: 'MB',
       bankName: 'MB Bank (Ngân hàng Quân Đội)',
+      shortName: 'MB Bank',
       accountNo: '0968999888',
       accountName: 'CONG TY TNHH NEP VIET',
-      branch: 'Chi nhánh Cầu Giấy, Hà Nội',
+      branch: 'Hội sở chính / Chi nhánh Cầu Giấy, Hà Nội',
+      badgeColor: 'bg-blue-600',
     },
     VCB: {
+      code: 'VCB',
       bankName: 'Vietcombank (Ngân hàng Ngoại Thương)',
+      shortName: 'Vietcombank',
       accountNo: '1029886868',
       accountName: 'CONG TY TNHH NEP VIET',
       branch: 'Chi nhánh Thăng Long, Hà Nội',
+      badgeColor: 'bg-emerald-600',
+    },
+    TCB: {
+      code: 'TCB',
+      bankName: 'Techcombank (Kỹ Thương Việt Nam)',
+      shortName: 'Techcombank',
+      accountNo: '1903678999',
+      accountName: 'CONG TY TNHH NEP VIET',
+      branch: 'Chi nhánh Trung Hòa, Cầu Giấy',
+      badgeColor: 'bg-red-600',
+    },
+    TPB: {
+      code: 'TPB',
+      bankName: 'TPBank (Ngân hàng Tiên Phong)',
+      shortName: 'TPBank',
+      accountNo: '0888999666',
+      accountName: 'CONG TY TNHH NEP VIET',
+      branch: 'Chi nhánh Hà Nội',
+      badgeColor: 'bg-purple-600',
     },
   };
 
@@ -105,6 +156,37 @@ export default function CheckoutPage() {
     setTimeout(() => setCopiedField(null), 2500);
   };
 
+  const handleSimulatePayment = () => {
+    if (!successOrder) return;
+    setIsVerifyingPayment(true);
+    setTimeout(() => {
+      const transId = 'FT241118' + Math.floor(100000 + Math.random() * 900000);
+      setIsVerifyingPayment(false);
+      setIsPaid(true);
+      setTransactionCode(transId);
+
+      // Lưu đơn hàng vào danh sách đơn hàng Admin
+      try {
+        const existing = JSON.parse(localStorage.getItem('nepviet_custom_orders') || '[]');
+        const newOrder = {
+          id: successOrder.orderId,
+          customer: successOrder.name,
+          phone: successOrder.phone,
+          city: successOrder.city,
+          total: successOrder.total,
+          method: 'VIETQR',
+          status: 'Đã thanh toán',
+          transactionCode: transId,
+          paidAt: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }),
+          date: successOrder.date,
+        };
+        localStorage.setItem('nepviet_custom_orders', JSON.stringify([newOrder, ...existing]));
+      } catch (e) {
+        console.error(e);
+      }
+    }, 2000);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
@@ -123,7 +205,7 @@ export default function CheckoutPage() {
       const formattedDate = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')} - ${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()}`;
 
       // Generate VietQR URL
-      const memo = `${generatedOrderId} ${formData.phone.slice(-4)}`;
+      const memo = `${generatedOrderId.replace('-', '')} ${formData.phone.slice(-4)}`;
       const qrUrl = `https://img.vietqr.io/image/${formData.selectedBank}-${currentBank.accountNo}-compact2.png?amount=${subtotal}&addInfo=${encodeURIComponent(memo)}&accountName=${encodeURIComponent(currentBank.accountName)}`;
 
       const orderData: OrderSuccessData = {
@@ -136,9 +218,11 @@ export default function CheckoutPage() {
         total: subtotal,
         date: formattedDate,
         bankInfo: formData.paymentMethod === 'BANK' ? {
+          bankCode: currentBank.code,
           bankName: currentBank.bankName,
           accountNo: currentBank.accountNo,
           accountName: currentBank.accountName,
+          branch: currentBank.branch,
           memo: memo,
           qrUrl: qrUrl,
         } : undefined,
@@ -173,39 +257,78 @@ export default function CheckoutPage() {
 
           {/* If Bank Transfer, show QR & Account Details */}
           {successOrder.paymentMethod === 'BANK' && successOrder.bankInfo && (
-            <div className="bg-gradient-to-br from-amber-50/60 to-cream-100/70 rounded-2xl p-6 border border-nepgold-500/30 space-y-5">
-              <div className="flex items-center justify-between pb-3 border-b border-nepgold-500/20">
-                <div className="flex items-center gap-2">
-                  <QrCode className="w-5 h-5 text-nepred-600" />
-                  <h3 className="font-serif font-bold text-sm text-stone-900">
-                    Thông Tin Chuyển Khoản VietQR Nhanh 24/7
-                  </h3>
+            <div className="bg-gradient-to-br from-amber-50/70 via-cream-50 to-stone-50 rounded-3xl p-6 border-2 border-nepgold-500/40 shadow-md space-y-5">
+              
+              {/* VietQR Header */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-nepgold-500/20">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-xl bg-nepred-600 text-white flex items-center justify-center shadow-sm">
+                    <QrCode className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-serif font-bold text-sm text-stone-900 flex items-center gap-2">
+                      <span>Cổng Chuyển Khoản VietQR Nhanh 24/7</span>
+                      <span className="px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 text-[10px] font-bold">
+                        Napas 247
+                      </span>
+                    </h3>
+                    <p className="text-[11px] text-stone-500">Chuẩn thanh toán quốc gia EMVCo liên ngân hàng</p>
+                  </div>
                 </div>
-                <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">
-                  Quét mã tiện lợi
-                </span>
+
+                {/* Countdown & Status */}
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-100 text-stone-700 text-xs font-mono font-bold">
+                    <Clock className="w-3.5 h-3.5 text-nepred-600" />
+                    <span>{formatCountdown(countdown)}</span>
+                  </div>
+                  <span className={`text-[11px] px-2.5 py-1 rounded-full font-bold ${
+                    isPaid ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                  }`}>
+                    {isPaid ? '✓ Đã khớp lệnh' : 'Chờ thanh toán'}
+                  </span>
+                </div>
               </div>
 
+              {/* QR Code and Account Information */}
               <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
-                {/* VietQR Code Image */}
+                {/* VietQR Code Frame */}
                 <div className="sm:col-span-5 flex flex-col items-center">
-                  <div className="relative w-48 h-48 bg-white rounded-2xl p-2 shadow-md border border-cream-300">
+                  <div className="relative w-52 h-52 bg-white rounded-2xl p-2.5 shadow-lg border-2 border-stone-200 flex items-center justify-center">
                     <img
                       src={successOrder.bankInfo.qrUrl}
                       alt="Mã VietQR thanh toán Nếp Việt"
                       className="w-full h-full object-contain rounded-xl"
                     />
+                    {isPaid && (
+                      <div className="absolute inset-0 bg-emerald-900/80 backdrop-blur-[2px] rounded-2xl flex flex-col items-center justify-center text-white p-4 text-center animate-fadeIn">
+                        <CheckCircle2 className="w-12 h-12 text-emerald-400 mb-1" />
+                        <span className="font-bold text-sm">ĐÃ THANH TOÁN</span>
+                        <span className="font-mono text-[11px] text-emerald-200 mt-0.5">{transactionCode}</span>
+                      </div>
+                    )}
                   </div>
-                  <p className="text-[10px] text-stone-500 mt-2 text-center">
-                    Mở app ngân hàng bất kỳ để quét mã tự động điền số tiền và nội dung
-                  </p>
+
+                  <div className="flex items-center gap-2 mt-3">
+                    <a
+                      href={successOrder.bankInfo.qrUrl}
+                      download={`VietQR-${successOrder.orderId}.png`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-stone-300 bg-white hover:bg-stone-50 text-[11px] font-semibold text-stone-700 transition-colors shadow-sm"
+                    >
+                      <Download className="w-3.5 h-3.5 text-nepred-600" />
+                      <span>Tải ảnh QR</span>
+                    </a>
+                  </div>
                 </div>
 
                 {/* Account Details with Copy Buttons */}
-                <div className="sm:col-span-7 space-y-3 text-xs">
+                <div className="sm:col-span-7 space-y-2.5 text-xs">
                   <div className="p-2.5 bg-white rounded-xl border border-cream-200">
                     <p className="text-[11px] text-stone-500">Ngân hàng thụ hưởng</p>
                     <p className="font-bold text-stone-900 mt-0.5">{successOrder.bankInfo.bankName}</p>
+                    <p className="text-[10px] text-stone-500">{successOrder.bankInfo.branch}</p>
                   </div>
 
                   <div className="p-2.5 bg-white rounded-xl border border-cream-200 flex items-center justify-between">
@@ -232,7 +355,7 @@ export default function CheckoutPage() {
 
                   <div className="p-2.5 bg-white rounded-xl border border-cream-200 flex items-center justify-between">
                     <div>
-                      <p className="text-[11px] text-stone-500">Nội dung chuyển khoản (Memo)</p>
+                      <p className="text-[11px] text-stone-500">Nội dung chuyển khoản (Memo bắt buộc)</p>
                       <p className="font-mono font-bold text-nepred-600 mt-0.5">{successOrder.bankInfo.memo}</p>
                     </div>
                     <button
@@ -253,6 +376,46 @@ export default function CheckoutPage() {
                   </div>
                 </div>
               </div>
+
+              {/* Interactive Bank Simulation Action */}
+              <div className="pt-2 border-t border-nepgold-500/20 space-y-3">
+                {!isPaid ? (
+                  <button
+                    type="button"
+                    onClick={handleSimulatePayment}
+                    disabled={isVerifyingPayment}
+                    className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-nepgreen-800 to-nepgreen-700 hover:from-nepgreen-900 hover:to-nepgreen-800 text-white font-bold text-xs shadow-lg transition-all flex items-center justify-center gap-2"
+                  >
+                    {isVerifyingPayment ? (
+                      <>
+                        <RefreshCw className="w-4 h-4 animate-spin text-emerald-300" />
+                        <span>Đang truy vấn đối soát Napas 247 & Ngân hàng...</span>
+                      </>
+                    ) : (
+                      <>
+                        <CheckCircle2 className="w-4 h-4 text-emerald-300" />
+                        <span>Tôi Đã Chuyển Khoản Xong (Mô Phỏng Khớp Lệnh Ngay)</span>
+                      </>
+                    )}
+                  </button>
+                ) : (
+                  <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-200 text-xs text-emerald-900 space-y-2 animate-fadeIn">
+                    <div className="flex items-center justify-between font-bold">
+                      <span className="flex items-center gap-1.5 text-emerald-700">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                        <span>Chứng Nhận Khớp Lệnh Thành Công 100%</span>
+                      </span>
+                      <span className="font-mono text-[11px] px-2 py-0.5 rounded bg-emerald-200/70 text-emerald-900">
+                        {transactionCode}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-emerald-800 leading-relaxed">
+                      Cổng thanh toán Napas 247 đã đối soát thành công số tiền {formatCurrency(successOrder.total)}. Trạng thái đơn hàng {successOrder.orderId} đã được tự động đồng bộ sang bộ phận kho xưởng để xuất kho vận chuyển!
+                    </p>
+                  </div>
+                )}
+              </div>
+
             </div>
           )}
 
@@ -555,38 +718,51 @@ export default function CheckoutPage() {
 
                     {/* Detailed Bank Selection when BANK is chosen */}
                     {formData.paymentMethod === 'BANK' && (
-                      <div className="p-4 bg-cream-50/70 border-t border-cream-200 space-y-3 text-xs">
-                        <p className="font-bold text-stone-800">Chọn ngân hàng chuyển khoản:</p>
-                        <div className="grid grid-cols-2 gap-3">
+                      <div className="p-4 bg-cream-50/80 border-t border-cream-200 space-y-4 text-xs">
+                        <div className="flex items-center justify-between">
+                          <p className="font-bold text-stone-800">Chọn ngân hàng chuyển khoản VietQR:</p>
                           <button
                             type="button"
-                            onClick={() => setFormData({ ...formData, selectedBank: 'MB' })}
-                            className={`p-3 rounded-xl border text-left flex flex-col justify-between transition-all ${
-                              formData.selectedBank === 'MB'
-                                ? 'border-nepred-600 bg-white shadow-sm ring-1 ring-nepred-500'
-                                : 'border-cream-300 bg-white hover:bg-cream-50'
-                            }`}
+                            onClick={() => setShowLivePreview(!showLivePreview)}
+                            className="text-[11px] font-semibold text-nepred-600 hover:text-nepred-700 underline flex items-center gap-1"
                           >
-                            <span className="font-bold text-stone-900">MB Bank</span>
-                            <span className="text-[11px] text-stone-500">Ngân hàng Quân Đội</span>
+                            <QrCode className="w-3.5 h-3.5" />
+                            <span>{showLivePreview ? 'Ẩn xem trước' : 'Xem trước mã QR'}</span>
                           </button>
+                        </div>
 
-                          <button
-                            type="button"
-                            onClick={() => setFormData({ ...formData, selectedBank: 'VCB' })}
-                            className={`p-3 rounded-xl border text-left flex flex-col justify-between transition-all ${
-                              formData.selectedBank === 'VCB'
-                                ? 'border-nepred-600 bg-white shadow-sm ring-1 ring-nepred-500'
-                                : 'border-cream-300 bg-white hover:bg-cream-50'
-                            }`}
-                          >
-                            <span className="font-bold text-stone-900">Vietcombank</span>
-                            <span className="text-[11px] text-stone-500">Ngoại Thương Việt Nam</span>
-                          </button>
+                        {/* 4 Banks Grid */}
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                          {(['MB', 'VCB', 'TCB', 'TPB'] as const).map((bKey) => {
+                            const b = BANK_ACCOUNTS[bKey];
+                            const isSel = formData.selectedBank === bKey;
+                            return (
+                              <button
+                                key={bKey}
+                                type="button"
+                                onClick={() => setFormData({ ...formData, selectedBank: bKey })}
+                                className={`p-2.5 rounded-xl border text-left flex flex-col justify-between transition-all ${
+                                  isSel
+                                    ? 'border-nepred-600 bg-white shadow-sm ring-1 ring-nepred-500'
+                                    : 'border-cream-300 bg-white hover:bg-stone-50'
+                                }`}
+                              >
+                                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded text-white w-fit ${b.badgeColor}`}>
+                                  {bKey}
+                                </span>
+                                <span className="font-bold text-stone-900 text-xs mt-1.5">{b.shortName}</span>
+                                <span className="text-[10px] text-stone-400 font-mono mt-0.5">{b.accountNo}</span>
+                              </button>
+                            );
+                          })}
                         </div>
 
                         {/* Account Preview */}
                         <div className="p-3 bg-white rounded-xl border border-cream-200 space-y-1.5 text-[11px]">
+                          <div className="flex justify-between">
+                            <span className="text-stone-500">Ngân hàng:</span>
+                            <span className="font-bold text-stone-900">{currentBank.bankName}</span>
+                          </div>
                           <div className="flex justify-between">
                             <span className="text-stone-500">Số tài khoản:</span>
                             <span className="font-mono font-bold text-stone-900">{currentBank.accountNo}</span>
@@ -600,6 +776,26 @@ export default function CheckoutPage() {
                             <span className="text-stone-700">{currentBank.branch}</span>
                           </div>
                         </div>
+
+                        {/* Live VietQR Preview Box */}
+                        {showLivePreview && (
+                          <div className="p-4 bg-white rounded-2xl border-2 border-dashed border-nepgold-500/50 flex flex-col items-center space-y-2 animate-fadeIn">
+                            <div className="flex items-center gap-1.5 text-[11px] font-bold text-stone-800">
+                              <QrCode className="w-4 h-4 text-nepred-600" />
+                              <span>Mã VietQR xem trước (Tạm tính: {formatCurrency(subtotal)})</span>
+                            </div>
+                            <div className="w-44 h-44 bg-white rounded-xl p-2 shadow-sm border border-stone-200">
+                              <img
+                                src={`https://img.vietqr.io/image/${formData.selectedBank}-${currentBank.accountNo}-compact2.png?amount=${subtotal}&addInfo=NEPVIET%20ORDER&accountName=${encodeURIComponent(currentBank.accountName)}`}
+                                alt="Mã VietQR xem trước"
+                                className="w-full h-full object-contain"
+                              />
+                            </div>
+                            <p className="text-[10px] text-stone-500 text-center max-w-xs">
+                              Mã VietQR chính thức gắn với mã đơn hàng của bạn sẽ được kích hoạt ngay khi bạn bấm xác nhận đặt hàng bên dưới.
+                            </p>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>

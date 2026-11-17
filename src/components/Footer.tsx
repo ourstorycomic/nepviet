@@ -1,5 +1,8 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import {
   MapPin,
   Phone,
@@ -15,6 +18,12 @@ import {
 } from 'lucide-react';
 
 export function Footer() {
+  const pathname = usePathname();
+
+  // Ẩn Footer khách hàng khi đang ở trong trang Quản trị Admin
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
   return (
     <footer className="bg-stone-900 text-cream-100 pt-16 pb-12 border-t border-stone-800">
       

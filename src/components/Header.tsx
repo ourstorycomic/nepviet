@@ -29,6 +29,11 @@ export function Header() {
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
+  // Ẩn Header khách hàng khi đang ở trong trang Quản trị Admin
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
+
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchTerm.trim()) {

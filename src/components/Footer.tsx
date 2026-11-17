@@ -10,16 +10,19 @@ import {
   Sparkles,
   Heart,
   QrCode,
+  CheckCircle2,
+  Lock,
 } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer className="bg-nepbrown-800 text-cream-100 pt-16 pb-12 border-t border-nepbrown-700">
-      {/* 3 Core Value Cards as shown in wireframe */}
+    <footer className="bg-stone-900 text-cream-100 pt-16 pb-12 border-t border-stone-800">
+      
+      {/* 3 Core Value Cards */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-14">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-nepbrown-700/60 p-6 rounded-2xl border border-nepbrown-600/50 flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-nepred-600 text-white flex items-center justify-center flex-shrink-0 shadow-md">
+          <div className="bg-stone-800/80 p-6 rounded-2xl border border-stone-700/60 flex items-start gap-4">
+            <div className="w-12 h-12 rounded-xl bg-nepred-600 text-white flex items-center justify-center flex-shrink-0 shadow-lg">
               <Sparkles className="w-6 h-6" />
             </div>
             <div>
@@ -30,8 +33,8 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="bg-nepbrown-700/60 p-6 rounded-2xl border border-nepbrown-600/50 flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-nepgreen-700 text-white flex items-center justify-center flex-shrink-0 shadow-md">
+          <div className="bg-stone-800/80 p-6 rounded-2xl border border-stone-700/60 flex items-start gap-4">
+            <div className="w-12 h-12 rounded-xl bg-nepgreen-800 text-white flex items-center justify-center flex-shrink-0 shadow-lg">
               <Truck className="w-6 h-6" />
             </div>
             <div>
@@ -42,8 +45,8 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="bg-nepbrown-700/60 p-6 rounded-2xl border border-nepbrown-600/50 flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-nepgold-600 text-white flex items-center justify-center flex-shrink-0 shadow-md">
+          <div className="bg-stone-800/80 p-6 rounded-2xl border border-stone-700/60 flex items-start gap-4">
+            <div className="w-12 h-12 rounded-xl bg-nepgold-600 text-white flex items-center justify-center flex-shrink-0 shadow-lg">
               <ShieldCheck className="w-6 h-6" />
             </div>
             <div>
@@ -57,52 +60,60 @@ export function Footer() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-nepbrown-700/80">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-stone-800">
           
           {/* Brand Info */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-nepred-600 text-white flex items-center justify-center font-serif text-xl font-bold shadow-md">
+            <div className="flex items-center gap-3.5">
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-nepred-700 to-nepbrown-800 text-white flex items-center justify-center font-serif text-xl font-bold shadow-md border border-nepgold-500/30">
                 NV
               </div>
-              <span className="font-serif text-2xl font-bold tracking-wider text-cream-50">
-                NẾP VIỆT
-              </span>
+              <div className="flex flex-col">
+                <span className="font-serif text-2xl font-bold tracking-wider text-cream-50">
+                  NẾP VIỆT
+                </span>
+                <span className="text-[10px] uppercase tracking-widest text-nepgold-500 font-semibold font-sans">
+                  Công ty TNHH Văn Hóa & Thủ Công Nếp Việt
+                </span>
+              </div>
             </div>
+            
             <p className="text-xs text-cream-200/90 leading-relaxed max-w-sm">
-              Nếp Việt là dự án thương mại điện tử kết nối giới trẻ với các giá trị di sản thủ công và ẩm thực truyền thống Việt Nam. Chúng tôi tin rằng mỗi sản phẩm thủ công đều có một linh hồn và một câu chuyện đáng được trân trọng.
+              Nếp Việt là doanh nghiệp xã hội kết nối giới trẻ với các giá trị di sản thủ công và ẩm thực truyền thống Việt Nam. Chúng tôi tin rằng mỗi sản phẩm thủ công đều có một linh hồn và một câu chuyện đáng được trân trọng.
             </p>
+
             <div className="space-y-2 pt-2 text-xs text-cream-200">
-              <div className="flex items-center gap-2.5">
-                <MapPin className="w-4 h-4 text-nepred-500 flex-shrink-0" />
-                <span>Học viện Công nghệ Bưu chính Viễn thông, Hà Đông, Hà Nội</span>
+              <div className="flex items-start gap-2.5">
+                <MapPin className="w-4 h-4 text-nepred-500 flex-shrink-0 mt-0.5" />
+                <span>Trụ sở: Tòa nhà A2, Học viện Công nghệ Bưu chính Viễn thông, Hà Đông, Hà Nội</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-nepred-500 flex-shrink-0" />
-                <span>1900 6868 (Hotline hỗ trợ miễn phí 8:00 - 21:00)</span>
+                <span>Hotline: 1900 6868 (Miễn phí 08:00 - 21:30 hàng ngày)</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-nepred-500 flex-shrink-0" />
-                <span>lienhe@nepviet.vn / hotro@nepviet.vn</span>
+                <span>Email: lienhe@nepviet.vn / hotro@nepviet.vn</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Clock className="w-4 h-4 text-nepred-500 flex-shrink-0" />
-                <span>Thứ 2 - Chủ Nhật: 08:00 - 21:30</span>
+                <span>Xưởng trưng bày: Thôn Giang Cao, Làng gốm Bát Tràng, Gia Lâm, Hà Nội</span>
               </div>
+            </div>
+
+            {/* Business Registration Details */}
+            <div className="pt-2 text-[11px] text-stone-400 space-y-1">
+              <p>Mã số doanh nghiệp: <strong className="text-cream-200 font-sans">0109886868</strong> do Sở KH&ĐT TP. Hà Nội cấp</p>
+              <p>Người đại diện pháp luật: Nhóm Sáng Lập Nếp Việt (Khoa Đa Phương Tiện - PTIT)</p>
             </div>
           </div>
 
-          {/* Nav Links */}
+          {/* Quick Links */}
           <div className="space-y-3">
-            <h4 className="font-serif font-bold text-sm text-cream-50 tracking-wide uppercase border-b border-nepbrown-700 pb-2">
-              Khám Phá
+            <h4 className="font-serif font-bold text-sm text-cream-50 tracking-wide uppercase border-b border-stone-800 pb-2">
+              Bộ Sưu Tập
             </h4>
             <ul className="space-y-2 text-xs text-cream-200">
-              <li>
-                <Link href="/" className="hover:text-amber-300 transition-colors">
-                  Trang chủ
-                </Link>
-              </li>
               <li>
                 <Link href="/san-pham" className="hover:text-amber-300 transition-colors">
                   Tất cả sản phẩm
@@ -124,17 +135,22 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/van-hoa" className="hover:text-amber-300 transition-colors">
-                  Văn hóa & Làng nghề
+                <Link href="/san-pham?category=phu-kien-thoi-trang" className="hover:text-amber-300 transition-colors">
+                  Trang phục & Phụ kiện
+                </Link>
+              </li>
+              <li>
+                <Link href="/san-pham?category=am-thuc" className="hover:text-amber-300 transition-colors">
+                  Ẩm thực & Trà sen
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Policies */}
+          {/* Policies & Support */}
           <div className="space-y-3">
-            <h4 className="font-serif font-bold text-sm text-cream-50 tracking-wide uppercase border-b border-nepbrown-700 pb-2">
-              Chính Sách & Hỗ Trợ
+            <h4 className="font-serif font-bold text-sm text-cream-50 tracking-wide uppercase border-b border-stone-800 pb-2">
+              Chính Sách Khách Hàng
             </h4>
             <ul className="space-y-2 text-xs text-cream-200">
               <li>
@@ -144,61 +160,77 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/thanh-toan" className="hover:text-amber-300 transition-colors">
-                  Hướng dẫn thanh toán COD
+                  Phương thức thanh toán COD
                 </Link>
               </li>
               <li>
                 <span className="cursor-pointer hover:text-amber-300 transition-colors">
-                  Chính sách đóng gói & vận chuyển
+                  Chính sách đóng gói chống vỡ
                 </span>
               </li>
               <li>
                 <span className="cursor-pointer hover:text-amber-300 transition-colors">
-                  Chính sách bảo hành và đổi trả 7 ngày
+                  Quy định đổi trả hàng 7 ngày
                 </span>
               </li>
               <li>
                 <span className="cursor-pointer hover:text-amber-300 transition-colors">
-                  Bảo mật thông tin khách hàng
+                  Chính sách bảo mật thông tin
                 </span>
               </li>
               <li>
                 <Link href="/gioi-thieu" className="hover:text-amber-300 transition-colors">
-                  Về dự án Nếp Việt
+                  Câu chuyện thương hiệu
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* QR & Mobile Connect (as shown in wireframe) */}
-          <div className="space-y-3">
-            <h4 className="font-serif font-bold text-sm text-cream-50 tracking-wide uppercase border-b border-nepbrown-700 pb-2">
-              Kết Nối & Quét Mã
+          {/* Enterprise Certifications & QR */}
+          <div className="space-y-4">
+            <h4 className="font-serif font-bold text-sm text-cream-50 tracking-wide uppercase border-b border-stone-800 pb-2">
+              Chứng Nhận & Kết Nối
             </h4>
-            <p className="text-xs text-cream-200 leading-relaxed">
-              Quét mã QR để theo dõi các câu chuyện văn hóa và nhận ưu đãi sinh viên 10%:
-            </p>
-            <div className="p-3 bg-white rounded-xl inline-block shadow-md">
-              {/* Responsive SVG QR code representation */}
-              <div className="w-24 h-24 bg-neutral-900 rounded flex items-center justify-center p-2 text-white">
-                <QrCode className="w-20 h-20 text-white" />
+            
+            {/* Ministry of Industry and Trade badge (official trust signal) */}
+            <div className="p-3 bg-stone-800 rounded-xl border border-stone-700 space-y-1.5">
+              <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold">
+                <CheckCircle2 className="w-4 h-4" />
+                <span>Đã Đăng Ký Bộ Công Thương</span>
+              </div>
+              <p className="text-[10px] text-stone-400">
+                Hệ thống thương mại điện tử tuân thủ đầy đủ quy định về bảo vệ quyền lợi người tiêu dùng.
+              </p>
+            </div>
+
+            {/* SSL Badge */}
+            <div className="flex items-center gap-2 text-xs text-stone-300">
+              <Lock className="w-3.5 h-3.5 text-nepgold-500" />
+              <span>Bảo mật chuẩn SSL 256-bit</span>
+            </div>
+
+            {/* QR code */}
+            <div className="pt-1 flex items-center gap-3">
+              <div className="p-2 bg-white rounded-xl shadow-md">
+                <QrCode className="w-14 h-14 text-stone-900" />
+              </div>
+              <div className="text-[11px] text-cream-200">
+                <p className="font-bold text-amber-300">Quét mã nhận ưu đãi</p>
+                <p className="text-stone-400">Mã: NEPVIET10</p>
               </div>
             </div>
-            <p className="text-[11px] text-cream-300">
-              Mã ưu đãi độc quyền: <span className="font-mono text-amber-300 font-bold">NEPVIET10</span>
-            </p>
+          </div>
+
+        </div>
+
+        {/* Bottom Bar with payment partner logos */}
+        <div className="pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-stone-400 gap-4">
+          <p>© 2026 CÔNG TY TNHH NẾP VIỆT • Học phần Ứng dụng Thiết kế Web (Nhóm 05 - PTIT). Giữ toàn bộ bản quyền.</p>
+          <div className="flex items-center gap-3 text-stone-400">
+            <span className="text-[11px] text-stone-500">Đối tác vận chuyển: Viettel Post • GHTK • GHN</span>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-cream-300 gap-4">
-          <p>© 2026 Nếp Việt – Dự án học phần Ứng dụng Thiết kế Web (Nhóm 05 - PTIT). Mọi quyền được bảo lưu.</p>
-          <div className="flex items-center gap-1 text-cream-300">
-            <span>Thiết kế bằng</span>
-            <Heart className="w-3.5 h-3.5 text-nepred-500 fill-nepred-500" />
-            <span>cho di sản Việt</span>
-          </div>
-        </div>
       </div>
     </footer>
   );

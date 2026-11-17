@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900;1,600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,18 +12,24 @@
 body {
   color: rgb(var(--foreground-rgb));
   background-color: #FAF8F5;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: var(--font-sans), 'Be Vietnam Pro', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   overflow-x: hidden;
+  letter-spacing: -0.01em;
+}
+
+h1, h2, h3, h4, .font-serif {
+  font-family: var(--font-serif), 'Playfair Display', Georgia, serif;
+  letter-spacing: -0.015em;
 }
 
 /* Custom smooth transitions */
 a, button {
-  transition: all 0.2s ease-in-out;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 7px;
 }
 ::-webkit-scrollbar-track {
   background: #F5EFE6;
@@ -40,7 +48,7 @@ a, button {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-6px);
+    transform: translateY(-5px);
   }
 }
 
@@ -50,6 +58,11 @@ a, button {
 
 /* Vietnamese traditional arch shape styling */
 .arch-card {
-  border-top-left-radius: 120px;
-  border-top-right-radius: 120px;
+  border-top-left-radius: 140px;
+  border-top-right-radius: 140px;
+}
+
+/* Gold shimmer effect */
+.gold-gradient-border {
+  background: linear-gradient(135deg, #D4AF37, #F5EFE6, #B8860B);
 }

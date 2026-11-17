@@ -183,6 +183,14 @@ export function Header() {
                       >
                         Quản lý giỏ hàng
                       </Link>
+                      <Link
+                        href="/admin"
+                        onClick={() => setUserDropdownOpen(false)}
+                        className="flex items-center gap-2 px-4 py-2 text-xs text-nepred-600 hover:bg-nepred-50 font-bold transition-colors"
+                      >
+                        <ShieldCheck className="w-3.5 h-3.5" />
+                        Trang Quản Trị (Admin)
+                      </Link>
                       <div className="pt-1 mt-1 border-t border-cream-100">
                         <button
                           onClick={() => {

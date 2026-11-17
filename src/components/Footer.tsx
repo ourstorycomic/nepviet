@@ -183,6 +183,11 @@ export function Footer() {
                   Câu chuyện thương hiệu
                 </Link>
               </li>
+              <li className="pt-1 border-t border-stone-800">
+                <Link href="/admin" className="text-amber-400 hover:text-white transition-colors font-bold inline-flex items-center gap-1">
+                  <ShieldCheck className="w-3.5 h-3.5" /> Cổng Quản Trị (Admin)
+                </Link>
+              </li>
             </ul>
           </div>
 

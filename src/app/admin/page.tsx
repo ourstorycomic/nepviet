@@ -48,6 +48,9 @@ interface MockOrder {
 }
 
 const PRESET_IMAGES = [
+  { label: 'Làng Gốm Bát Tràng', path: '/villages/lang-gom-bat-trang.webp' },
+  { label: 'Làng Tranh Đông Hồ', path: '/villages/lang-tranh-dong-ho.jpg' },
+  { label: 'Làng Lụa Vạn Phúc', path: '/villages/lang-lua-van-phuc.webp' },
   { label: 'Gốm Sứ Bát Tràng', path: '/showcase/gom-su-bat-trang.png' },
   { label: 'Mây Tre Đan Phú Vinh', path: '/showcase/may-tre-dan-phu-vinh.webp' },
   { label: 'Tranh Dân Gian Đông Hồ', path: '/showcase/tranh-dan-gian-dong-ho.jpg' },

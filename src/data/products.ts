@@ -389,7 +389,7 @@ export const CRAFT_VILLAGES = [
     location: 'Gia Lâm, Hà Nội',
     history: 'Hơn 700 năm lịch sử',
     highlight: 'Kỹ nghệ men lam, men rạn và men hoả biến độc bản lưu giữ từ thời Lý - Trần.',
-    image: '/showcase/gom-su-bat-trang.png',
+    image: '/villages/lang-gom-bat-trang.webp',
   },
   {
     id: 'phu-vinh',
@@ -405,7 +405,7 @@ export const CRAFT_VILLAGES = [
     location: 'Thuận Thành, Bắc Ninh',
     history: 'Gần 500 năm hình thành',
     highlight: 'Di sản văn hóa phi vật thể quốc gia với kỹ thuật khắc ván gỗ trên nền giấy điệp lấp lánh.',
-    image: '/showcase/tranh-dan-gian-dong-ho.jpg',
+    image: '/villages/lang-tranh-dong-ho.jpg',
   },
   {
     id: 'van-phuc',
@@ -413,7 +413,7 @@ export const CRAFT_VILLAGES = [
     location: 'Hà Đông, Hà Nội',
     history: 'Hơn 1.000 năm lịch sử',
     highlight: 'Cái nôi dệt lụa tơ tằm mềm mại, hoa văn vân mây từng được chọn may lễ phục triều đình.',
-    image: '/showcase/lua-to-tam-van-phuc.jpg',
+    image: '/villages/lang-lua-van-phuc.webp',
   },
   {
     id: 'xuan-la',

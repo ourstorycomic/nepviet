@@ -9,6 +9,13 @@
   --background-rgb: 250, 248, 245;
 }
 
+/* Force Lining Figures globally across all fonts so numbers NEVER jump up and down */
+*, html, body {
+  font-variant-numeric: lining-nums tabular-nums;
+  -webkit-font-feature-settings: "lnum" 1, "tnum" 1;
+  font-feature-settings: "lnum" 1, "tnum" 1;
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background-color: #FAF8F5;
@@ -20,6 +27,15 @@ body {
 h1, h2, h3, h4, .font-serif {
   font-family: var(--font-serif), 'Playfair Display', Georgia, serif;
   letter-spacing: -0.015em;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* Price specific styling helper - 100% flat, aligned, equal-height numerals */
+.price-tag {
+  font-family: var(--font-sans), 'Be Vietnam Pro', system-ui, sans-serif;
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: "lnum" 1, "tnum" 1;
+  letter-spacing: -0.02em;
 }
 
 /* Custom smooth transitions */
@@ -60,9 +76,4 @@ a, button {
 .arch-card {
   border-top-left-radius: 140px;
   border-top-right-radius: 140px;
-}
-
-/* Gold shimmer effect */
-.gold-gradient-border {
-  background: linear-gradient(135deg, #D4AF37, #F5EFE6, #B8860B);
 }

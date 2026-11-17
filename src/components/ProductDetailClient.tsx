@@ -167,15 +167,15 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
 
               {/* Price Block */}
               <div className="p-4 bg-cream-50 rounded-2xl border border-cream-200 flex items-baseline gap-3">
-                <span className="font-serif text-3xl font-black text-nepred-600">
+                <span className="text-3xl font-black text-nepred-600 price-tag">
                   {formatCurrency(product.price)}
                 </span>
                 {product.originalPrice && product.originalPrice > product.price && (
                   <>
-                    <span className="text-sm text-neutral-400 line-through">
+                    <span className="text-sm text-neutral-400 line-through price-tag">
                       {formatCurrency(product.originalPrice)}
                     </span>
-                    <span className="px-2 py-0.5 rounded bg-nepred-100 text-nepred-700 text-xs font-bold">
+                    <span className="px-2 py-0.5 rounded bg-nepred-100 text-nepred-700 text-xs font-bold price-tag">
                       -{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%
                     </span>
                   </>

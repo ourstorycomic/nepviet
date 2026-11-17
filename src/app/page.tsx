@@ -274,7 +274,7 @@ export default function HomePage() {
                   Đất cao lanh tuyển chọn nung ở 1.300°C, họa tiết nhành trúc thanh tao vẽ tay từ mực lam cổ truyền.
                 </p>
                 <div className="pt-2 flex items-center justify-between">
-                  <span className="font-serif text-lg font-bold text-amber-300">320.000đ</span>
+                  <span className="text-lg font-bold text-amber-300 price-tag">320.000đ</span>
                   <Link
                     href="/san-pham/bo-am-chen-men-lam-bat-trang"
                     className="px-4 py-2 bg-white text-stone-900 rounded-xl text-xs font-bold hover:bg-cream-100 transition-colors"

@@ -88,11 +88,11 @@ export function ProductCard({ product }: ProductCardProps) {
         {/* Price & Add to Cart button */}
         <div className="pt-3 border-t border-cream-100 flex items-center justify-between gap-2 mt-auto">
           <div>
-            <div className="text-base sm:text-lg font-bold text-nepred-600 font-serif">
+            <div className="text-base sm:text-lg font-bold text-nepred-600 price-tag">
               {formatCurrency(product.price)}
             </div>
             {product.originalPrice && product.originalPrice > product.price && (
-              <span className="text-xs text-stone-400 line-through">
+              <span className="text-xs text-stone-400 line-through price-tag">
                 {formatCurrency(product.originalPrice)}
               </span>
             )}

@@ -248,7 +248,7 @@ export default function CheckoutPage() {
                   <div className="p-2.5 bg-nepred-50 rounded-xl border border-nepred-100 flex items-center justify-between">
                     <div>
                       <p className="text-[11px] text-nepred-700 font-medium">Số tiền cần thanh toán</p>
-                      <p className="font-serif font-black text-base text-nepred-600">{formatCurrency(successOrder.total)}</p>
+                      <p className="font-bold text-base text-nepred-600 price-tag">{formatCurrency(successOrder.total)}</p>
                     </div>
                   </div>
                 </div>
@@ -284,7 +284,7 @@ export default function CheckoutPage() {
             </div>
             <div className="pt-3 border-t border-cream-200 flex justify-between items-baseline">
               <span className="font-serif font-bold text-sm text-stone-900">Tổng thanh toán:</span>
-              <span className="font-serif text-xl font-bold text-nepred-600">
+              <span className="text-xl font-bold text-nepred-600 price-tag">
                 {formatCurrency(successOrder.total)}
               </span>
             </div>
@@ -659,7 +659,7 @@ export default function CheckoutPage() {
                       SL: {item.quantity} x {formatCurrency(item.product.price)}
                     </p>
                   </div>
-                  <span className="font-serif font-bold text-xs text-stone-900 whitespace-nowrap">
+                  <span className="font-bold text-xs text-stone-900 whitespace-nowrap price-tag">
                     {formatCurrency(item.product.price * item.quantity)}
                   </span>
                 </div>
@@ -680,7 +680,7 @@ export default function CheckoutPage() {
               </div>
               <div className="pt-3 border-t border-cream-200 flex justify-between items-baseline">
                 <span className="font-serif font-bold text-sm text-stone-900">Tổng thanh toán:</span>
-                <span className="font-serif text-2xl font-bold text-nepred-600">
+                <span className="text-2xl font-bold text-nepred-600 price-tag">
                   {formatCurrency(subtotal)}
                 </span>
               </div>

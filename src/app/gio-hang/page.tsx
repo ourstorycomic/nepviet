@@ -193,7 +193,7 @@ export default function CartPage() {
 
                   {/* Total for item */}
                   <div className="text-right min-w-[90px]">
-                    <p className="font-serif font-bold text-sm sm:text-base text-nepred-600">
+                    <p className="font-bold text-sm sm:text-base text-nepred-600 price-tag">
                       {formatCurrency(item.product.price * item.quantity)}
                     </p>
                   </div>
@@ -296,7 +296,7 @@ export default function CartPage() {
 
               <div className="pt-3 border-t border-cream-200 flex justify-between items-baseline">
                 <span className="font-serif font-bold text-sm text-nepbrown-800">Tổng thanh toán:</span>
-                <span className="font-serif text-2xl font-black text-nepred-600">
+                <span className="text-2xl font-black text-nepred-600 price-tag">
                   {formatCurrency(finalTotal)}
                 </span>
               </div>

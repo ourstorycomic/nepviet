@@ -6,7 +6,7 @@ export const CATEGORIES: Category[] = [
     slug: 'gom-su',
     name: 'Gốm Sứ Bát Tràng',
     description: 'Tinh hoa đất sét nung và men hoả biến từ làng gốm nghìn năm tuổi ven sông Hồng.',
-    image: '/products/bo-am-chen-men-lam-bat-trang.jpg',
+    image: '/showcase/gom-su-bat-trang.png',
     itemCount: 3,
   },
   {
@@ -14,7 +14,7 @@ export const CATEGORIES: Category[] = [
     slug: 'may-tre',
     name: 'Mây Tre Đan Thủ Công',
     description: 'Sản phẩm mộc mạc, bền bỉ từ tre nứa tự nhiên, kết tinh bàn tay khéo léo của nghệ nhân Phú Vinh.',
-    image: '/products/khay-tra-may-tre-dan-phu-vinh.webp',
+    image: '/showcase/may-tre-dan-phu-vinh.webp',
     itemCount: 3,
   },
   {
@@ -22,7 +22,7 @@ export const CATEGORIES: Category[] = [
     slug: 'do-choi-qua-tang',
     name: 'Đồ Chơi & Quà Tặng Dân Gian',
     description: 'Tranh Đông Hồ, mặt nạ giấy bồi, tò he dân gian gợi nhớ ký ức tuổi thơ thanh bình.',
-    image: '/products/tranh-dong-ho-dam-cuoi-chuot.jpg',
+    image: '/showcase/qua-tang-do-choi-dan-gian.webp',
     itemCount: 3,
   },
   {
@@ -30,7 +30,7 @@ export const CATEGORIES: Category[] = [
     slug: 'phu-kien-thoi-trang',
     name: 'Trang Phục & Phụ Kiện Việt',
     description: 'Lụa tơ tằm Vạn Phúc, túi thêu thổ cẩm kết hợp nét hoa văn cổ điển và phong cách hiện đại.',
-    image: '/products/khan-lua-to-tam-van-phuc-may-cuon.jpg',
+    image: '/showcase/lua-to-tam-van-phuc.jpg',
     itemCount: 3,
   },
   {
@@ -38,7 +38,7 @@ export const CATEGORIES: Category[] = [
     slug: 'am-thuc',
     name: 'Ẩm Thực & Trà Truyền Thống',
     description: 'Hương vị trà sen Quảng Bá tao nhã, bánh cốm dẻo thơm và bánh chè lam ấm nồng ngày se lạnh.',
-    image: '/products/hop-tra-sen-tay-ho-thuong-hang.jpg',
+    image: '/showcase/am-thuc-tra-co-truyen.jpg',
     itemCount: 2,
   },
 ];
@@ -389,7 +389,7 @@ export const CRAFT_VILLAGES = [
     location: 'Gia Lâm, Hà Nội',
     history: 'Hơn 700 năm lịch sử',
     highlight: 'Kỹ nghệ men lam, men rạn và men hoả biến độc bản lưu giữ từ thời Lý - Trần.',
-    image: '/products/bo-am-chen-men-lam-bat-trang.jpg',
+    image: '/showcase/gom-su-bat-trang.png',
   },
   {
     id: 'phu-vinh',
@@ -397,7 +397,7 @@ export const CRAFT_VILLAGES = [
     location: 'Chương Mỹ, Hà Nội',
     history: 'Khoảng 400 năm phát triển',
     highlight: 'Nổi tiếng với tài chuốt nan tre mỏng như tơ sợi và kỹ thuật đan tranh hoa văn tinh xảo.',
-    image: '/products/khay-tra-may-tre-dan-phu-vinh.webp',
+    image: '/showcase/may-tre-dan-phu-vinh.webp',
   },
   {
     id: 'dong-ho',
@@ -405,7 +405,7 @@ export const CRAFT_VILLAGES = [
     location: 'Thuận Thành, Bắc Ninh',
     history: 'Gần 500 năm hình thành',
     highlight: 'Di sản văn hóa phi vật thể quốc gia với kỹ thuật khắc ván gỗ trên nền giấy điệp lấp lánh.',
-    image: '/products/tranh-dong-ho-dam-cuoi-chuot.jpg',
+    image: '/showcase/tranh-dan-gian-dong-ho.jpg',
   },
   {
     id: 'van-phuc',
@@ -413,7 +413,7 @@ export const CRAFT_VILLAGES = [
     location: 'Hà Đông, Hà Nội',
     history: 'Hơn 1.000 năm lịch sử',
     highlight: 'Cái nôi dệt lụa tơ tằm mềm mại, hoa văn vân mây từng được chọn may lễ phục triều đình.',
-    image: '/products/khan-lua-to-tam-van-phuc-may-cuon.jpg',
+    image: '/showcase/lua-to-tam-van-phuc.jpg',
   },
   {
     id: 'xuan-la',

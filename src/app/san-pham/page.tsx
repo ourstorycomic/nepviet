@@ -107,7 +107,7 @@ function ProductsFilterView() {
       {/* 1. SUB-HERO BANNER (AS IN WIREFRAME: TOP BANNER WITH CAROUSEL DOTS) */}
       <section className="relative w-full h-56 sm:h-72 bg-stone-900 overflow-hidden">
         <Image
-          src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=1600&q=80"
+          src="/showcase/banner-moc-mac-may-tre.jpg"
           alt="Bộ sưu tập Nếp Việt"
           fill
           priority
@@ -144,7 +144,7 @@ function ProductsFilterView() {
           {/* Left Arch Showcase */}
           <div className="lg:col-span-5 relative rounded-2xl overflow-hidden arch-card bg-stone-900 min-h-[300px] border-2 border-cream-200 shadow-md flex flex-col justify-end p-6">
             <Image
-              src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=800&q=85"
+              src="/showcase/gom-su-bat-trang.png"
               alt="Gốm Bát Tràng di sản"
               fill
               className="object-cover filter brightness-[0.75] hover:scale-105 transition-transform duration-700"
@@ -166,25 +166,25 @@ function ProductsFilterView() {
               {
                 title: 'Mây Tre Phú Vinh',
                 count: '3 mẫu thủ công',
-                img: 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=400&q=80',
+                img: '/showcase/may-tre-dan-phu-vinh.webp',
                 slug: 'may-tre',
               },
               {
                 title: 'Đồ Chơi Dân Gian',
                 count: '4 mẫu truyền thống',
-                img: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=400&q=80',
+                img: '/showcase/qua-tang-do-choi-dan-gian.webp',
                 slug: 'do-choi-qua-tang',
               },
               {
                 title: 'Lụa Vạn Phúc & Canvas',
                 count: '3 mẫu dệt may',
-                img: 'https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&w=400&q=80',
+                img: '/showcase/lua-to-tam-van-phuc.jpg',
                 slug: 'phu-kien-thoi-trang',
               },
               {
                 title: 'Ẩm Thực Cổ Truyền',
                 count: '2 món tiến vua',
-                img: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=400&q=80',
+                img: '/showcase/am-thuc-tra-co-truyen.jpg',
                 slug: 'am-thuc',
               },
             ].map((item, idx) => (

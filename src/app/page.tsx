@@ -30,7 +30,7 @@ export default function HomePage() {
     {
       title: 'Gìn giữ nếp xưa, thêu dệt nhịp sống trẻ',
       subtitle: 'Tôn vinh tinh hoa gốm Bát Tràng, mây tre Phú Vinh và lụa Vạn Phúc trong không gian sống hiện đại.',
-      image: 'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=1600&q=85',
+      image: '/showcase/gom-su-bat-trang.png',
       badge: 'Bộ Sưu Tập Mới 2026',
       ctaText: 'Khám phá sản phẩm ngay',
       ctaLink: '/san-pham',
@@ -38,7 +38,7 @@ export default function HomePage() {
     {
       title: 'Mộc mạc mây tre, tinh tế hồn quê Việt',
       subtitle: 'Từng đường nan tre già được chuốt mỏng như sợi tơ bởi bàn tay tài hoa của nghệ nhân Phú Vinh.',
-      image: 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=1600&q=85',
+      image: '/showcase/banner-moc-mac-may-tre.jpg',
       badge: 'Thủ Công Mỹ Nghệ Tuyển Chọn',
       ctaText: 'Xem bộ sưu tập mây tre',
       ctaLink: '/san-pham?category=may-tre',
@@ -46,7 +46,7 @@ export default function HomePage() {
     {
       title: 'Tranh Đông Hồ & Đồ chơi ký ức dân gian',
       subtitle: 'Sắc điệp lấp lánh và nét vẽ tay chú Tễu đưa người trẻ trở về với những miền ký ức trong trẻo.',
-      image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1600&q=85',
+      image: '/showcase/banner-tranh-dong-ho-do-choi.jpg',
       badge: 'Di Sản Văn Hóa Quốc Gia',
       ctaText: 'Khám phá quà tặng dân gian',
       ctaLink: '/san-pham?category=do-choi-qua-tang',
@@ -225,12 +225,12 @@ export default function HomePage() {
             {/* Left 6 category tiles (7 cols) */}
             <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-2 gap-4">
               {[
-                { name: 'Gốm Sứ Bát Tràng', slug: 'gom-su', desc: 'Men lam, men hoả biến nung củi', img: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=600&q=80' },
-                { name: 'Mây Tre Đan Phú Vinh', slug: 'may-tre', desc: 'Chuốt nan tre già đan khít', img: 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=600&q=80' },
-                { name: 'Quà Tặng & Đồ Chơi Dân Gian', slug: 'do-choi-qua-tang', desc: 'Mặt nạ giấy bồi, tò he bột nếp', img: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80' },
-                { name: 'Lụa Tơ Tằm Vạn Phúc', slug: 'phu-kien-thoi-trang', desc: 'Dệt hoa văn vân mây cổ điển', img: 'https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&w=600&q=80' },
-                { name: 'Tranh Dân Gian Đông Hồ', slug: 'do-choi-qua-tang', desc: 'Bản khắc gỗ in trên giấy điệp', img: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80' },
-                { name: 'Ẩm Thực & Trà Cổ Truyền', slug: 'am-thuc', desc: 'Trà sen Quảng Bá, bánh cốm dẻo', img: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80' },
+                { name: 'Gốm Sứ Bát Tràng', slug: 'gom-su', desc: 'Men lam, men hoả biến nung củi', img: '/showcase/gom-su-bat-trang.png' },
+                { name: 'Mây Tre Đan Phú Vinh', slug: 'may-tre', desc: 'Chuốt nan tre già đan khít', img: '/showcase/may-tre-dan-phu-vinh.webp' },
+                { name: 'Quà Tặng & Đồ Chơi Dân Gian', slug: 'do-choi-qua-tang', desc: 'Mặt nạ giấy bồi, tò he bột nếp', img: '/showcase/qua-tang-do-choi-dan-gian.webp' },
+                { name: 'Lụa Tơ Tằm Vạn Phúc', slug: 'phu-kien-thoi-trang', desc: 'Dệt hoa văn vân mây cổ điển', img: '/showcase/lua-to-tam-van-phuc.jpg' },
+                { name: 'Tranh Dân Gian Đông Hồ', slug: 'do-choi-qua-tang', desc: 'Bản khắc gỗ in trên giấy điệp', img: '/showcase/tranh-dan-gian-dong-ho.jpg' },
+                { name: 'Ẩm Thực & Trà Cổ Truyền', slug: 'am-thuc', desc: 'Trà sen Quảng Bá, bánh cốm dẻo', img: '/showcase/am-thuc-tra-co-truyen.jpg' },
               ].map((cat, i) => (
                 <Link
                   key={i}
@@ -258,7 +258,7 @@ export default function HomePage() {
             {/* Right Large Spotlight Card (5 cols) */}
             <div className="lg:col-span-5 relative rounded-2xl overflow-hidden bg-stone-800 border border-stone-700 min-h-[300px] flex flex-col justify-end p-6 group">
               <Image
-                src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&q=85"
+                src="/products/bo-am-chen-men-lam-bat-trang.jpg"
                 alt="Bộ sưu tập Tiêu Điểm Nếp Việt"
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-700 filter brightness-[0.7]"
@@ -393,7 +393,7 @@ export default function HomePage() {
               <div className="relative w-full max-w-md">
                 <div className="arch-card overflow-hidden shadow-2xl border-4 border-white aspect-[3/4] relative bg-stone-900">
                   <Image
-                    src="https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=1000&q=85"
+                    src="/showcase/nghe-nhan-lang-nghe-viet.jpg"
                     alt="Nghệ nhân mây tre đan Phú Vinh Nếp Việt"
                     fill
                     sizes="(max-width: 768px) 100vw, 500px"

@@ -48,6 +48,13 @@ interface MockOrder {
 }
 
 const PRESET_IMAGES = [
+  { label: 'Gốm Sứ Bát Tràng', path: '/showcase/gom-su-bat-trang.png' },
+  { label: 'Mây Tre Đan Phú Vinh', path: '/showcase/may-tre-dan-phu-vinh.webp' },
+  { label: 'Tranh Dân Gian Đông Hồ', path: '/showcase/tranh-dan-gian-dong-ho.jpg' },
+  { label: 'Lụa Tơ Tằm Vạn Phúc', path: '/showcase/lua-to-tam-van-phuc.jpg' },
+  { label: 'Ẩm Thực & Trà Cổ Truyền', path: '/showcase/am-thuc-tra-co-truyen.jpg' },
+  { label: 'Quà Tặng & Đồ Chơi Dân Gian', path: '/showcase/qua-tang-do-choi-dan-gian.webp' },
+  { label: 'Nghệ nhân làng nghề Việt', path: '/showcase/nghe-nhan-lang-nghe-viet.jpg' },
   { label: 'Bộ Ấm Chén Men Lam Bát Tràng', path: '/products/bo-am-chen-men-lam-bat-trang.jpg' },
   { label: 'Bình Hoa Men Hoả Biến Ngọc Bích', path: '/products/lo-hoa-men-hoa-bien-ngoc-bich.jpg' },
   { label: 'Cốc Sứ Men Rạn Hoa Sen Vẽ Tay', path: '/products/coc-su-hoa-tiet-hoa-sen-ve-tay.avif' },

@@ -1,0 +1,335 @@
+'use client';
+
+import React, { useState, useMemo, useEffect, Suspense } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { PRODUCTS, CATEGORIES } from '@/data/products';
+import { ProductCard } from '@/components/ProductCard';
+import {
+  Search,
+  SlidersHorizontal,
+  X,
+  RotateCcw,
+  Sparkles,
+} from 'lucide-react';
+
+function ProductsFilterView() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [priceRange, setPriceRange] = useState<string>('all');
+  const [selectedMaterial, setSelectedMaterial] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<string>('featured');
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+
+  useEffect(() => {
+    const cat = searchParams.get('category');
+    if (cat) setSelectedCategory(cat);
+    const search = searchParams.get('search');
+    if (search) setSearchQuery(search);
+  }, [searchParams]);
+
+  const materials = useMemo(() => [
+    { id: 'all', label: 'Tất cả chất liệu' },
+    { id: 'gom', label: 'Gốm đất & Sứ cao lanh' },
+    { id: 'may-tre', label: 'Mây tre tự nhiên' },
+    { id: 'lua-vai', label: 'Lụa tơ tằm & Vải canvas' },
+    { id: 'giay-bot', label: 'Giấy điệp & Giấy bồi thủ công' },
+    { id: 'tra-banh', label: 'Nông sản, Cốm & Trà hoa' },
+  ], []);
+
+  const filteredProducts = useMemo(() => {
+    return PRODUCTS.filter((product) => {
+      if (selectedCategory !== 'all' && product.category !== selectedCategory) {
+        return false;
+      }
+
+      if (searchQuery.trim()) {
+        const query = searchQuery.toLowerCase().trim();
+        const matchesName = product.name.toLowerCase().includes(query);
+        const matchesSummary = product.summary.toLowerCase().includes(query);
+        const matchesVillage = product.village.toLowerCase().includes(query);
+        const matchesMaterial = product.material.toLowerCase().includes(query);
+        if (!matchesName && !matchesSummary && !matchesVillage && !matchesMaterial) {
+          return false;
+        }
+      }
+
+      if (priceRange === 'under-100' && product.price >= 100000) return false;
+      if (priceRange === '100-200' && (product.price < 100000 || product.price > 200000)) return false;
+      if (priceRange === '200-500' && (product.price < 200000 || product.price > 500000)) return false;
+      if (priceRange === 'above-500' && product.price <= 500000) return false;
+
+      if (selectedMaterial !== 'all') {
+        const mat = product.material.toLowerCase();
+        if (selectedMaterial === 'gom' && !mat.includes('gốm') && !mat.includes('sét')) return false;
+        if (selectedMaterial === 'may-tre' && !mat.includes('mây') && !mat.includes('tre')) return false;
+        if (selectedMaterial === 'lua-vai' && !mat.includes('lụa') && !mat.includes('canvas') && !mat.includes('vải')) return false;
+        if (selectedMaterial === 'giay-bot' && !mat.includes('giấy') && !mat.includes('bồi')) return false;
+        if (selectedMaterial === 'tra-banh' && !mat.includes('trà') && !mat.includes('cốm') && !mat.includes('bột')) return false;
+      }
+
+      return true;
+    }).sort((a, b) => {
+      if (sortBy === 'price-asc') return a.price - b.price;
+      if (sortBy === 'price-desc') return b.price - a.price;
+      if (sortBy === 'rating') return b.rating - a.rating;
+      return (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0);
+    });
+  }, [selectedCategory, searchQuery, priceRange, selectedMaterial, sortBy]);
+
+  const handleResetFilters = () => {
+    setSelectedCategory('all');
+    setSearchQuery('');
+    setPriceRange('all');
+    setSelectedMaterial('all');
+    setSortBy('featured');
+    router.push('/san-pham');
+  };
+
+  const activeFiltersCount =
+    (selectedCategory !== 'all' ? 1 : 0) +
+    (searchQuery.trim() ? 1 : 0) +
+    (priceRange !== 'all' ? 1 : 0) +
+    (selectedMaterial !== 'all' ? 1 : 0);
+
+  return (
+    <div className="bg-[#FAF8F5] min-h-screen py-8 sm:py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Header Breadcrumbs & Title */}
+        <div className="mb-8">
+          <nav className="text-xs text-neutral-500 mb-2 flex items-center gap-1.5">
+            <a href="/" className="hover:text-nepred-600">Trang chủ</a>
+            <span>/</span>
+            <span className="text-nepbrown-800 font-semibold">Tất cả sản phẩm</span>
+          </nav>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+              <h1 className="font-serif text-2xl sm:text-4xl font-black text-nepbrown-800">
+                Sản Phẩm Thủ Công Nếp Việt
+              </h1>
+              <p className="text-xs sm:text-sm text-neutral-600 mt-1 max-w-2xl">
+                Khám phá bộ sưu tập quà tặng văn hóa, đồ dùng thủ công và ẩm thực truyền thống được chế tác hoàn toàn từ bàn tay của các nghệ nhân Việt.
+              </p>
+            </div>
+            
+            {/* Mobile Filter Toggle */}
+            <div className="flex items-center gap-2 lg:hidden">
+              <button
+                onClick={() => setMobileFilterOpen(!mobileFilterOpen)}
+                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-cream-300 rounded-xl text-xs font-semibold text-nepbrown-800 shadow-sm"
+              >
+                <SlidersHorizontal className="w-4 h-4 text-nepred-600" />
+                <span>Bộ lọc ({activeFiltersCount})</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Category Pills Slider */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-6 scrollbar-none">
+          <button
+            onClick={() => setSelectedCategory('all')}
+            className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+              selectedCategory === 'all'
+                ? 'bg-nepred-600 text-white shadow-md'
+                : 'bg-white text-nepbrown-700 hover:bg-cream-100 border border-cream-200'
+            }`}
+          >
+            Tất cả sản phẩm ({PRODUCTS.length})
+          </button>
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setSelectedCategory(cat.slug)}
+              className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                selectedCategory === cat.slug
+                  ? 'bg-nepred-600 text-white shadow-md'
+                  : 'bg-white text-nepbrown-700 hover:bg-cream-100 border border-cream-200'
+              }`}
+            >
+              {cat.name} ({cat.itemCount})
+            </button>
+          ))}
+        </div>
+
+        {/* Main Grid: Sidebar Filters + Products Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
+          
+          {/* Desktop Filters Sidebar */}
+          <aside className={`lg:block ${mobileFilterOpen ? 'block' : 'hidden'} bg-white rounded-2xl p-6 border border-cream-200 shadow-sm space-y-6 sticky top-28`}>
+            <div className="flex items-center justify-between pb-3 border-b border-cream-200">
+              <div className="flex items-center gap-2 font-serif font-bold text-base text-nepbrown-800">
+                <SlidersHorizontal className="w-4 h-4 text-nepred-600" />
+                <span>Bộ Lọc Sản Phẩm</span>
+              </div>
+              {activeFiltersCount > 0 && (
+                <button
+                  onClick={handleResetFilters}
+                  className="text-xs text-nepred-600 hover:text-nepred-800 flex items-center gap-1 font-medium"
+                >
+                  <RotateCcw className="w-3 h-3" /> Đặt lại
+                </button>
+              )}
+            </div>
+
+            {/* Keyword Search */}
+            <div>
+              <label className="block text-xs font-bold text-nepbrown-700 uppercase tracking-wider mb-2">
+                Từ khóa tìm kiếm
+              </label>
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Gốm lam, khay trà, sen..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-8 pr-7 py-2 text-xs rounded-xl border border-cream-300 bg-cream-50 focus:bg-white focus:outline-none focus:border-nepred-600 text-nepbrown-800"
+                />
+                <Search className="w-3.5 h-3.5 text-neutral-400 absolute left-2.5 top-3" />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-2.5 top-2.5 text-neutral-400 hover:text-neutral-600"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Price Range Filter */}
+            <div>
+              <label className="block text-xs font-bold text-nepbrown-700 uppercase tracking-wider mb-2">
+                Khoảng giá
+              </label>
+              <div className="space-y-1.5 text-xs text-nepbrown-800">
+                {[
+                  { id: 'all', label: 'Tất cả mức giá' },
+                  { id: 'under-100', label: 'Dưới 100.000đ' },
+                  { id: '100-200', label: 'Từ 100.000đ đến 200.000đ' },
+                  { id: '200-500', label: 'Từ 200.000đ đến 500.000đ' },
+                  { id: 'above-500', label: 'Trên 500.000đ' },
+                ].map((item) => (
+                  <label
+                    key={item.id}
+                    className="flex items-center gap-2 cursor-pointer p-1.5 rounded-lg hover:bg-cream-50"
+                  >
+                    <input
+                      type="radio"
+                      name="price-filter"
+                      checked={priceRange === item.id}
+                      onChange={() => setPriceRange(item.id)}
+                      className="text-nepred-600 focus:ring-nepred-500 h-3.5 w-3.5"
+                    />
+                    <span>{item.label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Material Filter */}
+            <div>
+              <label className="block text-xs font-bold text-nepbrown-700 uppercase tracking-wider mb-2">
+                Chất liệu chế tác
+              </label>
+              <select
+                value={selectedMaterial}
+                onChange={(e) => setSelectedMaterial(e.target.value)}
+                className="w-full p-2.5 text-xs rounded-xl border border-cream-300 bg-cream-50 focus:bg-white focus:outline-none focus:border-nepred-600 text-nepbrown-800 cursor-pointer"
+              >
+                {materials.map((mat) => (
+                  <option key={mat.id} value={mat.id}>
+                    {mat.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Craft Heritage Commitment Banner */}
+            <div className="p-4 bg-nepgreen-50 rounded-xl border border-nepgreen-100 text-xs text-nepgreen-900 leading-relaxed">
+              <p className="font-bold flex items-center gap-1.5 text-nepgreen-800 mb-1">
+                <Sparkles className="w-3.5 h-3.5" /> 100% Làng nghề Việt
+              </p>
+              Mỗi sản phẩm đều ghi rõ tên nghệ nhân hoặc xưởng gia truyền tại Bát Tràng, Phú Vinh, Vạn Phúc, Đông Hồ...
+            </div>
+          </aside>
+
+          {/* Products Content Area */}
+          <div className="lg:col-span-3 space-y-6">
+            
+            {/* Top Toolbar: Count and Sorting */}
+            <div className="bg-white rounded-xl p-3.5 sm:px-5 border border-cream-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+              <p className="text-neutral-600">
+                Hiển thị <span className="font-bold text-nepbrown-800">{filteredProducts.length}</span> sản phẩm phù hợp
+              </p>
+
+              <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                <span className="text-neutral-500 whitespace-nowrap">Sắp xếp:</span>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="p-1.5 text-xs font-medium rounded-lg border border-cream-300 bg-cream-50 focus:bg-white focus:outline-none focus:border-nepred-600 text-nepbrown-800 cursor-pointer"
+                >
+                  <option value="featured">Nổi bật nhất</option>
+                  <option value="price-asc">Giá: Thấp đến Cao</option>
+                  <option value="price-desc">Giá: Cao đến Thấp</option>
+                  <option value="rating">Đánh giá cao nhất</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Product Grid or Empty State */}
+            {filteredProducts.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                {filteredProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            ) : (
+              <div className="bg-white rounded-2xl p-12 text-center border border-cream-200 shadow-sm space-y-4">
+                <div className="w-16 h-16 rounded-full bg-cream-100 text-nepbrown-500 mx-auto flex items-center justify-center">
+                  <Search className="w-8 h-8 text-neutral-400" />
+                </div>
+                <h3 className="font-serif text-lg font-bold text-nepbrown-800">
+                  Không tìm thấy sản phẩm phù hợp
+                </h3>
+                <p className="text-xs text-neutral-500 max-w-md mx-auto leading-relaxed">
+                  Rất tiếc, không có sản phẩm nào thỏa mãn các tiêu chí lọc hiện tại của bạn. Vui lòng thử tìm kiếm bằng từ khóa khác hoặc đặt lại bộ lọc.
+                </p>
+                <div>
+                  <button
+                    onClick={handleResetFilters}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-nepred-600 hover:bg-nepred-700 text-white rounded-xl text-xs font-semibold shadow-md transition-colors"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    <span>Đặt lại tất cả bộ lọc</span>
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={
+      <div className="bg-[#FAF8F5] min-h-screen py-12">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <div className="w-8 h-8 border-4 border-nepred-600 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+          <p className="text-xs text-neutral-500">Đang tải sản phẩm Nếp Việt...</p>
+        </div>
+      </div>
+    }>
+      <ProductsFilterView />
+    </Suspense>
+  );
+}

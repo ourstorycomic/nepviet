@@ -3,6 +3,12 @@
 -- Chạy đoạn script này trong mục SQL Editor trên Supabase Dashboard
 -- ========================================================
 
+-- 0. XÓA SẠCH CÁC BẢNG CŨ NẾU ĐÃ TỒN TẠI (RESET SẠCH SẼ)
+DROP TABLE IF EXISTS public.orders CASCADE;
+DROP TABLE IF EXISTS public.products CASCADE;
+DROP TABLE IF EXISTS public.craft_villages CASCADE;
+DROP TABLE IF EXISTS public.categories CASCADE;
+
 -- 1. BẢNG SẢN PHẨM (products)
 CREATE TABLE IF NOT EXISTS public.products (
     id TEXT PRIMARY KEY,

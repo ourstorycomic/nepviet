@@ -1486,7 +1486,13 @@ export default function AdminPage() {
 
             <div className="relative">
               <pre className="bg-stone-900 text-amber-200 p-4 rounded-2xl text-[11px] font-mono h-72 overflow-y-auto whitespace-pre leading-relaxed">
-{`-- 1. BẢNG SẢN PHẨM (products)
+{`-- 0. XÓA BẢNG CŨ NẾU CẦN RESET LẠI
+DROP TABLE IF EXISTS public.orders CASCADE;
+DROP TABLE IF EXISTS public.products CASCADE;
+DROP TABLE IF EXISTS public.craft_villages CASCADE;
+DROP TABLE IF EXISTS public.categories CASCADE;
+
+-- 1. BẢNG SẢN PHẨM (products)
 CREATE TABLE IF NOT EXISTS public.products (
     id TEXT PRIMARY KEY,
     slug TEXT UNIQUE NOT NULL,
@@ -1522,7 +1528,12 @@ CREATE POLICY "Public delete products" ON public.products FOR DELETE USING (true
               <button
                 type="button"
                 onClick={() => {
-                  navigator.clipboard.writeText(`CREATE TABLE IF NOT EXISTS public.products (
+                  navigator.clipboard.writeText(`DROP TABLE IF EXISTS public.orders CASCADE;
+DROP TABLE IF EXISTS public.products CASCADE;
+DROP TABLE IF EXISTS public.craft_villages CASCADE;
+DROP TABLE IF EXISTS public.categories CASCADE;
+
+CREATE TABLE IF NOT EXISTS public.products (
     id TEXT PRIMARY KEY,
     slug TEXT UNIQUE NOT NULL,
     name TEXT NOT NULL,
@@ -1538,6 +1549,19 @@ CREATE POLICY "Public delete products" ON public.products FOR DELETE USING (true
     summary TEXT,
     description TEXT,
     material TEXT,
+    dimensions TEXT,
+    artisan_story TEXT,
+    preservation TEXT,
+    badge TEXT,
+    is_featured BOOLEAN DEFAULT false,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+ALTER TABLE public.products ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Public read products" ON public.products FOR SELECT USING (true);
+CREATE POLICY "Public insert products" ON public.products FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public update products" ON public.products FOR UPDATE USING (true);
+CREATE POLICY "Public delete products" ON public.products FOR DELETE USING (true);`);
     dimensions TEXT,
     artisan_story TEXT,
     preservation TEXT,

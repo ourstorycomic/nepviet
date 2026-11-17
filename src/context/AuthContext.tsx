@@ -2,27 +2,45 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-interface User {
+export interface User {
   name: string;
   email: string;
 }
 
+export interface AdminUser {
+  id: string;
+  name: string;
+  email: string;
+  role: 'admin' | 'staff'; // admin: toàn quyền, staff: quản lý đơn/kho
+  lastLogin: string;
+}
+
 interface AuthContextType {
+  // Customer Storefront Auth
   user: User | null;
   isLoggedIn: boolean;
   login: (name: string, email: string) => void;
   logout: () => void;
   register: (name: string, email: string) => void;
+
+  // Admin Dashboard Auth & RBAC (Phân quyền quản trị)
+  adminUser: AdminUser | null;
+  isAdminLoggedIn: boolean;
+  loginAdmin: (email: string, pass: string) => { success: boolean; message: string };
+  logoutAdmin: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const USER_STORAGE_KEY = 'nepviet_demo_user';
+const ADMIN_STORAGE_KEY = 'nepviet_admin_auth_session_v1';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [adminUser, setAdminUser] = useState<AdminUser | null>(null);
 
   useEffect(() => {
+    // 1. Tải phiên khách hàng
     try {
       const stored = localStorage.getItem(USER_STORAGE_KEY);
       if (stored) {
@@ -30,6 +48,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     } catch (e) {
       console.error('Failed to load user state', e);
+    }
+
+    // 2. Tải phiên đăng nhập quản trị Admin
+    try {
+      const storedAdmin = localStorage.getItem(ADMIN_STORAGE_KEY);
+      if (storedAdmin) {
+        setAdminUser(JSON.parse(storedAdmin));
+      }
+    } catch (e) {
+      console.error('Failed to load admin session', e);
     }
   }, []);
 
@@ -56,6 +84,60 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  // Xác thực đăng nhập Admin với phân quyền
+  const loginAdmin = (emailInput: string, passInput: string): { success: boolean; message: string } => {
+    const email = emailInput.trim().toLowerCase();
+    const pass = passInput.trim();
+
+    // 1. Tài khoản Giám Đốc / Admin Master (Toàn quyền)
+    if (
+      (email === 'admin@nepviet.vn' || email === 'admin') &&
+      (pass === 'Admin@123' || pass === 'nepviet2026' || pass === '123456')
+    ) {
+      const masterAdmin: AdminUser = {
+        id: 'admin-01',
+        name: 'Admin Master',
+        email: 'admin@nepviet.vn',
+        role: 'admin',
+        lastLogin: new Date().toLocaleString('vi-VN'),
+      };
+      setAdminUser(masterAdmin);
+      localStorage.setItem(ADMIN_STORAGE_KEY, JSON.stringify(masterAdmin));
+      return { success: true, message: 'Đăng nhập thành công với quyền Admin Master (Toàn quyền quản trị).' };
+    }
+
+    // 2. Tài khoản Nhân Viên Kho & Vận Hành (Staff - Giới hạn quyền)
+    if (
+      (email === 'kho@nepviet.vn' || email === 'staff') &&
+      (pass === 'Kho@123' || pass === 'staff2026' || pass === '123456')
+    ) {
+      const staffAdmin: AdminUser = {
+        id: 'staff-01',
+        name: 'Trần Văn Kho (Quản Lý Vận Hành)',
+        email: 'kho@nepviet.vn',
+        role: 'staff',
+        lastLogin: new Date().toLocaleString('vi-VN'),
+      };
+      setAdminUser(staffAdmin);
+      localStorage.setItem(ADMIN_STORAGE_KEY, JSON.stringify(staffAdmin));
+      return { success: true, message: 'Đăng nhập thành công với quyền Nhân Viên Vận Hành & Kho.' };
+    }
+
+    return {
+      success: false,
+      message: 'Sai email hoặc mật khẩu quản trị! Hãy dùng admin@nepviet.vn / Admin@123 hoặc kho@nepviet.vn / Kho@123',
+    };
+  };
+
+  const logoutAdmin = () => {
+    setAdminUser(null);
+    try {
+      localStorage.removeItem(ADMIN_STORAGE_KEY);
+    } catch (e) {
+      console.error('Failed to remove admin session', e);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -64,6 +146,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         login,
         logout,
         register,
+        adminUser,
+        isAdminLoggedIn: !!adminUser,
+        loginAdmin,
+        logoutAdmin,
       }}
     >
       {children}

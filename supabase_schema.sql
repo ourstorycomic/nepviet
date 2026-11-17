@@ -3,7 +3,12 @@
 -- Chạy đoạn script này trong mục SQL Editor trên Supabase Dashboard
 -- ========================================================
 
--- 0. XÓA SẠCH CÁC BẢNG CŨ NẾU ĐÃ TỒN TẠI (RESET SẠCH SẼ)
+-- 0. XÓA SẠCH TOÀN BỘ CÁC BẢNG CŨ CỦA DỰ ÁN TRƯỚC (CYBERSAFE & NẾP VIỆT CŨ)
+DROP TABLE IF EXISTS public.chatbot_consultations CASCADE;
+DROP TABLE IF EXISTS public.pretest_results CASCADE;
+DROP TABLE IF EXISTS public.scenarios CASCADE;
+DROP TABLE IF EXISTS public.user_profiles CASCADE;
+DROP TABLE IF EXISTS public.user_progress CASCADE;
 DROP TABLE IF EXISTS public.orders CASCADE;
 DROP TABLE IF EXISTS public.products CASCADE;
 DROP TABLE IF EXISTS public.craft_villages CASCADE;

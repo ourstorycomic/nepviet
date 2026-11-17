@@ -15,6 +15,8 @@ import {
   testSupabaseConnection,
 } from '@/lib/supabase';
 import { seedProductsToSupabase } from '@/services/supabaseService';
+import { useAuth } from '@/context/AuthContext';
+import { AdminLoginGate } from '@/components/AdminLoginGate';
 import {
   LayoutDashboard,
   ShoppingBag,
@@ -47,6 +49,10 @@ import {
   Check,
   Globe,
   Sparkles as SparklesIcon,
+  UploadCloud,
+  LogOut,
+  Lock,
+  User as UserIcon,
 } from 'lucide-react';
 
 interface MockOrder {
@@ -89,9 +95,16 @@ const PRESET_IMAGES = [
 ];
 
 export default function AdminPage() {
+  const { adminUser, isAdminLoggedIn, logoutAdmin } = useAuth();
+
   const [activeTab, setActiveTab] = useState<'dashboard' | 'orders' | 'products' | 'artisans' | 'settings'>('dashboard');
   const [orderSearchTerm, setOrderSearchTerm] = useState('');
   const [orderStatusFilter, setOrderStatusFilter] = useState<string>('all');
+
+  // Image Upload & Picker Mode State
+  const [imagePickMode, setImagePickMode] = useState<'upload' | 'preset' | 'url'>('upload');
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [uploadSuccessName, setUploadSuccessName] = useState<string | null>(null);
 
   // Product Catalog via Hook
   const { products, addProduct, updateProduct, deleteProduct, resetToDefault } = useProducts();
@@ -315,6 +328,10 @@ export default function AdminPage() {
   };
 
   const handleDeleteProduct = (prod: Product) => {
+    if (adminUser?.role === 'staff') {
+      alert('Tài khoản của bạn là Nhân Viên Vận Hành (Staff). Chỉ Admin Master mới có quyền xóa sản phẩm khỏi cơ sở dữ liệu!');
+      return;
+    }
     if (confirm(`Bạn có chắc chắn muốn xóa sản phẩm "${prod.name}" khỏi danh mục không?`)) {
       deleteProduct(prod.id);
       showToast(`Đã xóa vĩnh viễn sản phẩm "${prod.name}"`);
@@ -322,9 +339,63 @@ export default function AdminPage() {
   };
 
   const handleResetCatalog = () => {
+    if (adminUser?.role === 'staff') {
+      alert('Tài khoản Staff không có quyền khôi phục danh mục!');
+      return;
+    }
     if (confirm('Khôi phục danh mục về 14 sản phẩm gốc ban đầu với đầy đủ ảnh chuẩn?')) {
       resetToDefault();
       showToast('Đã khôi phục 14 sản phẩm nguyên bản của Nếp Việt!');
+    }
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Vui lòng chọn tệp hình ảnh (.jpg, .png, .webp, .avif)!');
+      return;
+    }
+
+    setIsUploadingImage(true);
+    setUploadSuccessName(null);
+
+    try {
+      const data = new FormData();
+      data.append('file', file);
+
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: data,
+      });
+
+      const json = await res.json();
+      if (json.success && json.url) {
+        setFormData((prev) => ({ ...prev, image: json.url }));
+        setUploadSuccessName(file.name);
+        showToast(`Đã tải lên ảnh thành công: ${file.name}`);
+      } else {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const base64 = event.target?.result as string;
+          setFormData((prev) => ({ ...prev, image: base64 }));
+          setUploadSuccessName(file.name);
+          showToast(`Đã tải lên ảnh (Base64): ${file.name}`);
+        };
+        reader.readAsDataURL(file);
+      }
+    } catch (err) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const base64 = event.target?.result as string;
+        setFormData((prev) => ({ ...prev, image: base64 }));
+        setUploadSuccessName(file.name);
+        showToast(`Đã tải lên ảnh: ${file.name}`);
+      };
+      reader.readAsDataURL(file);
+    } finally {
+      setIsUploadingImage(false);
     }
   };
 
@@ -430,6 +501,11 @@ export default function AdminPage() {
     return true;
   });
 
+  // Kiểm tra phân quyền đăng nhập Admin Portal
+  if (!isAdminLoggedIn) {
+    return <AdminLoginGate />;
+  }
+
   return (
     <div className="min-h-screen bg-stone-100/90 text-stone-900 flex flex-col font-sans">
       
@@ -488,14 +564,34 @@ export default function AdminPage() {
               <ExternalLink className="w-3.5 h-3.5 text-amber-300" />
             </Link>
 
-            <div className="flex items-center gap-2 pl-3 border-l border-stone-800">
-              <div className="w-8 h-8 rounded-full bg-nepred-700 text-white flex items-center justify-center text-xs font-bold">
-                AD
+            <div className="flex items-center gap-2.5 pl-3 border-l border-stone-800">
+              <div className={`w-8 h-8 rounded-full text-white flex items-center justify-center text-xs font-bold shadow ${
+                adminUser?.role === 'admin' ? 'bg-nepred-600' : 'bg-amber-600'
+              }`}>
+                {adminUser?.role === 'admin' ? 'AD' : 'NV'}
               </div>
               <div className="hidden sm:block text-left">
-                <p className="text-xs font-bold text-cream-50">Admin Master</p>
-                <p className="text-[10px] text-stone-400">admin@nepviet.vn</p>
+                <div className="flex items-center gap-1.5">
+                  <p className="text-xs font-bold text-cream-50">{adminUser?.name || 'Admin Master'}</p>
+                  <span className={`px-1.5 py-0.2 rounded text-[9px] font-bold ${
+                    adminUser?.role === 'admin'
+                      ? 'bg-nepred-500/20 text-nepred-400 border border-nepred-500/30'
+                      : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                  }`}>
+                    {adminUser?.role === 'admin' ? 'Master' : 'Staff'}
+                  </span>
+                </div>
+                <p className="text-[10px] text-stone-400">{adminUser?.email || 'admin@nepviet.vn'}</p>
               </div>
+
+              <button
+                type="button"
+                onClick={logoutAdmin}
+                className="p-1.5 ml-1 rounded-lg bg-stone-800 hover:bg-red-950/80 text-stone-400 hover:text-red-300 transition-colors"
+                title="Đăng xuất khỏi hệ thống quản trị"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
             </div>
           </div>
         </div>
@@ -1325,44 +1421,143 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              {/* Image Picker */}
-              <div className="space-y-2 p-3 bg-stone-50 rounded-2xl border border-stone-200">
-                <label className="font-bold text-stone-700 flex items-center justify-between">
-                  <span>Hình ảnh sản phẩm (*)</span>
-                  <span className="text-[10px] text-stone-500 font-normal">Chọn từ 14 ảnh mẫu chuẩn hoặc dán link</span>
-                </label>
+              {/* Image Picker with 3 Modes: Upload File / Preset Images / External URL */}
+              <div className="space-y-3 p-4 bg-stone-50 rounded-2xl border border-stone-200">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-stone-200/80">
+                  <label className="font-bold text-stone-800 flex items-center gap-1.5">
+                    <ImageIcon className="w-4 h-4 text-nepred-600" />
+                    <span>Hình ảnh sản phẩm (*)</span>
+                  </label>
 
-                {/* Preset image select buttons */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 max-h-36 overflow-y-auto p-1">
-                  {PRESET_IMAGES.map((img) => (
+                  {/* Mode switch pills */}
+                  <div className="flex items-center gap-1 bg-stone-200/70 p-1 rounded-xl text-[11px] font-bold">
                     <button
-                      key={img.path}
                       type="button"
-                      onClick={() => setFormData({ ...formData, image: img.path })}
-                      className={`flex items-center gap-2 p-1.5 rounded-xl border text-left transition-all ${
-                        formData.image === img.path
-                          ? 'border-nepred-600 bg-nepred-50 text-nepred-900 ring-2 ring-nepred-600/30'
-                          : 'border-stone-200 bg-white hover:border-stone-400'
+                      onClick={() => setImagePickMode('upload')}
+                      className={`px-2.5 py-1 rounded-lg transition-all ${
+                        imagePickMode === 'upload'
+                          ? 'bg-white text-stone-900 shadow-sm'
+                          : 'text-stone-600 hover:text-stone-900'
                       }`}
                     >
-                      <div className="relative w-8 h-8 rounded-lg overflow-hidden flex-shrink-0 bg-stone-100">
-                        <Image src={img.path} alt={img.label} fill className="object-cover" />
-                      </div>
-                      <span className="text-[10px] font-medium truncate">{img.label}</span>
+                      📤 Tải ảnh lên
                     </button>
-                  ))}
+                    <button
+                      type="button"
+                      onClick={() => setImagePickMode('preset')}
+                      className={`px-2.5 py-1 rounded-lg transition-all ${
+                        imagePickMode === 'preset'
+                          ? 'bg-white text-stone-900 shadow-sm'
+                          : 'text-stone-600 hover:text-stone-900'
+                      }`}
+                    >
+                      🖼️ 26 Ảnh mẫu
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setImagePickMode('url')}
+                      className={`px-2.5 py-1 rounded-lg transition-all ${
+                        imagePickMode === 'url'
+                          ? 'bg-white text-stone-900 shadow-sm'
+                          : 'text-stone-600 hover:text-stone-900'
+                      }`}
+                    >
+                      🔗 Link URL
+                    </button>
+                  </div>
                 </div>
 
-                <div className="flex items-center gap-2 pt-1">
-                  <span className="text-[10px] font-bold text-stone-500 whitespace-nowrap">Đường dẫn ảnh:</span>
-                  <input
-                    type="text"
-                    value={formData.image}
-                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                    placeholder="/products/... hoặc https://..."
-                    className="w-full p-1.5 text-xs rounded-lg border border-stone-300 bg-white font-mono"
-                  />
-                </div>
+                {/* MODE 1: FILE UPLOAD (DRAG & DROP OR FILE BROWSER) */}
+                {imagePickMode === 'upload' && (
+                  <div className="space-y-3">
+                    <label className="border-2 border-dashed border-stone-300 hover:border-nepred-500 bg-white hover:bg-stone-50/50 rounded-2xl p-5 flex flex-col items-center justify-center cursor-pointer transition-all group">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileUpload}
+                        disabled={isUploadingImage}
+                        className="hidden"
+                      />
+                      <div className="w-10 h-10 rounded-full bg-stone-100 group-hover:bg-nepred-50 text-stone-500 group-hover:text-nepred-600 flex items-center justify-center mb-2 transition-colors">
+                        <UploadCloud className={`w-5 h-5 ${isUploadingImage ? 'animate-bounce text-nepred-600' : ''}`} />
+                      </div>
+                      <p className="text-xs font-bold text-stone-800">
+                        {isUploadingImage ? 'Đang xử lý tải tệp ảnh...' : 'Nhấp để chọn ảnh từ máy tính hoặc kéo thả vào đây'}
+                      </p>
+                      <p className="text-[10px] text-stone-400 mt-1">
+                        Hỗ trợ định dạng: JPG, PNG, WEBP, AVIF (Tự động nén và tạo link)
+                      </p>
+                    </label>
+
+                    {uploadSuccessName && (
+                      <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] font-medium flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                        <span>Đã tải lên tệp ảnh: <strong>{uploadSuccessName}</strong></span>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* MODE 2: PRESET IMAGES PICKER (26 AUTHENTIC PHOTOS) */}
+                {imagePickMode === 'preset' && (
+                  <div className="space-y-2">
+                    <p className="text-[10px] text-stone-500">
+                      Chọn nhanh từ 26 bức ảnh thủ công Bát Tràng, Đông Hồ, Vạn Phúc, Phú Vinh...
+                    </p>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 max-h-40 overflow-y-auto p-1 bg-white rounded-xl border border-stone-200">
+                      {PRESET_IMAGES.map((img) => (
+                        <button
+                          key={img.path}
+                          type="button"
+                          onClick={() => setFormData({ ...formData, image: img.path })}
+                          className={`flex items-center gap-2 p-1.5 rounded-xl border text-left transition-all ${
+                            formData.image === img.path
+                              ? 'border-nepred-600 bg-nepred-50 text-nepred-900 ring-2 ring-nepred-600/30'
+                              : 'border-stone-200 bg-white hover:border-stone-400'
+                          }`}
+                        >
+                          <div className="relative w-8 h-8 rounded-lg overflow-hidden flex-shrink-0 bg-stone-100">
+                            <Image src={img.path} alt={img.label} fill className="object-cover" />
+                          </div>
+                          <span className="text-[10px] font-medium truncate">{img.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* MODE 3: DIRECT URL INPUT */}
+                {imagePickMode === 'url' && (
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold text-stone-600">Đường dẫn hình ảnh (URL):</label>
+                    <input
+                      type="text"
+                      value={formData.image}
+                      onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                      placeholder="https://... hoặc /products/..."
+                      className="w-full p-2 text-xs rounded-xl border border-stone-300 bg-white font-mono focus:outline-none focus:border-nepred-600"
+                    />
+                  </div>
+                )}
+
+                {/* Live Image Preview Banner */}
+                {formData.image && (
+                  <div className="flex items-center gap-3 p-2.5 rounded-xl bg-white border border-stone-200">
+                    <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-stone-100 border border-stone-200 flex-shrink-0">
+                      <Image
+                        src={formData.image}
+                        alt="Xem trước ảnh"
+                        fill
+                        className="object-cover"
+                        unoptimized={formData.image.startsWith('data:')}
+                      />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Ảnh đang chọn:</p>
+                      <p className="text-xs font-mono text-stone-700 truncate">{formData.image}</p>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -1486,7 +1681,12 @@ export default function AdminPage() {
 
             <div className="relative">
               <pre className="bg-stone-900 text-amber-200 p-4 rounded-2xl text-[11px] font-mono h-72 overflow-y-auto whitespace-pre leading-relaxed">
-{`-- 0. XÓA BẢNG CŨ NẾU CẦN RESET LẠI
+{`-- 0. XÓA SẠCH BẢNG CŨ CỦA DỰ ÁN TRƯỚC (CYBERSAFE & NẾP VIỆT)
+DROP TABLE IF EXISTS public.chatbot_consultations CASCADE;
+DROP TABLE IF EXISTS public.pretest_results CASCADE;
+DROP TABLE IF EXISTS public.scenarios CASCADE;
+DROP TABLE IF EXISTS public.user_profiles CASCADE;
+DROP TABLE IF EXISTS public.user_progress CASCADE;
 DROP TABLE IF EXISTS public.orders CASCADE;
 DROP TABLE IF EXISTS public.products CASCADE;
 DROP TABLE IF EXISTS public.craft_villages CASCADE;
@@ -1549,19 +1749,6 @@ CREATE TABLE IF NOT EXISTS public.products (
     summary TEXT,
     description TEXT,
     material TEXT,
-    dimensions TEXT,
-    artisan_story TEXT,
-    preservation TEXT,
-    badge TEXT,
-    is_featured BOOLEAN DEFAULT false,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
-);
-
-ALTER TABLE public.products ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Public read products" ON public.products FOR SELECT USING (true);
-CREATE POLICY "Public insert products" ON public.products FOR INSERT WITH CHECK (true);
-CREATE POLICY "Public update products" ON public.products FOR UPDATE USING (true);
-CREATE POLICY "Public delete products" ON public.products FOR DELETE USING (true);`);
     dimensions TEXT,
     artisan_story TEXT,
     preservation TEXT,

@@ -196,11 +196,7 @@ export default function AdminPage() {
   });
 
   // Supabase Database State
-  const [supabaseUrl, setSupabaseUrl] = useState('');
-  const [supabaseKey, setSupabaseKey] = useState('');
-  const [isCloudConnected, setIsCloudConnected] = useState(false);
-  const [isTestingSupabase, setIsTestingSupabase] = useState(false);
-  const [supabaseStatusMsg, setSupabaseStatusMsg] = useState<{ success?: boolean; text?: string } | null>(null);
+  const [isCloudConnected, setIsCloudConnected] = useState(true);
   const [isSeeding, setIsSeeding] = useState(false);
   const [showSchemaModal, setShowSchemaModal] = useState(false);
   const [copiedSchema, setCopiedSchema] = useState(false);
@@ -252,68 +248,17 @@ export default function AdminPage() {
   };
 
   useEffect(() => {
-    const config = getSupabaseConfig();
-    if (config) {
-      setSupabaseUrl(config.url);
-      setSupabaseKey(config.anonKey);
+    if (isSupabaseConfigured()) {
       setIsCloudConnected(true);
       refreshSupabaseData();
-    } else {
-      setIsCloudConnected(false);
     }
   }, []);
 
-  const handleSaveSupabase = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!supabaseUrl.trim() || !supabaseKey.trim()) {
-      alert('Vui lòng nhập đầy đủ Supabase Project URL và Anon Key.');
-      return;
-    }
-    setIsTestingSupabase(true);
-    saveSupabaseConfig(supabaseUrl.trim(), supabaseKey.trim());
-    const res = await testSupabaseConnection();
-    setIsTestingSupabase(false);
-    setIsCloudConnected(res.success);
-    setSupabaseStatusMsg({ success: res.success, text: res.message });
-    showToast(res.message);
-    if (res.success) {
-      await refreshSupabaseData();
-    }
-  };
-
-  const handleTestSupabase = async () => {
-    setIsTestingSupabase(true);
-    const res = await testSupabaseConnection();
-    setIsTestingSupabase(false);
-    setIsCloudConnected(res.success);
-    setSupabaseStatusMsg({ success: res.success, text: res.message });
-    showToast(res.message);
-    if (res.success) {
-      await refreshSupabaseData();
-    }
-  };
-
-  const handleDisconnectSupabase = () => {
-    if (confirm('Ngắt kết nối Supabase và chuyển về chế độ lưu trữ Local Database?')) {
-      clearSupabaseConfig();
-      setSupabaseUrl('');
-      setSupabaseKey('');
-      setIsCloudConnected(false);
-      setSupabaseStatusMsg(null);
-      showToast('Đã chuyển về chế độ Local Database.');
-    }
-  };
-
   const handleSeedSupabase = async () => {
-    if (!isCloudConnected && !isSupabaseConfigured()) {
-      alert('Vui lòng kết nối Supabase thành công trước khi đồng bộ dữ liệu.');
-      return;
-    }
     setIsSeeding(true);
     const res = await seedAllToSupabase();
     setIsSeeding(false);
     showToast(res.message);
-    setSupabaseStatusMsg({ success: res.success, text: res.message });
     await refreshSupabaseData();
   };
 
@@ -694,19 +639,14 @@ export default function AdminPage() {
           </div>
 
           <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => setActiveTab('settings')}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-semibold transition-all ${isCloudConnected
-                ? 'bg-emerald-950/70 border-emerald-500/50 text-emerald-300 hover:bg-emerald-900/70'
-                : 'bg-amber-950/70 border-amber-500/50 text-amber-300 hover:bg-amber-900/70'
-                }`}
-              title="Nhấn để cấu hình kết nối Supabase Cloud"
+            <div
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-emerald-500/50 bg-emerald-950/70 text-emerald-300 text-xs font-semibold"
+              title="Cơ sở dữ liệu Supabase được kết nối tự động qua file .env.local"
             >
               <Database className="w-3.5 h-3.5" />
-              <span>{isCloudConnected ? 'Supabase: Đã Kết Nối' : 'Supabase: Cấu Hình'}</span>
-              <span className={`w-2 h-2 rounded-full ${isCloudConnected ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
-            </button>
+              <span>Supabase: Đã Kết Nối (.env)</span>
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            </div>
 
             <Link
               href="/"
@@ -1478,15 +1418,14 @@ export default function AdminPage() {
                         <tr key={acc.id} className="hover:bg-stone-50/70 transition-colors">
                           <td className="py-3 px-4">
                             <div className="flex items-center gap-3">
-                              <div className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-white text-xs shadow-sm ${
-                                acc.role === 'admin'
-                                  ? 'bg-nepred-600'
-                                  : acc.role === 'artisan'
+                              <div className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-white text-xs shadow-sm ${acc.role === 'admin'
+                                ? 'bg-nepred-600'
+                                : acc.role === 'artisan'
                                   ? 'bg-blue-600'
                                   : acc.role === 'staff'
-                                  ? 'bg-amber-600'
-                                  : 'bg-emerald-600'
-                              }`}>
+                                    ? 'bg-amber-600'
+                                    : 'bg-emerald-600'
+                                }`}>
                                 {acc.full_name.slice(0, 2).toUpperCase()}
                               </div>
                               <div>
@@ -1519,31 +1458,29 @@ export default function AdminPage() {
                           </td>
 
                           <td className="py-3 px-4">
-                            <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold ${
-                              acc.role === 'admin'
-                                ? 'bg-nepred-100 text-nepred-800 border border-nepred-200'
-                                : acc.role === 'artisan'
+                            <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold ${acc.role === 'admin'
+                              ? 'bg-nepred-100 text-nepred-800 border border-nepred-200'
+                              : acc.role === 'artisan'
                                 ? 'bg-blue-100 text-blue-800 border border-blue-200'
                                 : acc.role === 'staff'
-                                ? 'bg-amber-100 text-amber-800 border border-amber-200'
-                                : 'bg-emerald-100 text-emerald-800 border border-emerald-200'
-                            }`}>
-                              <span className={`w-1.5 h-1.5 rounded-full ${
-                                acc.role === 'admin'
-                                  ? 'bg-nepred-600'
-                                  : acc.role === 'artisan'
+                                  ? 'bg-amber-100 text-amber-800 border border-amber-200'
+                                  : 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                              }`}>
+                              <span className={`w-1.5 h-1.5 rounded-full ${acc.role === 'admin'
+                                ? 'bg-nepred-600'
+                                : acc.role === 'artisan'
                                   ? 'bg-blue-600'
                                   : acc.role === 'staff'
-                                  ? 'bg-amber-600'
-                                  : 'bg-emerald-600'
-                              }`} />
+                                    ? 'bg-amber-600'
+                                    : 'bg-emerald-600'
+                                }`} />
                               {acc.role === 'admin'
                                 ? 'Admin Master'
                                 : acc.role === 'artisan'
-                                ? 'Nghệ Nhân Làng Nghề'
-                                : acc.role === 'staff'
-                                ? 'Kho & Vận Hành'
-                                : 'Khách Hàng'}
+                                  ? 'Nghệ Nhân Làng Nghề'
+                                  : acc.role === 'staff'
+                                    ? 'Kho & Vận Hành'
+                                    : 'Khách Hàng'}
                             </span>
                           </td>
 
@@ -1585,193 +1522,68 @@ export default function AdminPage() {
         {/* TAB 6: SYSTEM SETTINGS & SUPABASE DATABASE */}
         {activeTab === 'settings' && (
           <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-sm space-y-8 max-w-4xl">
-            <div>
-              <h2 className="font-serif font-bold text-xl text-stone-900 pb-2 border-b border-stone-100 flex items-center gap-2.5">
-                <Database className="w-5 h-5 text-nepred-600" />
-                <span>Cơ Sở Dữ Liệu Supabase Cloud & Cài Đặt Hệ Thống</span>
-              </h2>
-              <p className="text-xs text-stone-500 mt-1">
-                Quản lý kết nối cơ sở dữ liệu PostgreSQL trực tuyến và cấu hình tham số vận hành Nếp Việt
-              </p>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-stone-200">
+              <div>
+                <h2 className="font-serif font-bold text-xl text-stone-900 flex items-center gap-2.5">
+                  <Settings className="w-5 h-5 text-nepred-600" />
+                  <span>Cài Đặt Hệ Thống & Thanh Toán VietQR</span>
+                </h2>
+                <p className="text-xs text-stone-500 mt-1">
+                  Cấu hình tài khoản ngân hàng thụ hưởng Napas 24/7 và thông số vận hành Nếp Việt
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleSeedSupabase}
+                  disabled={isSeeding}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-nepgreen-700 hover:bg-nepgreen-800 text-white font-bold text-xs shadow-sm transition-colors disabled:opacity-50"
+                  title="Nạp toàn bộ dữ liệu mẫu (Tài khoản, Sản phẩm, Làng nghề, Đơn hàng) lên Supabase"
+                >
+                  <Database className="w-3.5 h-3.5" />
+                  <span>{isSeeding ? 'Đang đồng bộ...' : 'Đồng Bộ Dữ Liệu Supabase'}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setShowSchemaModal(true)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-stone-300 bg-white hover:bg-stone-50 text-stone-700 text-xs font-semibold shadow-sm transition-colors"
+                >
+                  <Terminal className="w-3.5 h-3.5 text-nepred-600" />
+                  <span>Xem SQL Schema</span>
+                </button>
+              </div>
             </div>
 
-            {/* Supabase Connection Box */}
-            <div className="p-6 rounded-2xl border bg-stone-50/70 border-stone-200 space-y-5">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-stone-200">
-                <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-sm ${isCloudConnected ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
-                    }`}>
-                    <Database className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 className="font-serif font-bold text-sm text-stone-900">
-                      Trạng Thái Cơ Sở Dữ Liệu: {isCloudConnected ? 'Supabase Cloud (PostgreSQL)' : 'Local Database Cache'}
-                    </h3>
-                    <p className="text-[11px] text-stone-500">
-                      {isCloudConnected
-                        ? 'Dữ liệu sản phẩm và đơn hàng được lưu trực tiếp trên Cloud Supabase.'
-                        : 'Hiện đang lưu trữ tạm trên trình duyệt. Kết nối Supabase để lưu trữ vĩnh viễn trên đám mây.'}
-                    </p>
-                  </div>
+            {/* Read-Only Database Environment Info */}
+            <div className="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-sm flex-shrink-0">
+                  <Database className="w-4 h-4" />
                 </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setShowSchemaModal(true)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-stone-300 bg-white hover:bg-stone-50 text-stone-700 text-xs font-semibold shadow-sm transition-colors"
-                  >
-                    <Terminal className="w-3.5 h-3.5 text-nepred-600" />
-                    <span>Xem SQL Schema</span>
-                  </button>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <p className="font-bold text-emerald-900">Cơ Sở Dữ Liệu Supabase PostgreSQL Cloud</p>
+                    <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 text-[10px] font-bold">
+                      Đã kết nối qua file .env
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-emerald-700/90 mt-0.5">
+                    Hệ thống tự động nạp cấu hình bảo mật từ biến môi trường NEXT_PUBLIC_SUPABASE_URL
+                  </p>
                 </div>
               </div>
 
-              {/* Status message alert if any */}
-              {supabaseStatusMsg && (
-                <div className={`p-3.5 rounded-xl text-xs flex items-center gap-2 border ${supabaseStatusMsg.success
-                  ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
-                  : 'bg-red-50 text-red-800 border-red-200'
-                  }`}>
-                  {supabaseStatusMsg.success ? (
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                  ) : (
-                    <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
-                  )}
-                  <span>{supabaseStatusMsg.text}</span>
-                </div>
-              )}
-
-              {/* Supabase credentials form */}
-              <form onSubmit={handleSaveSupabase} className="space-y-4 text-xs">
-                <div className="space-y-1">
-                  <label className="font-bold text-stone-700 flex items-center justify-between">
-                    <span>Supabase Project URL</span>
-                    <span className="text-[10px] text-stone-400 font-normal">Ví dụ: https://xyzproject.supabase.co</span>
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={supabaseUrl}
-                    onChange={(e) => setSupabaseUrl(e.target.value)}
-                    placeholder="https://your-project-ref.supabase.co"
-                    className="w-full p-2.5 rounded-xl border border-stone-300 bg-white focus:outline-none focus:border-nepred-600 font-mono text-xs"
-                  />
-                </div>
-
-                <div className="space-y-1">
-                  <label className="font-bold text-stone-700 flex items-center justify-between">
-                    <span>Supabase Anon Public Key (API Key)</span>
-                    <span className="text-[10px] text-stone-400 font-normal">Lấy tại Project Settings -&gt; API</span>
-                  </label>
-                  <input
-                    type="password"
-                    required
-                    value={supabaseKey}
-                    onChange={(e) => setSupabaseKey(e.target.value)}
-                    placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                    className="w-full p-2.5 rounded-xl border border-stone-300 bg-white focus:outline-none focus:border-nepred-600 font-mono text-xs"
-                  />
-                </div>
-
-                <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="submit"
-                      disabled={isTestingSupabase}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-nepred-600 hover:bg-nepred-700 text-white font-bold shadow-md transition-colors disabled:opacity-50"
-                    >
-                      <Save className="w-4 h-4" />
-                      <span>{isTestingSupabase ? 'Đang kiểm tra...' : 'Lưu & Kết Nối Supabase'}</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={handleTestSupabase}
-                      disabled={isTestingSupabase}
-                      className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-stone-300 bg-white hover:bg-stone-50 text-stone-700 font-semibold transition-colors"
-                    >
-                      <RefreshCw className={`w-3.5 h-3.5 ${isTestingSupabase ? 'animate-spin' : ''}`} />
-                      <span>Test Kết Nối</span>
-                    </button>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={handleSeedSupabase}
-                      disabled={isSeeding}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-nepgreen-700 hover:bg-nepgreen-800 text-white font-bold shadow-sm transition-colors disabled:opacity-50"
-                      title="Nạp toàn bộ dữ liệu mẫu (Tài khoản, Sản phẩm, Làng nghề, Đơn hàng, Đánh giá) lên Supabase"
-                    >
-                      <Database className="w-3.5 h-3.5" />
-                      <span>{isSeeding ? 'Đang đồng bộ...' : 'Đồng Bộ Toàn Bộ 5 Bảng Lên Supabase'}</span>
-                    </button>
-
-                    {isCloudConnected && (
-                      <button
-                        type="button"
-                        onClick={handleDisconnectSupabase}
-                        className="px-3 py-2 rounded-xl border border-red-200 text-red-600 hover:bg-red-50 font-semibold transition-colors"
-                      >
-                        Ngắt kết nối
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </form>
-
-              {/* 5-Table Live Status Grid */}
-              <div className="pt-3 border-t border-stone-200/80 space-y-2">
-                <p className="font-bold text-stone-800 text-[11px] flex items-center justify-between">
-                  <span>Trạng Thái 5 Bảng Dữ Liệu Supabase:</span>
-                  <span className="text-[10px] text-stone-400 font-normal">Cập nhật thời gian thực</span>
-                </p>
-                <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
-                  <div className="p-3 rounded-xl bg-white border border-stone-200 shadow-xs">
-                    <p className="text-[10px] text-stone-500 font-bold uppercase">1. accounts</p>
-                    <p className="text-base font-bold font-mono text-nepred-600">{tableStats.accountsCount || accountsList.length} tài khoản</p>
-                    <p className="text-[9px] text-stone-400">Admin, Nghệ nhân, Khách</p>
-                  </div>
-                  <div className="p-3 rounded-xl bg-white border border-stone-200 shadow-xs">
-                    <p className="text-[10px] text-stone-500 font-bold uppercase">2. products</p>
-                    <p className="text-base font-bold font-mono text-amber-600">{tableStats.productsCount || products.length} sản phẩm</p>
-                    <p className="text-[9px] text-stone-400">14 sản phẩm thủ công</p>
-                  </div>
-                  <div className="p-3 rounded-xl bg-white border border-stone-200 shadow-xs">
-                    <p className="text-[10px] text-stone-500 font-bold uppercase">3. craft_villages</p>
-                    <p className="text-base font-bold font-mono text-blue-600">{tableStats.villagesCount || 5} làng nghề</p>
-                    <p className="text-[9px] text-stone-400">Bát Tràng, Vạn Phúc...</p>
-                  </div>
-                  <div className="p-3 rounded-xl bg-white border border-stone-200 shadow-xs">
-                    <p className="text-[10px] text-stone-500 font-bold uppercase">4. orders</p>
-                    <p className="text-base font-bold font-mono text-emerald-600">{tableStats.ordersCount || orders.length} đơn hàng</p>
-                    <p className="text-[9px] text-stone-400">VIETQR &amp; COD</p>
-                  </div>
-                  <div className="p-3 rounded-xl bg-white border border-stone-200 shadow-xs">
-                    <p className="text-[10px] text-stone-500 font-bold uppercase">5. reviews</p>
-                    <p className="text-base font-bold font-mono text-purple-600">{tableStats.reviewsCount || 4} đánh giá</p>
-                    <p className="text-[9px] text-stone-400">Trải nghiệm khách hàng</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* 3 Step Instruction Guide */}
-              <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-200/80 text-[11px] text-stone-700 space-y-2">
-                <p className="font-bold text-stone-900 flex items-center gap-1.5">
-                  <SparklesIcon className="w-3.5 h-3.5 text-amber-700" />
-                  <span>Cách kết nối nhanh Supabase trong 2 phút:</span>
-                </p>
-                <ol className="list-decimal list-inside space-y-1 text-stone-600 leading-relaxed">
-                  <li>Tạo một dự án miễn phí tại <a href="https://supabase.com" target="_blank" rel="noreferrer" className="text-nepred-600 underline font-bold">supabase.com</a>.</li>
-                  <li>Mở mục <strong>SQL Editor</strong> trên Supabase, bấm <strong>"Xem SQL Schema"</strong> ở trên, copy toàn bộ và nhấn <strong>Run</strong> để tự động tạo bảng <code className="font-mono bg-white px-1 py-0.5 rounded border">products</code> và <code className="font-mono bg-white px-1 py-0.5 rounded border">orders</code>.</li>
-                  <li>Vào <strong>Project Settings -&gt; API</strong>, copy <strong>Project URL</strong> và <strong>anon public key</strong> dán vào 2 ô ở trên, sau đó bấm <strong>"Lưu &amp; Kết Nối Supabase"</strong>!</li>
-                </ol>
+              <div className="flex items-center gap-2 text-[11px] font-mono text-emerald-900 bg-white/70 px-3 py-1.5 rounded-xl border border-emerald-200">
+                <span>{tableStats.accountsCount || accountsList.length} tài khoản</span> • 
+                <span>{tableStats.productsCount || products.length} sản phẩm</span> • 
+                <span>{tableStats.ordersCount || orders.length} đơn hàng</span>
               </div>
             </div>
 
             {/* Beneficiary Bank & VietQR Configuration */}
-            <div className="space-y-5 pt-6 border-t border-stone-200 text-xs">
+            <div className="space-y-5 text-xs">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shadow-sm">
@@ -2267,7 +2079,7 @@ export default function AdminPage() {
 
             <div className="relative">
               <pre className="bg-stone-900 text-amber-200 p-4 rounded-2xl text-[11px] font-mono h-80 overflow-y-auto whitespace-pre leading-relaxed">
-{`-- 0. XÓA BẢNG CŨ (CYBERSAFE & NẾP VIỆT)
+                {`-- 0. XÓA BẢNG CŨ (CYBERSAFE & NẾP VIỆT)
 DROP TABLE IF EXISTS public.chatbot_consultations CASCADE;
 DROP TABLE IF EXISTS public.pretest_results CASCADE;
 DROP TABLE IF EXISTS public.scenarios CASCADE;

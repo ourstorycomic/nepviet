@@ -566,7 +566,7 @@ export default function HomePage() {
                   title: 'Tải Ứng Dụng Di Động Nếp Việt',
                   badge: 'iOS & Android App',
                   description: 'Trải nghiệm không gian thực tế ảo 3D làng nghề, theo dõi đơn hàng thời gian thực và nhận đặc quyền voucher thành viên mới.',
-                  qrUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fnepviet.vn%2Fapp',
+                  qrUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fnepviet.vercel.app%2F',
                   type: 'app',
                 })}
                 className="group p-5 rounded-2xl bg-cream-50/50 hover:bg-white border border-cream-200 hover:border-nepgold-500 hover:shadow-lg transition-all cursor-pointer flex flex-col items-center text-center"
@@ -580,7 +580,7 @@ export default function HomePage() {
 
                 <div className="relative w-40 h-40 bg-white rounded-xl p-2 shadow-sm border border-cream-300 group-hover:border-nepgold-400 group-hover:scale-105 transition-all flex items-center justify-center">
                   <img
-                    src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fnepviet.vn%2Fapp"
+                    src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fnepviet.vercel.app%2F"
                     alt="App Nếp Việt QR"
                     className="w-full h-full object-contain rounded-lg"
                   />
@@ -650,7 +650,7 @@ export default function HomePage() {
                   title: 'Tem Điện Tử Truy Xuất Nguồn Gốc Di Sản',
                   badge: 'Chứng Nhận OCOP 4-5 Sao',
                   description: 'Mỗi sản phẩm Nếp Việt đều được cấp mã định danh điện tử gắn kèm tem chống giả để tra cứu tên nghệ nhân, xưởng chế tác và giấy chứng nhận nguyên liệu.',
-                  qrUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fnepviet.vn%2Fvan-hoa',
+                  qrUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fnepviet.vercel.app%2Fvan-hoa',
                   type: 'ocop',
                 })}
                 className="group p-5 rounded-2xl bg-cream-50/50 hover:bg-white border border-cream-200 hover:border-nepgreen-600 hover:shadow-lg transition-all cursor-pointer flex flex-col items-center text-center"
@@ -664,7 +664,7 @@ export default function HomePage() {
 
                 <div className="relative w-40 h-40 bg-white rounded-xl p-2 shadow-sm border border-cream-300 group-hover:border-nepgreen-500 group-hover:scale-105 transition-all flex items-center justify-center">
                   <img
-                    src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fnepviet.vn%2Fvan-hoa"
+                    src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fnepviet.vercel.app%2Fvan-hoa"
                     alt="Truy xuất di sản QR"
                     className="w-full h-full object-contain rounded-lg"
                   />
@@ -830,6 +830,9 @@ export default function HomePage() {
                   <p className="text-xs text-stone-600 mt-3 text-center">
                     Mở camera trên điện thoại iPhone hoặc Android để quét mã trực tiếp
                   </p>
+                  <p className="text-[11px] font-mono font-semibold text-nepred-600 mt-1">
+                    {activeQrModal.type === 'ocop' ? 'https://nepviet.vercel.app/van-hoa' : activeQrModal.type === 'app' ? 'https://nepviet.vercel.app/' : 'https://zalo.me/nepviet'}
+                  </p>
                 </div>
 
                 <div className="flex gap-2">
@@ -840,13 +843,15 @@ export default function HomePage() {
                   >
                     Đóng cửa sổ
                   </button>
-                  <Link
-                    href={activeQrModal.type === 'ocop' ? '/van-hoa' : '/san-pham'}
+                  <a
+                    href={activeQrModal.type === 'ocop' ? 'https://nepviet.vercel.app/van-hoa' : activeQrModal.type === 'app' ? 'https://nepviet.vercel.app/' : 'https://zalo.me/nepviet'}
+                    target="_blank"
+                    rel="noreferrer"
                     className="flex-1 py-3 rounded-xl bg-cream-200 hover:bg-cream-300 text-stone-800 font-bold text-xs text-center transition-colors flex items-center justify-center gap-1"
                   >
-                    <span>Khám phá ngay</span>
+                    <span>Mở liên kết ngay</span>
                     <ExternalLink className="w-3.5 h-3.5" />
-                  </Link>
+                  </a>
                 </div>
               </div>
             )}

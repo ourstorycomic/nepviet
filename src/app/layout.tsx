@@ -22,6 +22,7 @@ const beVietnam = Be_Vietnam_Pro({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://nepviet.vercel.app'),
   title: 'Nếp Việt – Tinh hoa quà tặng & thủ công truyền thống',
   description: 'Nền tảng thương mại điện tử di sản giới thiệu và cung cấp các sản phẩm thủ công mỹ nghệ, quà tặng văn hóa và ẩm thực truyền thống Việt Nam tuyển chọn.',
   keywords: 'Nếp Việt, gốm Bát Tràng, mây tre Phú Vinh, lụa Vạn Phúc, tranh Đông Hồ, đồ handmade thủ công, quà tặng văn hóa Việt',

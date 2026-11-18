@@ -4,7 +4,9 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import { Eye, EyeOff, Lock, Mail, User, ArrowRight, Sparkles } from 'lucide-react';
+import { Eye, EyeOff, Lock, Mail, User, ArrowRight } from 'lucide-react';
+import { createAccountInDb, DbAccount } from '@/services/supabaseService';
+import { isSupabaseConfigured } from '@/lib/supabase';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -18,7 +20,7 @@ export default function RegisterPage() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
@@ -49,11 +51,28 @@ export default function RegisterPage() {
 
     setIsLoading(true);
 
-    setTimeout(() => {
+    try {
+      const newAcc: DbAccount = {
+        id: `acc-${Date.now().toString().slice(-4)}`,
+        email: email.trim().toLowerCase(),
+        password: password,
+        full_name: name.trim(),
+        role: 'customer',
+        loyalty_points: 50,
+        created_at: new Date().toISOString(),
+      };
+
+      if (isSupabaseConfigured()) {
+        await createAccountInDb(newAcc);
+      }
+
       register(name.trim(), email.trim());
-      setIsLoading(false);
       router.push('/san-pham');
-    }, 600);
+    } catch (err: any) {
+      setError('Lỗi đăng ký tài khoản: ' + err.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -73,12 +92,6 @@ export default function RegisterPage() {
           <p className="text-xs text-neutral-500">
             Trở thành thành viên cộng đồng Nếp Việt để nhận ưu đãi văn hóa
           </p>
-        </div>
-
-        {/* Demo banner */}
-        <div className="p-3 bg-cream-50 rounded-xl border border-cream-200 text-xs text-neutral-600 flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-nepgold-600 flex-shrink-0" />
-          <span>Đăng ký nhanh chóng để lưu thông tin đơn hàng và nhận ưu đãi.</span>
         </div>
 
         {error && (

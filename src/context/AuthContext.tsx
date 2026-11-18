@@ -3,8 +3,10 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 export interface User {
+  id?: string;
   name: string;
   email: string;
+  role?: 'admin' | 'staff' | 'artisan' | 'customer';
 }
 
 export interface AdminUser {
@@ -19,7 +21,7 @@ interface AuthContextType {
   // Customer Storefront Auth
   user: User | null;
   isLoggedIn: boolean;
-  login: (name: string, email: string) => void;
+  login: (name: string, email: string, role?: 'admin' | 'staff' | 'artisan' | 'customer') => void;
   logout: () => void;
   register: (name: string, email: string) => void;
 
@@ -61,8 +63,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const login = (name: string, email: string) => {
-    const newUser = { name, email };
+  const login = (name: string, email: string, role?: 'admin' | 'staff' | 'artisan' | 'customer') => {
+    const newUser: User = { name, email, role: role || 'customer' };
     setUser(newUser);
     try {
       localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(newUser));

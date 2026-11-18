@@ -18,7 +18,7 @@ import {
   Phone,
   MapPin,
   Calendar,
-  Sparkles,
+  PackageCheck,
   Copy,
   Check,
   QrCode,
@@ -454,7 +454,7 @@ export default function CheckoutPage() {
           </div>
 
           <div className="p-4 bg-nepgreen-50 rounded-xl border border-nepgreen-200 text-xs text-nepgreen-900 leading-relaxed flex items-start gap-3">
-            <Sparkles className="w-4 h-4 text-nepgreen-700 flex-shrink-0 mt-0.5" />
+            <PackageCheck className="w-4 h-4 text-nepgreen-700 flex-shrink-0 mt-0.5" strokeWidth={1.5} />
             <div>
               <p className="font-bold">Quy chuẩn đóng gói & đồng kiểm tra hàng:</p>
               <p className="mt-0.5 text-stone-600">

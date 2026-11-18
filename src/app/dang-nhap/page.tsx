@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import { Eye, EyeOff, Lock, Mail, ArrowRight, ShieldCheck, UserCheck, Sparkles } from 'lucide-react';
+import { Eye, EyeOff, Lock, Mail, ArrowRight, ShieldCheck, UserCheck, Palette } from 'lucide-react';
 import { authenticateAccountInDb, SEED_ACCOUNTS } from '@/services/supabaseService';
 import { isSupabaseConfigured } from '@/lib/supabase';
 
@@ -184,28 +184,37 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={() => handleQuickFill('admin@nepviet.vn', 'Admin@123')}
-              className="p-2 rounded-xl bg-nepred-50 hover:bg-nepred-100 border border-nepred-200 text-nepred-800 font-bold text-center transition-colors"
+              className="p-2 rounded-xl bg-stone-100/90 hover:bg-nepred-50 hover:border-nepred-200 border border-stone-200/80 text-stone-800 hover:text-nepred-800 font-bold text-center transition-colors group flex flex-col items-center justify-center gap-0.5"
             >
-              <div className="truncate">👑 Admin Master</div>
-              <div className="text-[9px] text-nepred-600 font-normal">Toàn quyền</div>
+              <div className="flex items-center gap-1">
+                <ShieldCheck className="w-3 h-3 text-nepred-600" strokeWidth={1.5} />
+                <span className="truncate">Admin Master</span>
+              </div>
+              <div className="text-[9px] text-stone-500 group-hover:text-nepred-600 font-normal">Toàn quyền</div>
             </button>
 
             <button
               type="button"
               onClick={() => handleQuickFill('nghenhan@nepviet.vn', 'Nghenhan@123')}
-              className="p-2 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-800 font-bold text-center transition-colors"
+              className="p-2 rounded-xl bg-stone-100/90 hover:bg-amber-50 hover:border-amber-200 border border-stone-200/80 text-stone-800 hover:text-amber-900 font-bold text-center transition-colors group flex flex-col items-center justify-center gap-0.5"
             >
-              <div className="truncate">🏺 Nghệ Nhân</div>
-              <div className="text-[9px] text-blue-600 font-normal">Bát Tràng</div>
+              <div className="flex items-center gap-1">
+                <Palette className="w-3 h-3 text-amber-700" strokeWidth={1.5} />
+                <span className="truncate">Nghệ Nhân</span>
+              </div>
+              <div className="text-[9px] text-stone-500 group-hover:text-amber-700 font-normal">Bát Tràng</div>
             </button>
 
             <button
               type="button"
               onClick={() => handleQuickFill('khachhang@nepviet.vn', 'Khach@123')}
-              className="p-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 font-bold text-center transition-colors"
+              className="p-2 rounded-xl bg-stone-100/90 hover:bg-emerald-50 hover:border-emerald-200 border border-stone-200/80 text-stone-800 hover:text-emerald-900 font-bold text-center transition-colors group flex flex-col items-center justify-center gap-0.5"
             >
-              <div className="truncate">🛍️ Khách Hàng</div>
-              <div className="text-[9px] text-emerald-600 font-normal">Thành viên</div>
+              <div className="flex items-center gap-1">
+                <UserCheck className="w-3 h-3 text-emerald-700" strokeWidth={1.5} />
+                <span className="truncate">Khách Hàng</span>
+              </div>
+              <div className="text-[9px] text-stone-500 group-hover:text-emerald-700 font-normal">Thành viên</div>
             </button>
           </div>
         </div>

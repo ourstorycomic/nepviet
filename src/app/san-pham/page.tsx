@@ -12,7 +12,7 @@ import {
   SlidersHorizontal,
   X,
   RotateCcw,
-  Sparkles,
+  ShieldCheck,
   ArrowRight,
   ChevronRight,
   Filter,
@@ -340,7 +340,7 @@ function ProductsFilterView() {
             {/* Packaging Assurance Card */}
             <div className="p-4 bg-nepgreen-50 rounded-2xl border border-nepgreen-100 text-xs text-nepgreen-900 leading-relaxed">
               <p className="font-bold flex items-center gap-1.5 text-nepgreen-800 mb-1">
-                <Sparkles className="w-3.5 h-3.5" /> 100% Làng nghề Việt
+                <ShieldCheck className="w-3.5 h-3.5" strokeWidth={1.5} /> 100% Làng nghề Việt
               </p>
               Từng sản phẩm đều có thông tin nghệ nhân hoặc xưởng gia truyền tại Bát Tràng, Phú Vinh, Vạn Phúc, Đông Hồ...
             </div>

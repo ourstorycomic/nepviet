@@ -12,11 +12,7 @@ import {
   X,
   ArrowRight,
   MapPin,
-  Sparkles,
-  Flame,
-  Layers,
   ChevronRight,
-  TrendingUp,
 } from 'lucide-react';
 
 interface SearchModalProps {
@@ -274,19 +270,17 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
             <div className="space-y-6 py-2">
               {/* Từ khóa phổ biến */}
               <div>
-                <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-stone-600 mb-3">
-                  <TrendingUp className="w-3.5 h-3.5 text-nepred-600" />
-                  <span>Tìm kiếm phổ biến</span>
+                <div className="text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-3">
+                  Từ khóa tìm kiếm phổ biến
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {popularKeywords.map((item, idx) => (
                     <button
                       key={idx}
                       onClick={() => setSearchTerm(item.query)}
-                      className="px-3.5 py-1.5 rounded-full text-xs font-medium text-stone-700 bg-cream-100/90 hover:bg-nepred-50 hover:text-nepred-600 border border-cream-200/80 transition-all flex items-center gap-1.5"
+                      className="px-3.5 py-1.5 rounded-full text-xs font-medium text-stone-700 bg-cream-100/90 hover:bg-stone-900 hover:text-white hover:border-stone-900 border border-cream-200/80 transition-all"
                     >
-                      <Sparkles className="w-3 h-3 text-nepgold-500" />
-                      <span>{item.label}</span>
+                      {item.label}
                     </button>
                   ))}
                 </div>
@@ -294,9 +288,8 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
               {/* Danh mục di sản */}
               <div className="pt-4">
-                <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-stone-600 mb-3">
-                  <Layers className="w-3.5 h-3.5 text-nepgreen-700" />
-                  <span>Khám phá theo danh mục</span>
+                <div className="text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-3">
+                  Khám phá theo danh mục
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                   {CATEGORIES.map((cat) => (

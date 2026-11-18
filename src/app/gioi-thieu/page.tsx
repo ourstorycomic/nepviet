@@ -10,8 +10,8 @@ export default function AboutPage() {
         
         {/* Story Intro */}
         <div className="max-w-3xl mx-auto text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-nepred-50 text-nepred-700 border border-nepred-100 text-xs font-semibold">
-            <Heart className="w-3.5 h-3.5 fill-nepred-600 text-nepred-600" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cream-100 text-stone-700 border border-cream-200/80 text-xs font-semibold">
+            <span className="w-1.5 h-1.5 rounded-full bg-nepred-600" />
             <span>Câu chuyện thương hiệu Nếp Việt</span>
           </div>
           <h1 className="font-serif text-3xl sm:text-5xl font-black text-nepbrown-800 leading-tight">
@@ -25,8 +25,8 @@ export default function AboutPage() {
         {/* Vision & Mission Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bg-white rounded-3xl p-8 sm:p-10 border border-cream-200 shadow-sm space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-nepred-600 text-white flex items-center justify-center font-bold shadow-md">
-              <Target className="w-6 h-6" />
+            <div className="w-11 h-11 rounded-2xl bg-[#F7F4EE] border border-stone-200/80 text-stone-800 flex items-center justify-center shadow-2xs">
+              <Target className="w-5 h-5" strokeWidth={1.5} />
             </div>
             <h2 className="font-serif text-2xl font-bold text-nepbrown-800">
               Sứ Mệnh Của Chúng Tôi
@@ -37,8 +37,8 @@ export default function AboutPage() {
           </div>
 
           <div className="bg-white rounded-3xl p-8 sm:p-10 border border-cream-200 shadow-sm space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-nepgreen-700 text-white flex items-center justify-center font-bold shadow-md">
-              <Compass className="w-6 h-6" />
+            <div className="w-11 h-11 rounded-2xl bg-[#F7F4EE] border border-stone-200/80 text-stone-800 flex items-center justify-center shadow-2xs">
+              <Compass className="w-5 h-5" strokeWidth={1.5} />
             </div>
             <h2 className="font-serif text-2xl font-bold text-nepbrown-800">
               Tầm Nhìn Dài Hạn

@@ -15,7 +15,7 @@ import {
   ShieldCheck,
   Truck,
   RotateCcw,
-  Sparkles,
+  ScrollText,
   MapPin,
   ChevronRight,
   Minus,
@@ -321,7 +321,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
 
               <div className="p-6 bg-cream-50 rounded-2xl border border-cream-200 space-y-2">
                 <h4 className="font-serif font-bold text-nepgreen-900 flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-nepgold-600" />
+                  <ScrollText className="w-4 h-4 text-nepbrown-700" strokeWidth={1.5} />
                   Ghi chú từ xưởng nghệ nhân
                 </h4>
                 <p className="text-xs sm:text-sm text-nepbrown-800 leading-relaxed italic">

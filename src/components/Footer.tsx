@@ -9,8 +9,9 @@ import {
   Mail,
   Clock,
   ShieldCheck,
-  Truck,
-  Sparkles,
+  PackageCheck,
+  Gem,
+  RotateCcw,
   Heart,
   QrCode,
   CheckCircle2,
@@ -27,40 +28,40 @@ export function Footer() {
   return (
     <footer className="bg-stone-900 text-cream-100 pt-16 pb-12 border-t border-stone-800">
       
-      {/* 3 Core Value Cards */}
+      {/* 3 Core Value Cards - Heritage Refined */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-14">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-stone-800/80 p-6 rounded-2xl border border-stone-700/60 flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-nepred-600 text-white flex items-center justify-center flex-shrink-0 shadow-lg">
-              <Sparkles className="w-6 h-6" />
+          <div className="bg-stone-850/80 p-6 rounded-2xl border border-stone-800 hover:border-nepgold-500/40 transition-colors flex items-start gap-4 group">
+            <div className="w-11 h-11 rounded-xl bg-stone-800 border border-stone-700/80 text-nepgold-400 flex items-center justify-center flex-shrink-0 shadow-inner group-hover:border-nepgold-500/50 group-hover:text-amber-300 transition-colors">
+              <Gem className="w-5 h-5" strokeWidth={1.5} />
             </div>
             <div>
               <h4 className="font-serif font-bold text-base text-cream-50 mb-1">100% Thủ Công Bản Địa</h4>
-              <p className="text-xs text-cream-200/90 leading-relaxed">
+              <p className="text-xs text-cream-200/80 leading-relaxed">
                 Từng sản phẩm kết tinh từ bàn tay nghệ nhân tại các làng nghề truyền thống Bát Tràng, Phú Vinh, Vạn Phúc, Đông Hồ...
               </p>
             </div>
           </div>
 
-          <div className="bg-stone-800/80 p-6 rounded-2xl border border-stone-700/60 flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-nepgreen-800 text-white flex items-center justify-center flex-shrink-0 shadow-lg">
-              <Truck className="w-6 h-6" />
+          <div className="bg-stone-850/80 p-6 rounded-2xl border border-stone-800 hover:border-nepgold-500/40 transition-colors flex items-start gap-4 group">
+            <div className="w-11 h-11 rounded-xl bg-stone-800 border border-stone-700/80 text-nepgold-400 flex items-center justify-center flex-shrink-0 shadow-inner group-hover:border-nepgold-500/50 group-hover:text-amber-300 transition-colors">
+              <PackageCheck className="w-5 h-5" strokeWidth={1.5} />
             </div>
             <div>
               <h4 className="font-serif font-bold text-base text-cream-50 mb-1">Đóng Gói Chống Vỡ An Toàn</h4>
-              <p className="text-xs text-cream-200/90 leading-relaxed">
+              <p className="text-xs text-cream-200/80 leading-relaxed">
                 Quy chuẩn đóng gói nhiều lớp mút đệm và hộp carton cứng chuyên dụng cho đồ gốm sứ thủ công mỹ nghệ dễ vỡ.
               </p>
             </div>
           </div>
 
-          <div className="bg-stone-800/80 p-6 rounded-2xl border border-stone-700/60 flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-nepgold-600 text-white flex items-center justify-center flex-shrink-0 shadow-lg">
-              <ShieldCheck className="w-6 h-6" />
+          <div className="bg-stone-850/80 p-6 rounded-2xl border border-stone-800 hover:border-nepgold-500/40 transition-colors flex items-start gap-4 group">
+            <div className="w-11 h-11 rounded-xl bg-stone-800 border border-stone-700/80 text-nepgold-400 flex items-center justify-center flex-shrink-0 shadow-inner group-hover:border-nepgold-500/50 group-hover:text-amber-300 transition-colors">
+              <RotateCcw className="w-5 h-5" strokeWidth={1.5} />
             </div>
             <div>
-              <h4 className="font-serif font-bold text-base text-cream-50 mb-1">Đồng Hành Cùng Người Trẻ</h4>
-              <p className="text-xs text-cream-200/90 leading-relaxed">
+              <h4 className="font-serif font-bold text-base text-cream-50 mb-1">Đồng Hành & Đổi Mới 7 Ngày</h4>
+              <p className="text-xs text-cream-200/80 leading-relaxed">
                 Mức giá tối ưu cho học sinh, sinh viên; chính sách hỗ trợ đổi mới trong 7 ngày nếu có lỗi từ chế tác hoặc vận chuyển.
               </p>
             </div>
@@ -93,19 +94,19 @@ export function Footer() {
 
             <div className="space-y-2 pt-2 text-xs text-cream-200">
               <div className="flex items-start gap-2.5">
-                <MapPin className="w-4 h-4 text-nepred-500 flex-shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 text-nepgold-500 flex-shrink-0 mt-0.5" strokeWidth={1.5} />
                 <span>Trụ sở: Tòa nhà A2, Học viện Công nghệ Bưu chính Viễn thông, Hà Đông, Hà Nội</span>
               </div>
               <div className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-nepred-500 flex-shrink-0" />
+                <Phone className="w-4 h-4 text-nepgold-500 flex-shrink-0" strokeWidth={1.5} />
                 <span>Hotline: 1900 6868 (Miễn phí 08:00 - 21:30 hàng ngày)</span>
               </div>
               <div className="flex items-center gap-2.5">
-                <Mail className="w-4 h-4 text-nepred-500 flex-shrink-0" />
+                <Mail className="w-4 h-4 text-nepgold-500 flex-shrink-0" strokeWidth={1.5} />
                 <span>Email: lienhe@nepviet.vn / hotro@nepviet.vn</span>
               </div>
               <div className="flex items-center gap-2.5">
-                <Clock className="w-4 h-4 text-nepred-500 flex-shrink-0" />
+                <Clock className="w-4 h-4 text-nepgold-500 flex-shrink-0" strokeWidth={1.5} />
                 <span>Xưởng trưng bày: Thôn Giang Cao, Làng gốm Bát Tràng, Gia Lâm, Hà Nội</span>
               </div>
             </div>
@@ -198,8 +199,8 @@ export function Footer() {
                 </Link>
               </li>
               <li className="pt-1 border-t border-stone-800">
-                <Link href="/admin" className="text-amber-400 hover:text-white transition-colors font-bold inline-flex items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5" /> Cổng Quản Trị (Admin)
+                <Link href="/admin" className="text-amber-400 hover:text-white transition-colors font-bold inline-flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5" strokeWidth={1.5} /> Cổng Quản Trị (Admin)
                 </Link>
               </li>
             </ul>
@@ -212,9 +213,9 @@ export function Footer() {
             </h4>
             
             {/* Ministry of Industry and Trade badge (official trust signal) */}
-            <div className="p-3 bg-stone-800 rounded-xl border border-stone-700 space-y-1.5">
+            <div className="p-3 bg-stone-850 rounded-xl border border-stone-800 space-y-1.5">
               <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold">
-                <CheckCircle2 className="w-4 h-4" />
+                <CheckCircle2 className="w-4 h-4" strokeWidth={1.5} />
                 <span>Đã Đăng Ký Bộ Công Thương</span>
               </div>
               <p className="text-[10px] text-stone-400">
@@ -224,7 +225,7 @@ export function Footer() {
 
             {/* SSL Badge */}
             <div className="flex items-center gap-2 text-xs text-stone-300">
-              <Lock className="w-3.5 h-3.5 text-nepgold-500" />
+              <Lock className="w-3.5 h-3.5 text-nepgold-500" strokeWidth={1.5} />
               <span>Bảo mật chuẩn SSL 256-bit</span>
             </div>
 

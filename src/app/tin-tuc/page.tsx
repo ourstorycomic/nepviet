@@ -7,7 +7,6 @@ import {
   Calendar,
   Clock,
   ArrowRight,
-  Sparkles,
   Tag,
   BookOpen,
   MapPin,
@@ -242,7 +241,7 @@ export default function NewsPage() {
         <div className="p-8 rounded-3xl bg-gradient-to-r from-nepgreen-900 via-stone-900 to-nepgreen-950 text-white flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-xl">
           <div className="space-y-2 max-w-xl">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-nepgreen-800 text-nepgold-400 text-xs font-semibold">
-              <Sparkles className="w-3.5 h-3.5" />
+              <Calendar className="w-3.5 h-3.5" strokeWidth={1.5} />
               <span>Đăng Ký Tham Gia Workshop Cuối Tuần</span>
             </span>
             <h3 className="font-serif font-bold text-2xl text-white">

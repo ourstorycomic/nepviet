@@ -8,17 +8,17 @@ import { useProducts } from '@/utils/productsCatalog';
 import { ProductCard } from '@/components/ProductCard';
 import {
   ArrowRight,
-  Sparkles,
   Award,
   ShieldCheck,
   Compass,
   Heart,
   ChevronRight,
-  Flame,
   Star,
   CheckCircle2,
   Clock,
-  Truck,
+  Gem,
+  PackageCheck,
+  RotateCcw,
   Layers,
   ChevronLeft,
   QrCode,
@@ -117,7 +117,7 @@ export default function HomePage() {
               <div className="relative max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8 flex flex-col justify-center">
                 <div className="max-w-2xl space-y-5">
                   <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-nepred-600/90 text-white border border-nepred-400/40 text-xs font-semibold tracking-wide backdrop-blur-sm shadow-md">
-                    <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
                     <span>{slide.badge}</span>
                   </div>
 
@@ -331,8 +331,9 @@ export default function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
           <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-nepred-600 mb-1">
-              <Flame className="w-3.5 h-3.5 fill-nepred-600" /> Sản phẩm tiêu biểu
+            <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-nepred-700 mb-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-nepred-600" />
+              <span>Sản phẩm tiêu biểu tuyển chọn</span>
             </div>
             <h2 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900">
               Được Giới Trẻ Yêu Thích Nhất
@@ -343,7 +344,7 @@ export default function HomePage() {
             className="text-xs font-bold text-nepred-600 hover:text-nepred-700 flex items-center gap-1"
           >
             <span>Xem thêm tất cả sản phẩm</span>
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-4 h-4" strokeWidth={1.5} />
           </Link>
         </div>
 
@@ -381,9 +382,9 @@ export default function HomePage() {
       {/* 6. 3 CORE VALUE CARDS (WIREFRAME BLOCK 6: 3 BOXES) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white p-6 rounded-2xl border border-cream-200 shadow-sm flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-nepred-50 text-nepred-600 flex items-center justify-center flex-shrink-0">
-              <Sparkles className="w-6 h-6" />
+          <div className="bg-white p-6 rounded-2xl border border-cream-200 shadow-sm flex items-start gap-4 group hover:border-nepgold-500/40 transition-colors">
+            <div className="w-11 h-11 rounded-2xl bg-stone-100/90 border border-stone-200/80 text-stone-800 flex items-center justify-center flex-shrink-0 shadow-2xs group-hover:bg-nepred-50 group-hover:text-nepred-600 group-hover:border-nepred-200 transition-colors">
+              <Gem className="w-5 h-5" strokeWidth={1.5} />
             </div>
             <div>
               <h4 className="font-serif font-bold text-base text-stone-900 mb-1">100% Thủ Công Bản Địa</h4>
@@ -393,9 +394,9 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-2xl border border-cream-200 shadow-sm flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-nepgreen-50 text-nepgreen-700 flex items-center justify-center flex-shrink-0">
-              <Truck className="w-6 h-6" />
+          <div className="bg-white p-6 rounded-2xl border border-cream-200 shadow-sm flex items-start gap-4 group hover:border-nepgold-500/40 transition-colors">
+            <div className="w-11 h-11 rounded-2xl bg-stone-100/90 border border-stone-200/80 text-stone-800 flex items-center justify-center flex-shrink-0 shadow-2xs group-hover:bg-nepgreen-50 group-hover:text-nepgreen-700 group-hover:border-nepgreen-200 transition-colors">
+              <PackageCheck className="w-5 h-5" strokeWidth={1.5} />
             </div>
             <div>
               <h4 className="font-serif font-bold text-base text-stone-900 mb-1">Đóng Gói Chống Vỡ An Toàn</h4>
@@ -405,12 +406,12 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-2xl border border-cream-200 shadow-sm flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center flex-shrink-0">
-              <ShieldCheck className="w-6 h-6" />
+          <div className="bg-white p-6 rounded-2xl border border-cream-200 shadow-sm flex items-start gap-4 group hover:border-nepgold-500/40 transition-colors">
+            <div className="w-11 h-11 rounded-2xl bg-stone-100/90 border border-stone-200/80 text-stone-800 flex items-center justify-center flex-shrink-0 shadow-2xs group-hover:bg-amber-50 group-hover:text-amber-800 group-hover:border-amber-200 transition-colors">
+              <RotateCcw className="w-5 h-5" strokeWidth={1.5} />
             </div>
             <div>
-              <h4 className="font-serif font-bold text-base text-stone-900 mb-1">Đổi Mới Trong 7 Ngày</h4>
+              <h4 className="font-serif font-bold text-base text-stone-900 mb-1">Đồng Kiểm & Đổi Mới 7 Ngày</h4>
               <p className="text-xs text-stone-500 leading-relaxed">
                 Đồng kiểm hàng khi nhận, hoàn tiền 100% hoặc đổi sản phẩm mới nếu có bất kỳ hư hại nào từ quá trình vận chuyển.
               </p>

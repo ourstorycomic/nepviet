@@ -14,7 +14,15 @@ import {
   isSupabaseConfigured,
   testSupabaseConnection,
 } from '@/lib/supabase';
-import { seedProductsToSupabase } from '@/services/supabaseService';
+import {
+  seedAllToSupabase,
+  seedProductsToSupabase,
+  DbAccount,
+  SEED_ACCOUNTS,
+  getSupabaseTableStats,
+  fetchAccountsFromDb,
+  createAccountInDb,
+} from '@/services/supabaseService';
 import { useAuth } from '@/context/AuthContext';
 import { AdminLoginGate } from '@/components/AdminLoginGate';
 import {
@@ -100,9 +108,43 @@ const PRESET_IMAGES = [
 export default function AdminPage() {
   const { adminUser, isAdminLoggedIn, logoutAdmin } = useAuth();
 
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'orders' | 'products' | 'artisans' | 'settings'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'orders' | 'products' | 'artisans' | 'accounts' | 'settings'>('dashboard');
   const [orderSearchTerm, setOrderSearchTerm] = useState('');
   const [orderStatusFilter, setOrderStatusFilter] = useState<string>('all');
+
+  // Accounts & RBAC State
+  const [accountsList, setAccountsList] = useState<DbAccount[]>(SEED_ACCOUNTS);
+  const [accountRoleFilter, setAccountRoleFilter] = useState<string>('all');
+  const [accountSearch, setAccountSearch] = useState<string>('');
+  const [isNewAccountModalOpen, setIsNewAccountModalOpen] = useState(false);
+  const [newAccountData, setNewAccountData] = useState<DbAccount>({
+    id: `acc-${Date.now().toString().slice(-4)}`,
+    email: '',
+    password: '',
+    full_name: '',
+    phone: '',
+    role: 'customer',
+    address: '',
+    city: 'Hà Nội',
+    loyalty_points: 0,
+  });
+
+  // Table Statistics State
+  const [tableStats, setTableStats] = useState<{
+    connected: boolean;
+    accountsCount: number;
+    productsCount: number;
+    villagesCount: number;
+    ordersCount: number;
+    reviewsCount: number;
+  }>({
+    connected: false,
+    accountsCount: 5,
+    productsCount: 14,
+    villagesCount: 5,
+    ordersCount: 5,
+    reviewsCount: 4,
+  });
 
   // Image Upload & Picker Mode State
   const [imagePickMode, setImagePickMode] = useState<'upload' | 'preset' | 'url'>('upload');
@@ -194,12 +236,28 @@ export default function AdminPage() {
     }
   }, []);
 
+  const refreshSupabaseData = async () => {
+    try {
+      const stats = await getSupabaseTableStats();
+      if (stats.connected) {
+        setTableStats(stats);
+      }
+      const accs = await fetchAccountsFromDb();
+      if (accs && accs.length > 0) {
+        setAccountsList(accs);
+      }
+    } catch (e) {
+      console.warn('Lỗi refresh Supabase data:', e);
+    }
+  };
+
   useEffect(() => {
     const config = getSupabaseConfig();
     if (config) {
       setSupabaseUrl(config.url);
       setSupabaseKey(config.anonKey);
       setIsCloudConnected(true);
+      refreshSupabaseData();
     } else {
       setIsCloudConnected(false);
     }
@@ -218,6 +276,9 @@ export default function AdminPage() {
     setIsCloudConnected(res.success);
     setSupabaseStatusMsg({ success: res.success, text: res.message });
     showToast(res.message);
+    if (res.success) {
+      await refreshSupabaseData();
+    }
   };
 
   const handleTestSupabase = async () => {
@@ -227,6 +288,9 @@ export default function AdminPage() {
     setIsCloudConnected(res.success);
     setSupabaseStatusMsg({ success: res.success, text: res.message });
     showToast(res.message);
+    if (res.success) {
+      await refreshSupabaseData();
+    }
   };
 
   const handleDisconnectSupabase = () => {
@@ -246,10 +310,52 @@ export default function AdminPage() {
       return;
     }
     setIsSeeding(true);
-    const res = await seedProductsToSupabase();
+    const res = await seedAllToSupabase();
     setIsSeeding(false);
     showToast(res.message);
     setSupabaseStatusMsg({ success: res.success, text: res.message });
+    await refreshSupabaseData();
+  };
+
+  const handleCreateAccount = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newAccountData.email.trim() || !newAccountData.full_name.trim() || !newAccountData.password?.trim()) {
+      alert('Vui lòng điền đầy đủ Email, Mật khẩu và Họ tên.');
+      return;
+    }
+
+    const accountToSave: DbAccount = {
+      ...newAccountData,
+      id: newAccountData.id || `acc-${Date.now().toString().slice(-4)}`,
+      email: newAccountData.email.trim().toLowerCase(),
+      created_at: new Date().toISOString(),
+    };
+
+    setAccountsList((prev) => [accountToSave, ...prev]);
+
+    if (isCloudConnected || isSupabaseConfigured()) {
+      const ok = await createAccountInDb(accountToSave);
+      if (ok) {
+        showToast(`Đã lưu tài khoản ${accountToSave.email} lên Supabase!`);
+      } else {
+        showToast(`Đã lưu tài khoản ${accountToSave.email} vào bộ nhớ máy.`);
+      }
+    } else {
+      showToast(`Đã lưu tài khoản ${accountToSave.email} thành công!`);
+    }
+
+    setIsNewAccountModalOpen(false);
+    setNewAccountData({
+      id: `acc-${Date.now().toString().slice(-4)}`,
+      email: '',
+      password: '',
+      full_name: '',
+      phone: '',
+      role: 'customer',
+      address: '',
+      city: 'Hà Nội',
+      loyalty_points: 0,
+    });
   };
 
   const showToast = (msg: string) => {
@@ -612,25 +718,23 @@ export default function AdminPage() {
             </Link>
 
             <div className="flex items-center gap-2.5 pl-3 border-l border-stone-800">
-              <div className={`w-8 h-8 rounded-full text-white flex items-center justify-center text-xs font-bold shadow ${
-                adminUser?.role === 'admin'
-                  ? 'bg-nepred-600'
-                  : adminUser?.role === 'artisan'
+              <div className={`w-8 h-8 rounded-full text-white flex items-center justify-center text-xs font-bold shadow ${adminUser?.role === 'admin'
+                ? 'bg-nepred-600'
+                : adminUser?.role === 'artisan'
                   ? 'bg-blue-600'
                   : 'bg-amber-600'
-              }`}>
+                }`}>
                 {adminUser?.role === 'admin' ? 'AD' : adminUser?.role === 'artisan' ? 'NN' : 'KH'}
               </div>
               <div className="hidden sm:block text-left">
                 <div className="flex items-center gap-1.5">
                   <p className="text-xs font-bold text-cream-50">{adminUser?.name || 'Admin Master'}</p>
-                  <span className={`px-1.5 py-0.2 rounded text-[9px] font-bold ${
-                    adminUser?.role === 'admin'
-                      ? 'bg-nepred-500/20 text-nepred-400 border border-nepred-500/30'
-                      : adminUser?.role === 'artisan'
+                  <span className={`px-1.5 py-0.2 rounded text-[9px] font-bold ${adminUser?.role === 'admin'
+                    ? 'bg-nepred-500/20 text-nepred-400 border border-nepred-500/30'
+                    : adminUser?.role === 'artisan'
                       ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
                       : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
-                  }`}>
+                    }`}>
                     {adminUser?.role === 'admin' ? 'Master' : adminUser?.role === 'artisan' ? 'Nghệ Nhân' : 'Kho'}
                   </span>
                 </div>
@@ -675,6 +779,11 @@ export default function AdminPage() {
               id: 'artisans',
               label: adminUser?.role === 'artisan' ? 'Hồ Sơ Xưởng & Câu Chuyện' : `Nghệ Nhân & Làng Nghề (${CRAFT_VILLAGES.length})`,
               icon: Users,
+            },
+            {
+              id: 'accounts',
+              label: adminUser?.role === 'artisan' ? 'Tài Khoản Của Tôi' : `Tài Khoản & Phân Quyền (${accountsList.length})`,
+              icon: ShieldCheck,
             },
             {
               id: 'settings',
@@ -1222,7 +1331,258 @@ export default function AdminPage() {
           </div>
         )}
 
-        {/* TAB 5: SYSTEM SETTINGS & SUPABASE DATABASE */}
+        {/* TAB 5: ACCOUNTS & RBAC MANAGEMENT */}
+        {activeTab === 'accounts' && (
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h2 className="font-serif font-bold text-xl text-stone-900 flex items-center gap-2">
+                  <ShieldCheck className="w-5 h-5 text-nepred-600" />
+                  <span>Quản Lý Tài Khoản & Phân Quyền Vai Trò (RBAC)</span>
+                </h2>
+                <p className="text-xs text-stone-500">
+                  Dữ liệu lưu trữ tại bảng <code className="font-mono text-nepred-700 font-bold">public.accounts</code> trên Supabase với 4 vai trò: Admin Master, Nghệ Nhân, Nhân Viên Kho, Khách Hàng
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={async () => {
+                    await refreshSupabaseData();
+                    showToast('Đã làm mới danh sách tài khoản từ cơ sở dữ liệu!');
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-stone-300 bg-white hover:bg-stone-50 text-stone-700 text-xs font-semibold shadow-sm transition-colors"
+                >
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  <span>Làm mới ({accountsList.length})</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setIsNewAccountModalOpen(true)}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-nepred-600 hover:bg-nepred-700 text-white text-xs font-bold shadow-md transition-colors"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Thêm Tài Khoản</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Role KPI Overview Cards */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm space-y-1">
+                <div className="flex items-center justify-between text-xs text-stone-500">
+                  <span className="font-semibold">Admin Master</span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-nepred-600" />
+                </div>
+                <p className="font-serif text-2xl font-bold text-nepred-700">
+                  {accountsList.filter(a => a.role === 'admin').length}
+                </p>
+                <p className="text-[10px] text-stone-400">Toàn quyền hệ thống & DB</p>
+              </div>
+
+              <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm space-y-1">
+                <div className="flex items-center justify-between text-xs text-stone-500">
+                  <span className="font-semibold">Nghệ Nhân Đối Tác</span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-blue-600" />
+                </div>
+                <p className="font-serif text-2xl font-bold text-blue-700">
+                  {accountsList.filter(a => a.role === 'artisan').length}
+                </p>
+                <p className="text-[10px] text-stone-400">Quản lý xưởng & đơn hàng làng nghề</p>
+              </div>
+
+              <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm space-y-1">
+                <div className="flex items-center justify-between text-xs text-stone-500">
+                  <span className="font-semibold">Vận Hành & Kho</span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-600" />
+                </div>
+                <p className="font-serif text-2xl font-bold text-amber-700">
+                  {accountsList.filter(a => a.role === 'staff').length}
+                </p>
+                <p className="text-[10px] text-stone-400">Xử lý đóng gói & giao vận</p>
+              </div>
+
+              <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm space-y-1">
+                <div className="flex items-center justify-between text-xs text-stone-500">
+                  <span className="font-semibold">Khách Hàng</span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-600" />
+                </div>
+                <p className="font-serif text-2xl font-bold text-emerald-700">
+                  {accountsList.filter(a => a.role === 'customer').length}
+                </p>
+                <p className="text-[10px] text-stone-400">Mua sắm & tích lũy điểm thưởng</p>
+              </div>
+            </div>
+
+            {/* Filter & Search Bar */}
+            <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="relative flex-1 w-full">
+                <Search className="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  placeholder="Tìm theo tên, email, số điện thoại, ID tài khoản..."
+                  value={accountSearch}
+                  onChange={(e) => setAccountSearch(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2 rounded-xl border border-stone-200 text-xs focus:outline-none focus:border-nepred-600 bg-stone-50"
+                />
+              </div>
+
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <Filter className="w-4 h-4 text-stone-400" />
+                <select
+                  value={accountRoleFilter}
+                  onChange={(e) => setAccountRoleFilter(e.target.value)}
+                  className="p-2 rounded-xl border border-stone-200 text-xs font-semibold bg-stone-50 focus:outline-none"
+                >
+                  <option value="all">Tất cả vai trò ({accountsList.length})</option>
+                  <option value="admin">Admin Master</option>
+                  <option value="artisan">Nghệ Nhân Làng Nghề</option>
+                  <option value="staff">Vận Hành / Kho</option>
+                  <option value="customer">Khách Hàng</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Accounts Table */}
+            <div className="bg-white rounded-3xl border border-stone-200 shadow-sm overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr className="bg-stone-50 text-stone-500 font-bold border-b border-stone-200">
+                      <th className="py-3 px-4">Tài Khoản / Họ Tên</th>
+                      <th className="py-3 px-4">Email & Mật Khẩu Mẫu</th>
+                      <th className="py-3 px-4">Phân Quyền Vai Trò</th>
+                      <th className="py-3 px-4">Số Điện Thoại</th>
+                      <th className="py-3 px-4">Địa Chỉ / Tỉnh Thành</th>
+                      <th className="py-3 px-4 text-center">Điểm Tích Lũy</th>
+                      <th className="py-3 px-4 text-right">Thao Tác</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-stone-100">
+                    {accountsList
+                      .filter((acc) => {
+                        if (accountRoleFilter !== 'all' && acc.role !== accountRoleFilter) return false;
+                        if (accountSearch.trim()) {
+                          const q = accountSearch.toLowerCase();
+                          return (
+                            acc.full_name.toLowerCase().includes(q) ||
+                            acc.email.toLowerCase().includes(q) ||
+                            (acc.phone && acc.phone.includes(q))
+                          );
+                        }
+                        return true;
+                      })
+                      .map((acc) => (
+                        <tr key={acc.id} className="hover:bg-stone-50/70 transition-colors">
+                          <td className="py-3 px-4">
+                            <div className="flex items-center gap-3">
+                              <div className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-white text-xs shadow-sm ${
+                                acc.role === 'admin'
+                                  ? 'bg-nepred-600'
+                                  : acc.role === 'artisan'
+                                  ? 'bg-blue-600'
+                                  : acc.role === 'staff'
+                                  ? 'bg-amber-600'
+                                  : 'bg-emerald-600'
+                              }`}>
+                                {acc.full_name.slice(0, 2).toUpperCase()}
+                              </div>
+                              <div>
+                                <p className="font-bold text-stone-900">{acc.full_name}</p>
+                                <p className="text-[10px] text-stone-400 font-mono">ID: {acc.id}</p>
+                              </div>
+                            </div>
+                          </td>
+
+                          <td className="py-3 px-4">
+                            <p className="font-mono text-stone-700 font-semibold">{acc.email}</p>
+                            <div className="flex items-center gap-1.5 mt-0.5">
+                              <span className="text-[10px] text-stone-400">Pass:</span>
+                              <code className="text-[10px] font-mono px-1 py-0.5 rounded bg-stone-100 border text-stone-600">
+                                {acc.password || '******'}
+                              </code>
+                              {acc.password && (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    navigator.clipboard.writeText(`${acc.email} | ${acc.password}`);
+                                    showToast(`Đã sao chép tài khoản ${acc.email}`);
+                                  }}
+                                  className="text-[10px] text-nepred-600 hover:underline font-semibold"
+                                >
+                                  Copy
+                                </button>
+                              )}
+                            </div>
+                          </td>
+
+                          <td className="py-3 px-4">
+                            <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                              acc.role === 'admin'
+                                ? 'bg-nepred-100 text-nepred-800 border border-nepred-200'
+                                : acc.role === 'artisan'
+                                ? 'bg-blue-100 text-blue-800 border border-blue-200'
+                                : acc.role === 'staff'
+                                ? 'bg-amber-100 text-amber-800 border border-amber-200'
+                                : 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                            }`}>
+                              <span className={`w-1.5 h-1.5 rounded-full ${
+                                acc.role === 'admin'
+                                  ? 'bg-nepred-600'
+                                  : acc.role === 'artisan'
+                                  ? 'bg-blue-600'
+                                  : acc.role === 'staff'
+                                  ? 'bg-amber-600'
+                                  : 'bg-emerald-600'
+                              }`} />
+                              {acc.role === 'admin'
+                                ? 'Admin Master'
+                                : acc.role === 'artisan'
+                                ? 'Nghệ Nhân Làng Nghề'
+                                : acc.role === 'staff'
+                                ? 'Kho & Vận Hành'
+                                : 'Khách Hàng'}
+                            </span>
+                          </td>
+
+                          <td className="py-3 px-4 font-mono text-stone-600">
+                            {acc.phone || 'Chưa cập nhật'}
+                          </td>
+
+                          <td className="py-3 px-4 text-stone-600 max-w-[200px] truncate">
+                            {acc.address ? `${acc.address}, ${acc.city || ''}` : (acc.city || 'Việt Nam')}
+                          </td>
+
+                          <td className="py-3 px-4 text-center">
+                            <span className="font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full font-mono text-[11px]">
+                              {acc.loyalty_points || 0} pts
+                            </span>
+                          </td>
+
+                          <td className="py-3 px-4 text-right">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                navigator.clipboard.writeText(`Email: ${acc.email}\nMật khẩu: ${acc.password || 'Admin@123'}\nVai trò: ${acc.role}`);
+                                showToast(`Đã sao chép thông tin đăng nhập ${acc.email}!`);
+                              }}
+                              className="px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold text-[11px] transition-colors"
+                            >
+                              Sao Chép Login
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 6: SYSTEM SETTINGS & SUPABASE DATABASE */}
         {activeTab === 'settings' && (
           <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-sm space-y-8 max-w-4xl">
             <div>
@@ -1342,10 +1702,10 @@ export default function AdminPage() {
                       onClick={handleSeedSupabase}
                       disabled={isSeeding}
                       className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-nepgreen-700 hover:bg-nepgreen-800 text-white font-bold shadow-sm transition-colors disabled:opacity-50"
-                      title="Nạp toàn bộ 14 sản phẩm chuẩn lên bảng products trên Supabase"
+                      title="Nạp toàn bộ dữ liệu mẫu (Tài khoản, Sản phẩm, Làng nghề, Đơn hàng, Đánh giá) lên Supabase"
                     >
                       <Database className="w-3.5 h-3.5" />
-                      <span>{isSeeding ? 'Đang đồng bộ...' : 'Đồng Bộ 14 Sản Phẩm Lên Supabase'}</span>
+                      <span>{isSeeding ? 'Đang đồng bộ...' : 'Đồng Bộ Toàn Bộ 5 Bảng Lên Supabase'}</span>
                     </button>
 
                     {isCloudConnected && (
@@ -1360,6 +1720,41 @@ export default function AdminPage() {
                   </div>
                 </div>
               </form>
+
+              {/* 5-Table Live Status Grid */}
+              <div className="pt-3 border-t border-stone-200/80 space-y-2">
+                <p className="font-bold text-stone-800 text-[11px] flex items-center justify-between">
+                  <span>Trạng Thái 5 Bảng Dữ Liệu Supabase:</span>
+                  <span className="text-[10px] text-stone-400 font-normal">Cập nhật thời gian thực</span>
+                </p>
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+                  <div className="p-3 rounded-xl bg-white border border-stone-200 shadow-xs">
+                    <p className="text-[10px] text-stone-500 font-bold uppercase">1. accounts</p>
+                    <p className="text-base font-bold font-mono text-nepred-600">{tableStats.accountsCount || accountsList.length} tài khoản</p>
+                    <p className="text-[9px] text-stone-400">Admin, Nghệ nhân, Khách</p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-white border border-stone-200 shadow-xs">
+                    <p className="text-[10px] text-stone-500 font-bold uppercase">2. products</p>
+                    <p className="text-base font-bold font-mono text-amber-600">{tableStats.productsCount || products.length} sản phẩm</p>
+                    <p className="text-[9px] text-stone-400">14 sản phẩm thủ công</p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-white border border-stone-200 shadow-xs">
+                    <p className="text-[10px] text-stone-500 font-bold uppercase">3. craft_villages</p>
+                    <p className="text-base font-bold font-mono text-blue-600">{tableStats.villagesCount || 5} làng nghề</p>
+                    <p className="text-[9px] text-stone-400">Bát Tràng, Vạn Phúc...</p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-white border border-stone-200 shadow-xs">
+                    <p className="text-[10px] text-stone-500 font-bold uppercase">4. orders</p>
+                    <p className="text-base font-bold font-mono text-emerald-600">{tableStats.ordersCount || orders.length} đơn hàng</p>
+                    <p className="text-[9px] text-stone-400">VIETQR &amp; COD</p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-white border border-stone-200 shadow-xs">
+                    <p className="text-[10px] text-stone-500 font-bold uppercase">5. reviews</p>
+                    <p className="text-base font-bold font-mono text-purple-600">{tableStats.reviewsCount || 4} đánh giá</p>
+                    <p className="text-[9px] text-stone-400">Trải nghiệm khách hàng</p>
+                  </div>
+                </div>
+              </div>
 
               {/* 3 Step Instruction Guide */}
               <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-200/80 text-[11px] text-stone-700 space-y-2">
@@ -1850,15 +2245,15 @@ export default function AdminPage() {
       {/* SCHEMA MODAL */}
       {showSchemaModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
-          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 space-y-4 shadow-2xl border border-stone-200 my-8">
+          <div className="bg-white rounded-3xl max-w-3xl w-full p-6 sm:p-8 space-y-4 shadow-2xl border border-stone-200 my-8">
             <div className="flex items-center justify-between pb-3 border-b border-stone-100">
               <div>
                 <h3 className="font-serif font-bold text-lg text-stone-900 flex items-center gap-2">
                   <Terminal className="w-5 h-5 text-nepred-600" />
-                  <span>SQL Schema Tạo Bảng Supabase</span>
+                  <span>SQL Schema Tạo Đầy Đủ 5 Bảng Supabase</span>
                 </h3>
                 <p className="text-xs text-stone-500">
-                  Dán đoạn mã này vào SQL Editor trên Supabase Dashboard và bấm Run
+                  Bao gồm: <code className="font-mono text-nepred-700">accounts</code>, <code className="font-mono text-nepred-700">products</code>, <code className="font-mono text-nepred-700">craft_villages</code>, <code className="font-mono text-nepred-700">orders</code>, <code className="font-mono text-nepred-700">reviews</code> và RLS Policies
                 </p>
               </div>
               <button
@@ -1871,19 +2266,35 @@ export default function AdminPage() {
             </div>
 
             <div className="relative">
-              <pre className="bg-stone-900 text-amber-200 p-4 rounded-2xl text-[11px] font-mono h-72 overflow-y-auto whitespace-pre leading-relaxed">
-                {`-- 0. XÓA SẠCH BẢNG CŨ CỦA DỰ ÁN TRƯỚC (CYBERSAFE & NẾP VIỆT)
+              <pre className="bg-stone-900 text-amber-200 p-4 rounded-2xl text-[11px] font-mono h-80 overflow-y-auto whitespace-pre leading-relaxed">
+{`-- 0. XÓA BẢNG CŨ (CYBERSAFE & NẾP VIỆT)
 DROP TABLE IF EXISTS public.chatbot_consultations CASCADE;
 DROP TABLE IF EXISTS public.pretest_results CASCADE;
 DROP TABLE IF EXISTS public.scenarios CASCADE;
 DROP TABLE IF EXISTS public.user_profiles CASCADE;
 DROP TABLE IF EXISTS public.user_progress CASCADE;
+DROP TABLE IF EXISTS public.reviews CASCADE;
 DROP TABLE IF EXISTS public.orders CASCADE;
+DROP TABLE IF EXISTS public.accounts CASCADE;
 DROP TABLE IF EXISTS public.products CASCADE;
 DROP TABLE IF EXISTS public.craft_villages CASCADE;
-DROP TABLE IF EXISTS public.categories CASCADE;
 
--- 1. BẢNG SẢN PHẨM (products)
+-- 1. BẢNG TÀI KHOẢN & PHÂN QUYỀN (accounts)
+CREATE TABLE IF NOT EXISTS public.accounts (
+    id TEXT PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    full_name TEXT NOT NULL,
+    phone TEXT,
+    role TEXT NOT NULL DEFAULT 'customer',
+    avatar TEXT,
+    address TEXT,
+    city TEXT,
+    loyalty_points INTEGER DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 2. BẢNG SẢN PHẨM (products)
 CREATE TABLE IF NOT EXISTS public.products (
     id TEXT PRIMARY KEY,
     slug TEXT UNIQUE NOT NULL,
@@ -1908,22 +2319,108 @@ CREATE TABLE IF NOT EXISTS public.products (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
--- 2. BẬT ROW LEVEL SECURITY CHO PHÉP ĐỌC VÀ GHI
+-- 3. BẢNG LÀNG NGHỀ (craft_villages)
+CREATE TABLE IF NOT EXISTS public.craft_villages (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    location TEXT NOT NULL,
+    history TEXT NOT NULL,
+    highlight TEXT NOT NULL,
+    image TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 4. BẢNG ĐƠN HÀNG (orders)
+CREATE TABLE IF NOT EXISTS public.orders (
+    id TEXT PRIMARY KEY,
+    customer_name TEXT NOT NULL,
+    phone TEXT NOT NULL,
+    city TEXT NOT NULL,
+    address TEXT NOT NULL,
+    notes TEXT,
+    items JSONB NOT NULL DEFAULT '[]'::jsonb,
+    total NUMERIC NOT NULL,
+    payment_method TEXT NOT NULL,
+    status TEXT DEFAULT 'pending',
+    transaction_code TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 5. BẢNG ĐÁNH GIÁ (reviews)
+CREATE TABLE IF NOT EXISTS public.reviews (
+    id TEXT PRIMARY KEY,
+    product_id TEXT NOT NULL,
+    user_name TEXT NOT NULL,
+    rating INTEGER NOT NULL DEFAULT 5,
+    comment TEXT NOT NULL,
+    images JSONB DEFAULT '[]'::jsonb,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 6. BẬT RLS POLICIES (PUBLIC READ / WRITE)
+ALTER TABLE public.accounts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.products ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.craft_villages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.orders ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.reviews ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Public read accounts" ON public.accounts FOR SELECT USING (true);
+CREATE POLICY "Public insert accounts" ON public.accounts FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public update accounts" ON public.accounts FOR UPDATE USING (true);
+CREATE POLICY "Public delete accounts" ON public.accounts FOR DELETE USING (true);
+
 CREATE POLICY "Public read products" ON public.products FOR SELECT USING (true);
 CREATE POLICY "Public insert products" ON public.products FOR INSERT WITH CHECK (true);
 CREATE POLICY "Public update products" ON public.products FOR UPDATE USING (true);
-CREATE POLICY "Public delete products" ON public.products FOR DELETE USING (true);`}
+CREATE POLICY "Public delete products" ON public.products FOR DELETE USING (true);
+
+CREATE POLICY "Public read craft_villages" ON public.craft_villages FOR SELECT USING (true);
+CREATE POLICY "Public insert craft_villages" ON public.craft_villages FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public update craft_villages" ON public.craft_villages FOR UPDATE USING (true);
+CREATE POLICY "Public delete craft_villages" ON public.craft_villages FOR DELETE USING (true);
+
+CREATE POLICY "Public read orders" ON public.orders FOR SELECT USING (true);
+CREATE POLICY "Public insert orders" ON public.orders FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public update orders" ON public.orders FOR UPDATE USING (true);
+CREATE POLICY "Public delete orders" ON public.orders FOR DELETE USING (true);
+
+CREATE POLICY "Public read reviews" ON public.reviews FOR SELECT USING (true);
+CREATE POLICY "Public insert reviews" ON public.reviews FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public update reviews" ON public.reviews FOR UPDATE USING (true);
+CREATE POLICY "Public delete reviews" ON public.reviews FOR DELETE USING (true);`}
               </pre>
 
               <button
                 type="button"
                 onClick={() => {
-                  navigator.clipboard.writeText(`DROP TABLE IF EXISTS public.orders CASCADE;
+                  navigator.clipboard.writeText(`-- 0. XÓA BẢNG CŨ (CYBERSAFE & NẾP VIỆT)
+DROP TABLE IF EXISTS public.chatbot_consultations CASCADE;
+DROP TABLE IF EXISTS public.pretest_results CASCADE;
+DROP TABLE IF EXISTS public.scenarios CASCADE;
+DROP TABLE IF EXISTS public.user_profiles CASCADE;
+DROP TABLE IF EXISTS public.user_progress CASCADE;
+DROP TABLE IF EXISTS public.reviews CASCADE;
+DROP TABLE IF EXISTS public.orders CASCADE;
+DROP TABLE IF EXISTS public.accounts CASCADE;
 DROP TABLE IF EXISTS public.products CASCADE;
 DROP TABLE IF EXISTS public.craft_villages CASCADE;
-DROP TABLE IF EXISTS public.categories CASCADE;
 
+-- 1. BẢNG TÀI KHOẢN & PHÂN QUYỀN (accounts)
+CREATE TABLE IF NOT EXISTS public.accounts (
+    id TEXT PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    full_name TEXT NOT NULL,
+    phone TEXT,
+    role TEXT NOT NULL DEFAULT 'customer',
+    avatar TEXT,
+    address TEXT,
+    city TEXT,
+    loyalty_points INTEGER DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 2. BẢNG SẢN PHẨM (products)
 CREATE TABLE IF NOT EXISTS public.products (
     id TEXT PRIMARY KEY,
     slug TEXT UNIQUE NOT NULL,
@@ -1948,25 +2445,89 @@ CREATE TABLE IF NOT EXISTS public.products (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
+-- 3. BẢNG LÀNG NGHỀ (craft_villages)
+CREATE TABLE IF NOT EXISTS public.craft_villages (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    location TEXT NOT NULL,
+    history TEXT NOT NULL,
+    highlight TEXT NOT NULL,
+    image TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 4. BẢNG ĐƠN HÀNG (orders)
+CREATE TABLE IF NOT EXISTS public.orders (
+    id TEXT PRIMARY KEY,
+    customer_name TEXT NOT NULL,
+    phone TEXT NOT NULL,
+    city TEXT NOT NULL,
+    address TEXT NOT NULL,
+    notes TEXT,
+    items JSONB NOT NULL DEFAULT '[]'::jsonb,
+    total NUMERIC NOT NULL,
+    payment_method TEXT NOT NULL,
+    status TEXT DEFAULT 'pending',
+    transaction_code TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 5. BẢNG ĐÁNH GIÁ (reviews)
+CREATE TABLE IF NOT EXISTS public.reviews (
+    id TEXT PRIMARY KEY,
+    product_id TEXT NOT NULL,
+    user_name TEXT NOT NULL,
+    rating INTEGER NOT NULL DEFAULT 5,
+    comment TEXT NOT NULL,
+    images JSONB DEFAULT '[]'::jsonb,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 6. BẬT RLS POLICIES
+ALTER TABLE public.accounts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.products ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.craft_villages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.orders ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.reviews ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Public read accounts" ON public.accounts FOR SELECT USING (true);
+CREATE POLICY "Public insert accounts" ON public.accounts FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public update accounts" ON public.accounts FOR UPDATE USING (true);
+CREATE POLICY "Public delete accounts" ON public.accounts FOR DELETE USING (true);
+
 CREATE POLICY "Public read products" ON public.products FOR SELECT USING (true);
 CREATE POLICY "Public insert products" ON public.products FOR INSERT WITH CHECK (true);
 CREATE POLICY "Public update products" ON public.products FOR UPDATE USING (true);
-CREATE POLICY "Public delete products" ON public.products FOR DELETE USING (true);`);
+CREATE POLICY "Public delete products" ON public.products FOR DELETE USING (true);
+
+CREATE POLICY "Public read craft_villages" ON public.craft_villages FOR SELECT USING (true);
+CREATE POLICY "Public insert craft_villages" ON public.craft_villages FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public update craft_villages" ON public.craft_villages FOR UPDATE USING (true);
+CREATE POLICY "Public delete craft_villages" ON public.craft_villages FOR DELETE USING (true);
+
+CREATE POLICY "Public read orders" ON public.orders FOR SELECT USING (true);
+CREATE POLICY "Public insert orders" ON public.orders FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public update orders" ON public.orders FOR UPDATE USING (true);
+CREATE POLICY "Public delete orders" ON public.orders FOR DELETE USING (true);
+
+CREATE POLICY "Public read reviews" ON public.reviews FOR SELECT USING (true);
+CREATE POLICY "Public insert reviews" ON public.reviews FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public update reviews" ON public.reviews FOR UPDATE USING (true);
+CREATE POLICY "Public delete reviews" ON public.reviews FOR DELETE USING (true);`);
                   setCopiedSchema(true);
                   setTimeout(() => setCopiedSchema(false), 2500);
-                  showToast('Đã sao chép SQL Schema vào bộ nhớ tạm!');
+                  showToast('Đã sao chép toàn bộ SQL Schema 5 bảng vào bộ nhớ tạm!');
                 }}
                 className="absolute top-3 right-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-nepred-600 hover:bg-nepred-700 text-white text-xs font-bold shadow-md transition-colors"
               >
                 {copiedSchema ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                <span>{copiedSchema ? 'Đã sao chép!' : 'Sao chép SQL'}</span>
+                <span>{copiedSchema ? 'Đã sao chép!' : 'Sao chép SQL 5 Bảng'}</span>
               </button>
             </div>
 
             <div className="flex items-center justify-between pt-2">
               <span className="text-[11px] text-stone-500">
-                File đầy đủ kèm dữ liệu mẫu nằm tại: <code className="font-mono text-nepred-700">supabase_schema.sql</code>
+                File đầy đủ kèm dữ liệu mẫu nằm tại: <code className="font-mono text-nepred-700 font-bold">supabase_schema.sql</code>
               </span>
               <button
                 type="button"
@@ -1976,6 +2537,139 @@ CREATE POLICY "Public delete products" ON public.products FOR DELETE USING (true
                 Đóng
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL THÊM TÀI KHOẢN MỚI */}
+      {isNewAccountModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-5 shadow-2xl border border-stone-200 my-8">
+            <div className="flex items-center justify-between pb-3 border-b border-stone-100">
+              <div>
+                <h3 className="font-serif font-bold text-lg text-stone-900 flex items-center gap-2">
+                  <ShieldCheck className="w-5 h-5 text-nepred-600" />
+                  <span>Thêm Tài Khoản Phân Quyền Mới</span>
+                </h3>
+                <p className="text-xs text-stone-500">
+                  Tạo tài khoản và đồng bộ trực tiếp lên bảng <code className="font-mono text-nepred-600">accounts</code>
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsNewAccountModalOpen(false)}
+                className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 flex items-center justify-center text-stone-500"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateAccount} className="space-y-4 text-xs">
+              <div className="space-y-1">
+                <label className="font-bold text-stone-700">Họ và tên (*)</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Ví dụ: Nguyễn Văn A..."
+                  value={newAccountData.full_name}
+                  onChange={(e) => setNewAccountData({ ...newAccountData, full_name: e.target.value })}
+                  className="w-full p-2.5 rounded-xl border border-stone-300 focus:outline-none focus:border-nepred-600"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="font-bold text-stone-700">Email đăng nhập (*)</label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="ten@nepviet.vn"
+                    value={newAccountData.email}
+                    onChange={(e) => setNewAccountData({ ...newAccountData, email: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-stone-300 focus:outline-none focus:border-nepred-600 font-mono"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="font-bold text-stone-700">Mật khẩu (*)</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Mật khẩu bí mật"
+                    value={newAccountData.password}
+                    onChange={(e) => setNewAccountData({ ...newAccountData, password: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-stone-300 focus:outline-none focus:border-nepred-600 font-mono"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="font-bold text-stone-700">Phân quyền vai trò (*)</label>
+                  <select
+                    value={newAccountData.role}
+                    onChange={(e) => setNewAccountData({ ...newAccountData, role: e.target.value as any })}
+                    className="w-full p-2.5 rounded-xl border border-stone-300 bg-white font-semibold"
+                  >
+                    <option value="admin">Admin Master (Toàn quyền)</option>
+                    <option value="artisan">Nghệ Nhân Đối Tác Làng Nghề</option>
+                    <option value="staff">Vận Hành &amp; Kho Hàng</option>
+                    <option value="customer">Khách Hàng Thân Thiết</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="font-bold text-stone-700">Số điện thoại</label>
+                  <input
+                    type="text"
+                    placeholder="0981234567"
+                    value={newAccountData.phone}
+                    onChange={(e) => setNewAccountData({ ...newAccountData, phone: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-stone-300 focus:outline-none focus:border-nepred-600 font-mono"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="font-bold text-stone-700">Địa chỉ / Xưởng</label>
+                  <input
+                    type="text"
+                    placeholder="Số 10 Nguyễn Trãi..."
+                    value={newAccountData.address}
+                    onChange={(e) => setNewAccountData({ ...newAccountData, address: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-stone-300 focus:outline-none focus:border-nepred-600"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="font-bold text-stone-700">Tỉnh / Thành phố</label>
+                  <input
+                    type="text"
+                    placeholder="Hà Nội, TP.HCM..."
+                    value={newAccountData.city}
+                    onChange={(e) => setNewAccountData({ ...newAccountData, city: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-stone-300 focus:outline-none focus:border-nepred-600"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-stone-100">
+                <button
+                  type="button"
+                  onClick={() => setIsNewAccountModalOpen(false)}
+                  className="px-4 py-2 rounded-xl border border-stone-300 text-stone-700 font-bold hover:bg-stone-50"
+                >
+                  Hủy Bỏ
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 rounded-xl bg-nepred-600 hover:bg-nepred-700 text-white font-bold shadow-md transition-colors"
+                >
+                  Tạo Tài Khoản Ngay
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

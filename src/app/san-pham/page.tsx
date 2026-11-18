@@ -350,10 +350,22 @@ function ProductsFilterView() {
           <div className="lg:col-span-3 space-y-6">
             
             {/* Toolbar */}
-            <div className="bg-white rounded-2xl p-4 sm:px-6 border border-cream-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
-              <p className="text-stone-600">
-                Tìm thấy <span className="font-bold text-stone-900">{filteredProducts.length}</span> sản phẩm phù hợp
-              </p>
+            <div className="bg-white rounded-2xl p-4 sm:px-6 border border-cream-200 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-xs">
+              <div className="flex items-center justify-between sm:justify-start gap-3 w-full sm:w-auto">
+                <p className="text-stone-600">
+                  Tìm thấy <span className="font-bold text-stone-900">{filteredProducts.length}</span> sản phẩm
+                </p>
+
+                {/* Mobile Filter Button */}
+                <button
+                  type="button"
+                  onClick={() => setMobileFilterOpen(!mobileFilterOpen)}
+                  className="lg:hidden flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cream-100 hover:bg-cream-200 border border-cream-200 font-semibold text-stone-800 text-xs transition-colors"
+                >
+                  <Filter className="w-3.5 h-3.5 text-nepred-600" />
+                  <span>Bộ lọc {activeFiltersCount > 0 && `(${activeFiltersCount})`}</span>
+                </button>
+              </div>
 
               <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
                 <span className="text-stone-500 whitespace-nowrap">Sắp xếp:</span>

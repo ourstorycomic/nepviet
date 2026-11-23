@@ -18,6 +18,7 @@ import {
   PhoneCall,
   ShieldCheck,
   Compass,
+  Store,
 } from 'lucide-react';
 
 export function Header() {
@@ -48,8 +49,8 @@ export function Header() {
     setUserDropdownOpen(false);
   }, [pathname]);
 
-  // Ẩn Header khách hàng khi đang ở trong trang Quản trị Admin
-  if (pathname?.startsWith('/admin')) {
+  // Ẩn Header khách hàng khi đang ở trong trang Quản trị Admin hoặc Kênh Nghệ Nhân
+  if (pathname?.startsWith('/admin') || pathname?.startsWith('/kenh-nghe-nhan')) {
     return null;
   }
 
@@ -213,14 +214,25 @@ export function Header() {
                         >
                           Quản lý giỏ hàng
                         </Link>
-                        <Link
-                          href="/admin"
-                          onClick={() => setUserDropdownOpen(false)}
-                          className="flex items-center gap-2 px-4 py-2 text-xs text-nepred-600 hover:bg-nepred-50 font-bold transition-colors"
-                        >
-                          <ShieldCheck className="w-3.5 h-3.5" strokeWidth={1.5} />
-                          Trang Quản Trị (Admin)
-                        </Link>
+                        {user?.role === 'artisan' ? (
+                          <Link
+                            href="/kenh-nghe-nhan"
+                            onClick={() => setUserDropdownOpen(false)}
+                            className="flex items-center gap-2 px-4 py-2 text-xs text-amber-700 bg-amber-50 hover:bg-amber-100 font-bold transition-colors"
+                          >
+                            <Store className="w-3.5 h-3.5 text-amber-600" />
+                            <span>Kênh Nghệ Nhân (Studio)</span>
+                          </Link>
+                        ) : user?.role === 'admin' || user?.role === 'staff' ? (
+                          <Link
+                            href="/admin"
+                            onClick={() => setUserDropdownOpen(false)}
+                            className="flex items-center gap-2 px-4 py-2 text-xs text-nepred-600 hover:bg-nepred-50 font-bold transition-colors"
+                          >
+                            <ShieldCheck className="w-3.5 h-3.5" strokeWidth={1.5} />
+                            <span>Trang Quản Trị (Admin)</span>
+                          </Link>
+                        ) : null}
                         <div className="pt-1 mt-1 border-t border-cream-100">
                           <button
                             onClick={() => {

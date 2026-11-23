@@ -88,8 +88,8 @@ function LoginFormContent() {
         pass: 'Nghenhan@123',
         name: 'Nghệ Nhân Bát Tràng (Đối Tác Làng Nghề)',
       },
-      btnLabel: 'Vào Kênh Gian Hàng Nghệ Nhân',
-      redirectTarget: '/admin',
+      btnLabel: 'Vào Kênh Studio Nghệ Nhân',
+      redirectTarget: '/kenh-nghe-nhan',
       registerLink: '/dang-ky?role=artisan',
       registerPrompt: 'Bạn là xưởng nghề truyền thống?',
       registerAction: 'Đăng ký mở gian hàng đối tác',
@@ -192,7 +192,11 @@ function LoginFormContent() {
       // Nếu tài khoản có vai trò Quản trị (Admin, Nghệ Nhân, Kho) -> kích hoạt luôn quyền Quản trị
       if (['admin', 'artisan', 'staff'].includes(matchedAccount.role)) {
         loginAdmin(matchedAccount.email, password);
-        router.push(currentStream.redirectTarget);
+        if (matchedAccount.role === 'artisan') {
+          router.push('/kenh-nghe-nhan');
+        } else {
+          router.push('/admin');
+        }
       } else {
         router.push(currentStream.redirectTarget);
       }
@@ -206,7 +210,7 @@ function LoginFormContent() {
   return (
     <div className="bg-[#FAF8F5] min-h-[90vh] flex items-center justify-center py-12 px-4 sm:px-6">
       <div className="w-full max-w-xl bg-white rounded-3xl p-6 sm:p-10 border border-cream-200/90 shadow-xl space-y-6">
-        
+
         {/* Brand header với Font Chữ Hán triện thư */}
         <div className="text-center space-y-2 pb-2">
           <Link href="/" className="inline-flex items-center gap-2 group">
@@ -239,11 +243,10 @@ function LoginFormContent() {
             <button
               type="button"
               onClick={() => handleSelectStream('customer')}
-              className={`py-2 px-2 rounded-xl transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 text-center ${
-                activeStream === 'customer'
-                  ? streamConfig.customer.activeTabClass
-                  : 'text-stone-600 hover:text-stone-900'
-              }`}
+              className={`py-2 px-2 rounded-xl transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 text-center ${activeStream === 'customer'
+                ? streamConfig.customer.activeTabClass
+                : 'text-stone-600 hover:text-stone-900'
+                }`}
             >
               <User className="w-3.5 h-3.5 text-nepred-600 flex-shrink-0" strokeWidth={1.5} />
               <span className="text-[11px] sm:text-xs">Người Dùng</span>
@@ -252,11 +255,10 @@ function LoginFormContent() {
             <button
               type="button"
               onClick={() => handleSelectStream('artisan')}
-              className={`py-2 px-2 rounded-xl transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 text-center ${
-                activeStream === 'artisan'
-                  ? streamConfig.artisan.activeTabClass
-                  : 'text-stone-600 hover:text-stone-900'
-              }`}
+              className={`py-2 px-2 rounded-xl transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 text-center ${activeStream === 'artisan'
+                ? streamConfig.artisan.activeTabClass
+                : 'text-stone-600 hover:text-stone-900'
+                }`}
             >
               <Store className="w-3.5 h-3.5 text-amber-700 flex-shrink-0" strokeWidth={1.5} />
               <span className="text-[11px] sm:text-xs">Người Bán / Xưởng</span>
@@ -265,11 +267,10 @@ function LoginFormContent() {
             <button
               type="button"
               onClick={() => handleSelectStream('admin')}
-              className={`py-2 px-2 rounded-xl transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 text-center ${
-                activeStream === 'admin'
-                  ? streamConfig.admin.activeTabClass
-                  : 'text-stone-600 hover:text-stone-900'
-              }`}
+              className={`py-2 px-2 rounded-xl transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 text-center ${activeStream === 'admin'
+                ? streamConfig.admin.activeTabClass
+                : 'text-stone-600 hover:text-stone-900'
+                }`}
             >
               <ShieldCheck className="w-3.5 h-3.5 text-nepgreen-800 flex-shrink-0" strokeWidth={1.5} />
               <span className="text-[11px] sm:text-xs">Ban Quản Trị</span>
@@ -325,8 +326,8 @@ function LoginFormContent() {
                   activeStream === 'admin'
                     ? 'admin@nepviet.vn'
                     : activeStream === 'artisan'
-                    ? 'nghenhan@nepviet.vn hoặc email xưởng'
-                    : 'email@domain.com của bạn'
+                      ? 'nghenhan@nepviet.vn hoặc email xưởng'
+                      : 'email@domain.com của bạn'
                 }
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -386,21 +387,65 @@ function LoginFormContent() {
           </div>
         </form>
 
-        {/* Quick Fill Button tailored to selected stream */}
-        <div className="p-3 rounded-2xl bg-cream-50 border border-cream-200/90 flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs">
+        {/* Quick Fill Buttons tailored to selected stream */}
+        <div className="p-3.5 rounded-2xl bg-cream-50 border border-cream-200/90 space-y-2 text-xs">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-nepgold-500 animate-pulse" />
-            <span className="text-[11px] text-stone-600">
+            <span className="text-[11px] text-stone-600 font-semibold">
               Tài khoản mẫu luồng <strong>{currentStream.label}</strong>:
             </span>
           </div>
-          <button
-            type="button"
-            onClick={handleQuickFillCurrent}
-            className="w-full sm:w-auto px-3.5 py-1.5 rounded-xl bg-white hover:bg-stone-900 hover:text-white border border-stone-200 text-stone-800 text-[11px] font-bold shadow-2xs transition-all flex items-center justify-center gap-1.5"
-          >
-            <span>Điền sẵn mẫu ({currentStream.sampleAccount.email})</span>
-          </button>
+
+          {activeStream === 'admin' ? (
+            <div className="flex flex-col sm:flex-row gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail('admin@nepviet.vn');
+                  setPassword('Admin@123');
+                  setError('');
+                }}
+                className="flex-1 px-3 py-1.5 rounded-xl bg-white hover:bg-nepred-600 hover:text-white border border-stone-200 text-stone-800 text-[11px] font-bold shadow-2xs transition-all text-center"
+              >
+                Admin Master (Toàn quyền Sàn)
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail('kho@nepviet.vn');
+                  setPassword('Kho@123');
+                  setError('');
+                }}
+                className="flex-1 px-3 py-1.5 rounded-xl bg-white hover:bg-amber-600 hover:text-white border border-stone-200 text-stone-800 text-[11px] font-bold shadow-2xs transition-all text-center"
+              >
+                Nhân Viên Kho (Giới hạn Đơn & Kho)
+              </button>
+            </div>
+          ) : activeStream === 'artisan' ? (
+            <button
+              type="button"
+              onClick={() => {
+                setEmail('nghenhan@nepviet.vn');
+                setPassword('Nghenhan@123');
+                setError('');
+              }}
+              className="w-full px-3.5 py-1.5 rounded-xl bg-white hover:bg-amber-600 hover:text-white border border-amber-300 text-amber-900 text-[11px] font-bold shadow-2xs transition-all text-center"
+            >
+              Nghệ Nhân Bát Tràng (nghenhan@nepviet.vn)
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => {
+                setEmail('khachhang@nepviet.vn');
+                setPassword('Khach@123');
+                setError('');
+              }}
+              className="w-full px-3.5 py-1.5 rounded-xl bg-white hover:bg-nepred-600 hover:text-white border border-stone-200 text-stone-800 text-[11px] font-bold shadow-2xs transition-all text-center"
+            >
+              Khách Hàng Thành Viên (khachhang@nepviet.vn)
+            </button>
+          )}
         </div>
 
         {/* Switch to Register */}

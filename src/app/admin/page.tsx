@@ -63,6 +63,8 @@ import {
   Lock,
   User as UserIcon,
   QrCode,
+  Store,
+  ArrowRight,
 } from 'lucide-react';
 
 interface MockOrder {
@@ -698,38 +700,86 @@ export default function AdminPage() {
       {/* Main Admin Dashboard Container */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-1 space-y-6">
 
+        {/* Banner điều hướng dành cho Nghệ Nhân khi vào Cổng Admin Toàn Sàn */}
+        {adminUser?.role === 'artisan' && (
+          <div className="p-4 sm:p-5 rounded-3xl bg-amber-50 border border-amber-300 text-amber-900 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm animate-fadeIn">
+            <div className="flex items-center gap-3.5">
+              <div className="w-11 h-11 rounded-2xl bg-amber-600 text-white flex items-center justify-center font-bold flex-shrink-0 shadow-md">
+                <Store className="w-6 h-6" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <p className="font-bold text-sm">Bạn đang đăng nhập bằng tài khoản Nghệ Nhân ({adminUser?.email})</p>
+                  <span className="px-2 py-0.5 rounded-full bg-amber-200 text-amber-900 text-[10px] font-bold">Đối Tác Xưởng</span>
+                </div>
+                <p className="text-xs text-amber-800 mt-0.5 leading-relaxed">
+                  Trang này là <strong>Cổng Điều Hành Toàn Sàn</strong> của Nếp Việt. Vui lòng chuyển sang <strong>Kênh Nghệ Nhân (Studio)</strong> để quản lý riêng xưởng thủ công, tác phẩm chế tác và ví doanh thu của bạn.
+                </p>
+              </div>
+            </div>
+            <Link
+              href="/kenh-nghe-nhan"
+              className="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-md transition-all whitespace-nowrap flex items-center gap-1.5 flex-shrink-0"
+            >
+              <span>Vào Kênh Nghệ Nhân Của Bạn</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        )}
+
+        {/* Staff Role Notice - Minh bạch quyền hạn theo chuẩn RBAC Doanh nghiệp */}
+        {adminUser?.role === 'staff' && (
+          <div className="p-4 rounded-2xl bg-blue-50 border border-blue-200 text-blue-900 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs shadow-xs animate-fadeIn">
+            <div className="flex items-center gap-2.5">
+              <ShieldCheck className="w-5 h-5 text-blue-600 flex-shrink-0" />
+              <span>
+                Quyền hạn hiện tại: <strong>Nhân Viên Vận Hành & Kho</strong>. Bạn có thẩm quyền xử lý Đơn Hàng & Kiểm kê Kho Sản Phẩm. Các tab Quản Trị Phân Quyền & Cấu Hình Ngân Hàng Doanh Nghiệp đã được khóa theo chính sách RBAC.
+              </span>
+            </div>
+            <span className="px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 text-[10px] font-bold flex-shrink-0 border border-blue-200">
+              Quyền Nghiệp Vụ Kho
+            </span>
+          </div>
+        )}
+
         {/* Navigation Tabs Bar */}
         <div className="bg-white rounded-2xl p-2 border border-stone-200/90 shadow-sm flex items-center gap-1 overflow-x-auto">
           {[
             {
               id: 'dashboard',
-              label: adminUser?.role === 'artisan' ? 'Tổng Quan Gian Hàng' : 'Tổng Quan & Thống Kê',
+              label: 'Tổng Quan & Thống Kê',
               icon: LayoutDashboard,
+              locked: false,
             },
             {
               id: 'orders',
-              label: adminUser?.role === 'artisan' ? `Đơn Hàng Làng Nghề (${orders.length})` : `Quản Lý Đơn Hàng (${orders.length})`,
+              label: `Quản Lý Đơn Hàng (${orders.length})`,
               icon: ShoppingBag,
+              locked: false,
             },
             {
               id: 'products',
-              label: adminUser?.role === 'artisan' ? `Sản Phẩm & Tồn Kho (${products.length})` : `Quản Lý Sản Phẩm (${products.length})`,
+              label: `Quản Lý Sản Phẩm & Kho (${products.length})`,
               icon: Package,
+              locked: false,
             },
             {
               id: 'artisans',
-              label: adminUser?.role === 'artisan' ? 'Hồ Sơ Xưởng & Câu Chuyện' : `Nghệ Nhân & Làng Nghề (${CRAFT_VILLAGES.length})`,
+              label: `Nghệ Nhân & Làng Nghề (${CRAFT_VILLAGES.length})`,
               icon: Users,
+              locked: false,
             },
             {
               id: 'accounts',
-              label: adminUser?.role === 'artisan' ? 'Tài Khoản Của Tôi' : `Tài Khoản & Phân Quyền (${accountsList.length})`,
+              label: adminUser?.role === 'staff' ? 'Tài Khoản & Phân Quyền (🔒 Khóa)' : `Tài Khoản & Phân Quyền (${accountsList.length})`,
               icon: ShieldCheck,
+              locked: adminUser?.role === 'staff',
             },
             {
               id: 'settings',
-              label: adminUser?.role === 'artisan' ? 'Quy Chuẩn & Hỗ Trợ' : 'Cài Đặt Hệ Thống',
+              label: adminUser?.role === 'staff' ? 'Cài Đặt Hệ Thống (🔒 Khóa)' : 'Cài Đặt Hệ Thống',
               icon: Settings,
+              locked: adminUser?.role === 'staff',
             },
           ].map((tab) => {
             const Icon = tab.icon;
@@ -738,10 +788,13 @@ export default function AdminPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${isActive
-                  ? 'bg-nepred-600 text-white shadow-md shadow-nepred-600/20'
-                  : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100'
-                  }`}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+                  isActive
+                    ? 'bg-nepred-600 text-white shadow-md shadow-nepred-600/20'
+                    : tab.locked
+                    ? 'text-stone-400 hover:text-stone-600 hover:bg-stone-50 cursor-pointer'
+                    : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100'
+                }`}
               >
                 <Icon className="w-4 h-4" />
                 <span>{tab.label}</span>
@@ -1277,6 +1330,30 @@ export default function AdminPage() {
 
         {/* TAB 5: ACCOUNTS & RBAC MANAGEMENT */}
         {activeTab === 'accounts' && (
+          adminUser?.role === 'staff' ? (
+            <div className="bg-white rounded-3xl p-8 sm:p-12 border border-red-200 text-center space-y-4 max-w-xl mx-auto shadow-sm animate-fadeIn">
+              <div className="w-16 h-16 rounded-3xl bg-red-50 text-red-600 flex items-center justify-center mx-auto border border-red-200">
+                <Lock className="w-8 h-8" />
+              </div>
+              <h3 className="font-serif font-bold text-xl text-stone-900">
+                Quyền Truy Cập Bị Từ Chối (403 Forbidden)
+              </h3>
+              <p className="text-xs text-stone-600 leading-relaxed">
+                Tài khoản của bạn thuộc vai trò <strong>Nhân Viên Vận Hành & Kho ({adminUser?.email})</strong>. 
+                Theo chính sách phân quyền RBAC của doanh nghiệp, chức năng <strong>Quản Trị Phân Quyền & Tài Khoản</strong> chỉ dành riêng cho <strong>Admin Master (Ban Giám Đốc)</strong>.
+              </p>
+              <div className="p-3 bg-cream-50 rounded-xl text-stone-500 text-[11px]">
+                Nếu bạn cần cấp quyền điều chỉnh cấu hình, vui lòng liên hệ Admin Master: <strong>admin@nepviet.vn</strong>
+              </div>
+              <button
+                type="button"
+                onClick={() => setActiveTab('orders')}
+                className="px-5 py-2.5 rounded-xl bg-nepred-600 hover:bg-nepred-700 text-white font-bold text-xs shadow-md transition-all"
+              >
+                Quay Về Quản Lý Đơn Hàng
+              </button>
+            </div>
+          ) : (
           <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
@@ -1521,10 +1598,34 @@ export default function AdminPage() {
               </div>
             </div>
           </div>
+          )
         )}
 
         {/* TAB 6: SYSTEM SETTINGS & SUPABASE DATABASE */}
         {activeTab === 'settings' && (
+          adminUser?.role === 'staff' ? (
+            <div className="bg-white rounded-3xl p-8 sm:p-12 border border-red-200 text-center space-y-4 max-w-xl mx-auto shadow-sm animate-fadeIn">
+              <div className="w-16 h-16 rounded-3xl bg-red-50 text-red-600 flex items-center justify-center mx-auto border border-red-200">
+                <Lock className="w-8 h-8" />
+              </div>
+              <h3 className="font-serif font-bold text-xl text-stone-900">
+                Quyền Truy Cập Bị Từ Chối (403 Forbidden)
+              </h3>
+              <p className="text-xs text-stone-600 leading-relaxed">
+                Tài khoản <strong>Nhân Viên Vận Hành ({adminUser?.email})</strong> không có thẩm quyền điều chỉnh số tài khoản ngân hàng thụ hưởng VietQR công ty hoặc cấu hình cơ sở dữ liệu Supabase.
+              </p>
+              <div className="p-3 bg-cream-50 rounded-xl text-stone-500 text-[11px]">
+                Theo chính sách an toàn bảo mật dòng tiền của sàn Nếp Việt, chỉ <strong>Admin Master (Ban Giám Đốc)</strong> mới có thẩm quyền thay đổi thông tin này.
+              </div>
+              <button
+                type="button"
+                onClick={() => setActiveTab('orders')}
+                className="px-5 py-2.5 rounded-xl bg-nepred-600 hover:bg-nepred-700 text-white font-bold text-xs shadow-md transition-all"
+              >
+                Quay Về Quản Lý Đơn Hàng
+              </button>
+            </div>
+          ) : (
           <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-sm space-y-8 max-w-4xl">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-stone-200">
               <div>
@@ -1733,6 +1834,7 @@ export default function AdminPage() {
               </div>
             </div>
           </div>
+          )
         )}
 
       </div>

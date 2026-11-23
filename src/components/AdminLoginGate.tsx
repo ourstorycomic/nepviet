@@ -147,11 +147,11 @@ export function AdminLoginGate() {
               <span>Tài khoản thử nghiệm phân quyền (Bấm để điền):</span>
             </p>
 
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-2.5">
               <button
                 type="button"
                 onClick={() => handleFillAccount('admin')}
-                className={`p-2 rounded-xl border text-left transition-all ${
+                className={`p-2.5 rounded-xl border text-left transition-all ${
                   email === 'admin@nepviet.vn'
                     ? 'bg-nepred-950/60 border-nepred-500/80 text-white ring-1 ring-nepred-500/50'
                     : 'bg-stone-950/70 border-stone-800 text-stone-400 hover:border-stone-700'
@@ -161,29 +161,13 @@ export function AdminLoginGate() {
                   <span className="w-2 h-2 rounded-full bg-nepred-500" />
                   <span className="font-bold text-[11px] text-white">Admin Master</span>
                 </div>
-                <p className="text-[9px] text-stone-500 mt-0.5">Toàn quyền hệ thống</p>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleFillAccount('artisan')}
-                className={`p-2 rounded-xl border text-left transition-all ${
-                  email === 'nghenhan@nepviet.vn'
-                    ? 'bg-blue-950/60 border-blue-500/80 text-white ring-1 ring-blue-500/50'
-                    : 'bg-stone-950/70 border-stone-800 text-stone-400 hover:border-stone-700'
-                }`}
-              >
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-blue-500" />
-                  <span className="font-bold text-[11px] text-white">Nghệ Nhân</span>
-                </div>
-                <p className="text-[9px] text-stone-500 mt-0.5">Xưởng thủ công</p>
+                <p className="text-[9px] text-stone-500 mt-0.5">Toàn quyền hệ thống sàn</p>
               </button>
 
               <button
                 type="button"
                 onClick={() => handleFillAccount('staff')}
-                className={`p-2 rounded-xl border text-left transition-all ${
+                className={`p-2.5 rounded-xl border text-left transition-all ${
                   email === 'kho@nepviet.vn'
                     ? 'bg-amber-950/60 border-amber-500/80 text-white ring-1 ring-amber-500/50'
                     : 'bg-stone-950/70 border-stone-800 text-stone-400 hover:border-stone-700'
@@ -191,10 +175,19 @@ export function AdminLoginGate() {
               >
                 <div className="flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-amber-500" />
-                  <span className="font-bold text-[11px] text-white">Quản Lý Kho</span>
+                  <span className="font-bold text-[11px] text-white">Vận Hành & Kho</span>
                 </div>
-                <p className="text-[9px] text-stone-500 mt-0.5">Xử lý đơn &amp; kho</p>
+                <p className="text-[9px] text-stone-500 mt-0.5">Xử lý đơn (Khóa cài đặt)</p>
               </button>
+            </div>
+
+            <div className="p-2.5 bg-stone-950/60 rounded-xl border border-stone-800 text-center">
+              <span className="text-[11px] text-stone-400">
+                Bạn là đối tác nghệ nhân làng nghề?{' '}
+                <Link href="/kenh-nghe-nhan" className="font-bold text-amber-400 hover:underline">
+                  Vào Kênh Nghệ Nhân Studio →
+                </Link>
+              </span>
             </div>
           </div>
         </div>

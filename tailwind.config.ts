@@ -52,7 +52,7 @@ const config: Config = {
         }
       },
       fontFamily: {
-        serif: ['var(--font-serif)', '"Playfair Display"', 'Georgia', 'serif'],
+        serif: ['var(--font-serif)', '"Lora"', '"Playfair Display"', 'Georgia', 'serif'],
         sans: ['var(--font-sans)', '"Be Vietnam Pro"', 'Inter', 'system-ui', 'sans-serif'],
         han: ['"Ma Shan Zheng"', '"ZCOOL XiaoWei"', '"Noto Serif SC"', 'serif'],
       },

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Playfair_Display, Be_Vietnam_Pro } from 'next/font/google';
+import { Lora, Be_Vietnam_Pro } from 'next/font/google';
 import './globals.css';
 import { CartProvider } from '@/context/CartContext';
 import { AuthProvider } from '@/context/AuthContext';
@@ -7,11 +7,11 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Toast } from '@/components/Toast';
 
-const playfair = Playfair_Display({
+const lora = Lora({
   subsets: ['vietnamese', 'latin'],
   variable: '--font-serif',
   display: 'swap',
-  weight: ['400', '500', '600', '700', '800', '900'],
+  weight: ['400', '500', '600', '700'],
 });
 
 const beVietnam = Be_Vietnam_Pro({
@@ -34,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="vi" className={`${playfair.variable} ${beVietnam.variable} scroll-smooth`}>
+    <html lang="vi" className={`${lora.variable} ${beVietnam.variable} scroll-smooth`}>
       <body className="min-h-screen flex flex-col bg-[#FAF8F5] text-stone-900 font-sans antialiased selection:bg-nepred-600 selection:text-white">
         <AuthProvider>
           <CartProvider>

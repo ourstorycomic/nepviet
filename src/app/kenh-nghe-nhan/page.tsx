@@ -35,6 +35,7 @@ import {
   Banknote,
   Send,
   X,
+  MapPin,
 } from 'lucide-react';
 
 interface ArtisanProduct {
@@ -340,13 +341,13 @@ function ArtisanStudioContent() {
 
             {/* Current Artisan Workshop Info */}
             <div className="flex items-center gap-3">
-              <div className="hidden md:flex items-center gap-3 px-3.5 py-1.5 rounded-2xl bg-cream-50 border border-cream-200 text-xs">
-                <div className="w-7 h-7 rounded-full bg-amber-600 text-white flex items-center justify-center font-bold text-xs shadow-xs">
-                  BT
+              <div className="hidden md:flex items-center gap-2.5 px-3.5 py-1.5 rounded-2xl bg-cream-50 border border-cream-200 text-xs">
+                <div className="relative w-8 h-8 rounded-xl overflow-hidden bg-stone-100 border border-amber-300 flex-shrink-0">
+                  <Image src="/villages/lang-gom-bat-trang.webp" alt="Xưởng Bát Tràng" fill className="object-cover" />
                 </div>
                 <div>
-                  <p className="font-bold text-stone-900">Xưởng Gốm Dòng Tộc Bát Tràng</p>
-                  <p className="text-[10px] text-stone-500">Nghệ nhân Phạm Văn Tuấn • Tem OCOP 4 Sao (#ART-BTI-01)</p>
+                  <p className="font-bold text-stone-900 leading-tight">Xưởng Gốm Dòng Tộc Bát Tràng</p>
+                  <p className="text-[10px] text-stone-500 leading-tight">Nghệ nhân Phạm Văn Tuấn • Tem OCOP 4 Sao (#ART-BTI-01)</p>
                 </div>
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse ml-1" title="Xưởng đang mở nhận đơn" />
               </div>
@@ -931,35 +932,62 @@ function ArtisanStudioContent() {
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Left Column: Workshop identity */}
-              <div className="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 border border-cream-200 shadow-xs space-y-6">
+              <div className="lg:col-span-7 bg-white rounded-2xl p-6 sm:p-7 border border-cream-200 shadow-xs space-y-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-2xl bg-amber-600 text-white flex items-center justify-center font-serif text-2xl font-bold shadow-md">
-                    Bát Tràng
-                  </div>
-                  <div>
-                    <h3 className="font-serif font-bold text-lg text-stone-900">
-                      Xưởng Gốm Dòng Tộc Bát Tràng
-                    </h3>
-                    <p className="text-xs text-stone-500">
-                      Đại diện: <strong>Nghệ nhân Phạm Văn Tuấn</strong> (Kế thừa đời thứ 5)
-                    </p>
-                    <span className="inline-block mt-1 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">
-                      Chứng nhận Làng Nghề Cổ Truyền 2026
+                  <div className="relative w-16 h-16 rounded-2xl overflow-hidden border-2 border-amber-300 shadow-sm flex-shrink-0 bg-stone-100">
+                    <Image
+                      src="/villages/lang-gom-bat-trang.webp"
+                      alt="Làng Gốm Bát Tràng"
+                      fill
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-stone-950/70 via-transparent to-transparent" />
+                    <span className="absolute bottom-1 left-0 right-0 text-center text-[9px] font-bold text-amber-200 uppercase tracking-widest drop-shadow-sm select-none">
+                      Bát Tràng
                     </span>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h3 className="font-serif font-bold text-lg sm:text-xl text-stone-900 leading-snug">
+                        Xưởng Gốm Dòng Tộc Bát Tràng
+                      </h3>
+                      <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-bold border border-emerald-200">
+                        Làng Nghề Cổ Truyền
+                      </span>
+                    </div>
+                    <p className="text-xs text-stone-600">
+                      Đại diện: <strong className="text-stone-900 font-semibold">Nghệ nhân Phạm Văn Tuấn</strong> (Kế thừa đời thứ 5 • Xưởng nung củi & gas)
+                    </p>
                   </div>
                 </div>
 
-                <div className="space-y-4 text-xs text-stone-700">
-                  <div className="p-4 bg-cream-50 rounded-2xl border border-cream-200 space-y-2">
-                    <p className="font-bold text-stone-900">Địa Chỉ Lò Nung Thực Tế:</p>
-                    <p>Số 48 Xóm 2, Thôn Giang Cao, Xã Bát Tràng, Huyện Gia Lâm, TP. Hà Nội.</p>
-                    <p className="text-stone-500">Quy mô: 2 lò nung củi truyền thống, 1 lò gas nung khử oxy công suất 1.300°C.</p>
+                <div className="space-y-3.5 pt-1 text-xs text-stone-700">
+                  <div className="p-4 sm:p-5 bg-cream-50/80 rounded-2xl border border-cream-200 space-y-2">
+                    <div className="flex items-center gap-2 text-stone-900 font-bold text-xs">
+                      <MapPin className="w-4 h-4 text-nepred-600 flex-shrink-0" />
+                      <span>Địa Chỉ Lò Nung Thực Tế</span>
+                    </div>
+                    <p className="text-xs text-stone-700 leading-relaxed pl-6">
+                      Số 48 Xóm 2, Thôn Giang Cao, Xã Bát Tràng, Huyện Gia Lâm, TP. Hà Nội.
+                    </p>
+                    <div className="flex items-center gap-2 pl-6 pt-0.5 text-[11px] text-stone-500">
+                      <Flame className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
+                      <span>Quy mô: 2 lò nung củi truyền thống, 1 lò gas nung khử oxy công suất 1.300°C.</span>
+                    </div>
                   </div>
 
-                  <div className="p-4 bg-cream-50 rounded-2xl border border-cream-200 space-y-2">
-                    <p className="font-bold text-stone-900">Chứng Nhận Chất Lượng OCOP:</p>
-                    <p>Hồ sơ chứng nhận sản phẩm OCOP 4 sao do UBND TP. Hà Nội cấp, số QĐ: 418/QĐ-UBND.</p>
-                    <p className="text-stone-500">Đạt tiêu chuẩn xuất khẩu, hàm lượng kim loại chì/cadimi đạt chuẩn an toàn 100%.</p>
+                  <div className="p-4 sm:p-5 bg-cream-50/80 rounded-2xl border border-cream-200 space-y-2">
+                    <div className="flex items-center gap-2 text-stone-900 font-bold text-xs">
+                      <Award className="w-4 h-4 text-amber-600 flex-shrink-0" />
+                      <span>Chứng Nhận Chất Lượng OCOP Quốc Gia</span>
+                    </div>
+                    <p className="text-xs text-stone-700 leading-relaxed pl-6">
+                      Hồ sơ chứng nhận sản phẩm OCOP 4 sao do UBND TP. Hà Nội cấp, số QĐ: <strong>418/QĐ-UBND</strong>.
+                    </p>
+                    <div className="flex items-center gap-2 pl-6 pt-0.5 text-[11px] text-stone-500">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+                      <span>Đạt chuẩn xuất khẩu, hàm lượng khoáng tự nhiên an toàn tuyệt đối 100%.</span>
+                    </div>
                   </div>
                 </div>
               </div>

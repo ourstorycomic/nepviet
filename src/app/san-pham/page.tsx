@@ -165,25 +165,25 @@ function ProductsFilterView() {
             {[
               {
                 title: 'Mây Tre Phú Vinh',
-                count: '3 mẫu thủ công',
+                count: '5 mẫu thủ công',
                 img: '/showcase/may-tre-dan-phu-vinh.webp',
                 slug: 'may-tre',
               },
               {
                 title: 'Đồ Chơi Dân Gian',
-                count: '4 mẫu truyền thống',
+                count: '5 mẫu truyền thống',
                 img: '/showcase/qua-tang-do-choi-dan-gian.webp',
                 slug: 'do-choi-qua-tang',
               },
               {
                 title: 'Lụa Vạn Phúc & Canvas',
-                count: '3 mẫu dệt may',
+                count: '5 mẫu dệt may',
                 img: '/showcase/lua-to-tam-van-phuc.jpg',
                 slug: 'phu-kien-thoi-trang',
               },
               {
                 title: 'Ẩm Thực Cổ Truyền',
-                count: '2 món tiến vua',
+                count: '4 món tiến vua',
                 img: '/showcase/am-thuc-tra-co-truyen.jpg',
                 slug: 'am-thuc',
               },
@@ -237,7 +237,7 @@ function ProductsFilterView() {
                   : 'bg-white text-stone-700 hover:bg-cream-100 border border-cream-200'
               }`}
             >
-              {cat.name} ({cat.itemCount})
+              {cat.name} ({products.filter(p => p.category === cat.slug).length || cat.itemCount})
             </button>
           ))}
         </div>

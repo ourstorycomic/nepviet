@@ -75,13 +75,18 @@ export function Footer() {
           {/* Brand Info */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3.5">
-              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-nepred-700 to-nepbrown-800 text-white flex items-center justify-center font-serif text-xl font-bold shadow-md border border-nepgold-500/30">
-                NV
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-nepred-700 to-nepbrown-800 text-white flex items-center justify-center font-han text-2xl font-bold shadow-md border border-nepgold-500/30 select-none">
+                越
               </div>
               <div className="flex flex-col">
-                <span className="font-serif text-2xl font-bold tracking-wider text-cream-50">
-                  NẾP VIỆT
-                </span>
+                <div className="flex items-baseline gap-2">
+                  <span className="font-serif text-2xl font-bold tracking-wider text-cream-50">
+                    NẾP VIỆT
+                  </span>
+                  <span className="font-han text-base font-bold text-nepgold-400 select-none tracking-wider">
+                    惗越
+                  </span>
+                </div>
                 <span className="text-[10px] uppercase tracking-widest text-nepgold-500 font-semibold font-sans">
                   Công ty TNHH Văn Hóa & Thủ Công Nếp Việt
                 </span>

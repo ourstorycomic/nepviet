@@ -194,10 +194,13 @@ export default function HomePage() {
           {/* Left Emblem / Image */}
           <div className="lg:col-span-4 flex justify-center">
             <div className="relative w-56 h-56 sm:w-64 sm:h-64 rounded-3xl bg-gradient-to-br from-nepbrown-800 via-nepbrown-700 to-stone-900 p-6 shadow-xl border-2 border-nepgold-500/30 flex flex-col items-center justify-center text-center text-white">
-              <div className="w-20 h-20 rounded-2xl bg-nepred-600 border border-nepgold-400/40 flex items-center justify-center font-serif text-3xl font-bold shadow-inner mb-3">
-                NV
+              <div className="w-20 h-20 rounded-2xl bg-nepred-600 border border-nepgold-400/40 flex items-center justify-center font-han text-4xl font-bold shadow-inner mb-3 select-none">
+                越
               </div>
-              <h3 className="font-serif text-xl font-bold tracking-wider text-cream-50">NẾP VIỆT</h3>
+              <div className="flex items-center gap-1.5 justify-center">
+                <h3 className="font-serif text-xl font-bold tracking-wider text-cream-50">NẾP VIỆT</h3>
+                <span className="font-han text-base font-bold text-amber-300">惗越</span>
+              </div>
               <p className="text-[11px] uppercase tracking-widest text-nepgold-400 mt-1 font-semibold">
                 Thương hiệu Di sản Thủ công
               </p>

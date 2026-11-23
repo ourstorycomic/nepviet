@@ -12,6 +12,7 @@ export default function RegisterPage() {
   const router = useRouter();
   const { register } = useAuth();
 
+  const [role, setRole] = useState<'customer' | 'artisan'>('customer');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -57,8 +58,8 @@ export default function RegisterPage() {
         email: email.trim().toLowerCase(),
         password: password,
         full_name: name.trim(),
-        role: 'customer',
-        loyalty_points: 50,
+        role: role,
+        loyalty_points: role === 'customer' ? 50 : 0,
         created_at: new Date().toISOString(),
       };
 
@@ -67,7 +68,7 @@ export default function RegisterPage() {
       }
 
       register(name.trim(), email.trim());
-      router.push('/san-pham');
+      router.push(role === 'artisan' ? '/admin' : '/san-pham');
     } catch (err: any) {
       setError('Lỗi đăng ký tài khoản: ' + err.message);
     } finally {
@@ -82,16 +83,52 @@ export default function RegisterPage() {
         {/* Brand header */}
         <div className="text-center space-y-2">
           <Link href="/" className="inline-flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-full bg-nepred-600 text-white flex items-center justify-center font-serif text-xl font-bold shadow-md group-hover:scale-105 transition-transform">
-              NV
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-nepred-700 via-nepred-600 to-nepbrown-800 text-white flex items-center justify-center font-han text-2xl font-bold shadow-md border border-nepgold-500/30 group-hover:scale-105 transition-transform select-none">
+              越
             </div>
           </Link>
-          <h1 className="font-serif text-2xl sm:text-3xl font-black text-nepbrown-800">
-            Tạo Tài Khoản Mới
-          </h1>
+          <div className="flex items-center justify-center gap-2">
+            <h1 className="font-serif text-2xl sm:text-3xl font-black text-stone-900">
+              Tạo Tài Khoản Mới
+            </h1>
+            <span className="font-han text-base font-bold text-nepred-700 select-none">惗越</span>
+          </div>
           <p className="text-xs text-neutral-500">
-            Trở thành thành viên cộng đồng Nếp Việt để nhận ưu đãi văn hóa
+            Tham gia cộng đồng Nếp Việt để đồng hành cùng di sản thủ công
           </p>
+        </div>
+
+        {/* Role Type Selector */}
+        <div className="space-y-1.5">
+          <label className="block text-xs font-bold text-stone-700">
+            Bạn đăng ký với tư cách:
+          </label>
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <button
+              type="button"
+              onClick={() => setRole('customer')}
+              className={`p-2.5 rounded-xl border text-center transition-all ${
+                role === 'customer'
+                  ? 'bg-nepred-50 border-nepred-600 text-nepred-700 font-bold shadow-xs'
+                  : 'bg-stone-50 border-stone-200 text-stone-600 hover:bg-cream-100'
+              }`}
+            >
+              <span>👤 Khách Hàng</span>
+              <p className="text-[10px] font-normal text-stone-500 mt-0.5">Mua sắm & Sưu tầm</p>
+            </button>
+            <button
+              type="button"
+              onClick={() => setRole('artisan')}
+              className={`p-2.5 rounded-xl border text-center transition-all ${
+                role === 'artisan'
+                  ? 'bg-amber-50 border-amber-600 text-amber-900 font-bold shadow-xs'
+                  : 'bg-stone-50 border-stone-200 text-stone-600 hover:bg-cream-100'
+              }`}
+            >
+              <span>🏺 Nghệ Nhân / Xưởng</span>
+              <p className="text-[10px] font-normal text-stone-500 mt-0.5">Bán hàng thủ công</p>
+            </button>
+          </div>
         </div>
 
         {error && (

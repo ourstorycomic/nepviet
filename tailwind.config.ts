@@ -54,6 +54,7 @@ const config: Config = {
       fontFamily: {
         serif: ['var(--font-serif)', '"Playfair Display"', 'Georgia', 'serif'],
         sans: ['var(--font-sans)', '"Be Vietnam Pro"', 'Inter', 'system-ui', 'sans-serif'],
+        han: ['"Ma Shan Zheng"', '"ZCOOL XiaoWei"', '"Noto Serif SC"', 'serif'],
       },
       borderRadius: {
         'arch': '140px 140px 0 0',

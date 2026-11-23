@@ -11,11 +11,11 @@ import {
 } from '@/services/supabaseService';
 import { isSupabaseConfigured } from '@/lib/supabase';
 
-export const PRODUCTS_STORAGE_KEY = 'nepviet_products_catalog_v2';
+export const PRODUCTS_STORAGE_KEY = 'nepviet_products_catalog_v3';
 export const PRODUCTS_UPDATED_EVENT = 'nepviet_products_updated';
 
 /**
- * Lấy danh sách sản phẩm hiện tại từ LocalStorage (nếu có tùy chỉnh) hoặc danh mục gốc 14 sản phẩm.
+ * Lấy danh sách sản phẩm hiện tại từ LocalStorage (nếu có tùy chỉnh) hoặc danh mục gốc 24 sản phẩm.
  */
 export function getStoredProducts(): Product[] {
   if (typeof window === 'undefined') {
@@ -25,7 +25,7 @@ export function getStoredProducts(): Product[] {
     const raw = localStorage.getItem(PRODUCTS_STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed) && parsed.length > 0) {
+      if (Array.isArray(parsed) && parsed.length >= PRODUCTS.length) {
         return parsed;
       }
     }

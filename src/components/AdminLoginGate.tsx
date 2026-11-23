@@ -62,8 +62,8 @@ export function AdminLoginGate() {
       <div className="relative z-10 max-w-md w-full space-y-6">
         {/* Brand Header */}
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-nepred-600 text-white font-serif text-2xl font-bold shadow-xl shadow-nepred-600/30 mb-2 border border-nepred-500/40">
-            NV
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-nepred-600 text-white font-han text-3xl font-bold shadow-xl shadow-nepred-600/30 mb-2 border border-nepred-500/40 select-none">
+            越
           </div>
           <h1 className="font-serif text-2xl sm:text-3xl font-bold text-white tracking-wide">
             NẾP VIỆT ADMIN PORTAL

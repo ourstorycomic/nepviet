@@ -95,7 +95,7 @@ export function Header() {
         {/* Main Header Bar */}
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20 gap-2 sm:gap-4">
-            
+
             {/* Left: Mobile Menu Toggle & Brand Logo */}
             <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
               {/* Mobile Hamburger Button */}
@@ -111,18 +111,23 @@ export function Header() {
                 )}
               </button>
 
-              {/* Brand Logo */}
+              {/* Brand Logo - Phong cách Triện thư Hán Nôm */}
               <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group flex-shrink-0">
                 <div className="relative w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-nepred-700 via-nepred-600 to-nepbrown-800 text-white flex items-center justify-center shadow-md shadow-nepred-900/20 border border-nepgold-500/30 group-hover:scale-105 transition-all duration-300 flex-shrink-0">
                   <div className="absolute inset-0.5 rounded-xl border border-dashed border-nepgold-400/40 pointer-events-none" />
-                  <span className="font-serif text-lg sm:text-xl font-black tracking-tight text-cream-50 drop-shadow-sm">
-                    NV
+                  <span className="font-han text-xl sm:text-2xl font-bold tracking-normal text-cream-50 drop-shadow-sm select-none">
+                    越
                   </span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-serif text-lg sm:text-2xl font-black tracking-wide text-stone-900 group-hover:text-nepred-600 transition-colors leading-tight">
-                    NẾP VIỆT
-                  </span>
+                  <div className="flex items-baseline gap-1.5 leading-tight">
+                    <span className="font-serif text-lg sm:text-2xl font-black tracking-wide text-stone-900 group-hover:text-nepred-600 transition-colors">
+                      NẾP VIỆT
+                    </span>
+                    <span className="font-han text-xs sm:text-sm font-bold text-nepred-700 select-none tracking-wider opacity-90" title="惗越 (Nếp Việt - Hán Nôm)">
+                      惗越
+                    </span>
+                  </div>
                   <span className="text-[8px] sm:text-[10px] uppercase tracking-[0.16em] sm:tracking-[0.2em] text-nepgreen-800 font-bold font-sans">
                     Tinh hoa thủ công di sản
                   </span>
@@ -138,11 +143,10 @@ export function Header() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`text-xs xl:text-sm font-semibold tracking-tight transition-all relative py-1 ${
-                      isActive
-                        ? 'text-nepred-600 font-bold after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-nepred-600 after:rounded-full'
-                        : 'text-stone-700 hover:text-nepred-600'
-                    }`}
+                    className={`text-xs xl:text-sm font-semibold tracking-tight transition-all relative py-1 ${isActive
+                      ? 'text-nepred-600 font-bold after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-nepred-600 after:rounded-full'
+                      : 'text-stone-700 hover:text-nepred-600'
+                      }`}
                   >
                     {link.label}
                   </Link>
@@ -288,11 +292,10 @@ export function Header() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-colors flex items-center justify-between ${
-                      isActive
-                        ? 'bg-nepred-50 text-nepred-600'
-                        : 'text-stone-800 hover:bg-cream-100'
-                    }`}
+                    className={`px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-colors flex items-center justify-between ${isActive
+                      ? 'bg-nepred-50 text-nepred-600'
+                      : 'text-stone-800 hover:bg-cream-100'
+                      }`}
                   >
                     <span>{link.label}</span>
                     {isActive && <span className="w-1.5 h-1.5 rounded-full bg-nepred-600" />}

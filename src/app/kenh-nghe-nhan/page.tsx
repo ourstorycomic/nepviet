@@ -255,8 +255,19 @@ function ArtisanStudioContent() {
 
   const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'orders' | 'wallet' | 'profile'>('overview');
 
-  // Load artisan-specific craft pieces from shared catalog
-  const [customArtisanProducts, setCustomArtisanProducts] = useState<ArtisanProduct[]>([]);
+  // Load artisan-specific craft pieces from persistent LocalStorage
+  const [customArtisanProducts, setCustomArtisanProducts] = useState<ArtisanProduct[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const raw = localStorage.getItem('nepviet_custom_artisan_products');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) return parsed;
+        }
+      } catch (e) { }
+    }
+    return [];
+  });
 
   // Orders state persisted in LocalStorage
   const [orders, setOrders] = useState<ArtisanOrder[]>(() => {
@@ -367,11 +378,52 @@ function ArtisanStudioContent() {
     }
   }, []);
 
+  // Đồng bộ trạng thái kiểm định & xuất bản từ catalog sang customArtisanProducts
+  useEffect(() => {
+    if (customArtisanProducts.length > 0 && catalogProducts.length > 0) {
+      let changed = false;
+      const updated = customArtisanProducts.map((cap) => {
+        const catItem = catalogProducts.find((p) => p.id === cap.id);
+        if (catItem) {
+          const newStatus: ArtisanProduct['status'] = !catItem.inStock
+            ? 'out_of_stock'
+            : catItem.approvalStatus === 'pending' || (catItem.badge && catItem.badge.includes('Chờ'))
+            ? 'pending'
+            : catItem.approvalStatus === 'rejected'
+            ? 'rejected'
+            : 'active';
+          if (newStatus !== cap.status || catItem.badge !== cap.badge || catItem.rejectionReason !== cap.rejectionReason) {
+            changed = true;
+            return {
+              ...cap,
+              status: newStatus,
+              badge: catItem.badge,
+              rejectionReason: catItem.rejectionReason,
+            };
+          }
+        }
+        return cap;
+      });
+      if (changed) {
+        setCustomArtisanProducts(updated);
+        try {
+          localStorage.setItem('nepviet_custom_artisan_products', JSON.stringify(updated));
+        } catch (e) { }
+      }
+    }
+  }, [catalogProducts]);
+
   // Compute products list belonging to this workshop
   const products: ArtisanProduct[] = useMemo(() => {
-    // 1. Get pottery / Bat Trang items from catalog
+    // 1. Get pottery / Bat Trang items or items created by this artisan from catalog
     const fromCatalog: ArtisanProduct[] = catalogProducts
-      .filter((p) => p.category === 'gom-su' || (p.village && p.village.toLowerCase().includes('bát tràng')))
+      .filter(
+        (p) =>
+          p.category === 'gom-su' ||
+          (p.village && p.village.toLowerCase().includes('bát tràng')) ||
+          (p.artisanName && p.artisanName.toLowerCase().includes('tuấn')) ||
+          p.id.startsWith('art-')
+      )
       .map((p) => ({
         id: p.id,
         name: p.name,
@@ -384,10 +436,10 @@ function ArtisanStudioContent() {
         status: !p.inStock
           ? 'out_of_stock'
           : p.approvalStatus === 'pending' || (p.badge && p.badge.includes('Chờ'))
-          ? 'pending'
-          : p.approvalStatus === 'rejected'
-          ? 'rejected'
-          : 'active',
+            ? 'pending'
+            : p.approvalStatus === 'rejected'
+              ? 'rejected'
+              : 'active',
         material: p.material || 'Gốm sa khoáng nung khử 1.300°C',
         badge: p.badge || (p.isFeatured ? 'Di sản tiêu biểu' : undefined),
         totalSold: p.reviewsCount ? p.reviewsCount * 3 + 8 : 16,
@@ -439,9 +491,11 @@ function ArtisanStudioContent() {
     const price = Number(newProductPrice) || 350000;
     const stock = Number(newProductStock) || 5;
 
+    const uniqueSuffix = Date.now().toString(36);
     const added = await addProduct({
+      id: `art-${uniqueSuffix}`,
       name: newProductName.trim(),
-      slug: newProductName.trim().toLowerCase().replace(/[^a-z0-9]/g, '-'),
+      slug: `${newProductName.trim().toLowerCase().replace(/[^a-z0-9]/g, '-')}-${uniqueSuffix}`,
       category: 'gom-su',
       categoryName: 'Gốm Sứ Bát Tràng',
       village: 'Làng gốm Bát Tràng, Gia Lâm, Hà Nội',
@@ -478,7 +532,13 @@ function ArtisanStudioContent() {
       totalSold: 0,
     };
 
-    setCustomArtisanProducts((prev) => [newPiece, ...prev]);
+    setCustomArtisanProducts((prev) => {
+      const updated = [newPiece, ...prev.filter((p) => p.id !== newPiece.id)];
+      try {
+        localStorage.setItem('nepviet_custom_artisan_products', JSON.stringify(updated));
+      } catch (e) { }
+      return updated;
+    });
     setIsSubmitModalOpen(false);
     setNewProductName('');
     setNewProductMaterial('');

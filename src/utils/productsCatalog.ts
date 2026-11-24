@@ -80,8 +80,31 @@ export function useProducts() {
       try {
         const cloudProducts = await fetchProductsFromDb();
         if (cloudProducts && cloudProducts.length > 0) {
-          setProductsState(cloudProducts);
-          saveStoredProducts(cloudProducts);
+          // THUẬT TOÁN HỢP NHẤT THÔNG MINH (Smart Merge):
+          // Không bao giờ ghi đè làm mất sản phẩm vừa tạo ở client hoặc đang chờ kiểm định!
+          const currentLocal = getStoredProducts();
+          const cloudMap = new Map(cloudProducts.map((p) => [p.id, p]));
+
+          // Lấy tất cả sản phẩm chỉ có ở local (chưa lên cloud hoặc được tạo cục bộ)
+          const localOnly = currentLocal.filter((lp) => !cloudMap.has(lp.id));
+
+          // Với các sản phẩm có ở cả cloud và local, hợp nhất thông tin kiểm duyệt mới nhất
+          const mergedCloud = cloudProducts.map((cp) => {
+            const matchedLocal = currentLocal.find((lp) => lp.id === cp.id);
+            if (matchedLocal) {
+              return {
+                ...cp,
+                approvalStatus: matchedLocal.approvalStatus || cp.approvalStatus,
+                rejectionReason: matchedLocal.rejectionReason || cp.rejectionReason,
+                artisanName: matchedLocal.artisanName || cp.artisanName,
+              };
+            }
+            return cp;
+          });
+
+          const finalMerged = [...localOnly, ...mergedCloud];
+          setProductsState(finalMerged);
+          saveStoredProducts(finalMerged);
           setIsCloudSynced(true);
         } else if (cloudProducts && cloudProducts.length === 0) {
           // Bảng Supabase đang trống, vẫn giữ local

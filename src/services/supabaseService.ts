@@ -58,6 +58,40 @@ export interface DbReview {
 // 2. PRODUCT MAPPERS & CRUD
 // ========================================================
 export function mapRowToProduct(row: any): Product {
+  // Decode badge for approval status & rejection
+  let approvalStatus: 'approved' | 'pending' | 'rejected' = 'approved';
+  let rejectionReason: string | undefined = undefined;
+
+  if (row.approval_status) {
+    approvalStatus = row.approval_status;
+  } else if (row.badge) {
+    if (typeof row.badge === 'string' && row.badge.startsWith('[REJECTED]')) {
+      approvalStatus = 'rejected';
+      rejectionReason = row.badge.replace('[REJECTED]', '').trim();
+    } else if (typeof row.badge === 'string' && (row.badge.includes('Chờ') || row.badge.includes('Kiểm Định'))) {
+      approvalStatus = 'pending';
+    }
+  }
+
+  if (row.rejection_reason) {
+    rejectionReason = row.rejection_reason;
+  }
+
+  let artisanName = row.artisan_name || undefined;
+  let rawStory = row.artisan_story || row.artisanStory || '';
+  if (!artisanName && rawStory.startsWith('[Tác giả:')) {
+    const match = rawStory.match(/^\[Tác giả:\s*([^\]]+)\]\s*(.*)$/);
+    if (match) {
+      artisanName = match[1];
+      rawStory = match[2];
+    }
+  }
+
+  let displayBadge = row.badge || undefined;
+  if (displayBadge && typeof displayBadge === 'string' && displayBadge.startsWith('[REJECTED]')) {
+    displayBadge = 'Yêu cầu hoàn thiện hồ sơ';
+  }
+
   return {
     id: row.id,
     slug: row.slug,
@@ -68,25 +102,39 @@ export function mapRowToProduct(row: any): Product {
     price: Number(row.price),
     originalPrice: row.original_price ? Number(row.original_price) : undefined,
     rating: Number(row.rating) || 5.0,
-    reviewsCount: Number(row.reviews_count) || 1,
+    reviewsCount: Number(row.reviews_count) || 0,
     inStock: Boolean(row.in_stock),
     images: Array.isArray(row.images) ? row.images : (typeof row.images === 'string' ? JSON.parse(row.images) : []),
     summary: row.summary || '',
     description: row.description || '',
     material: row.material || '',
     dimensions: row.dimensions || '',
-    artisanStory: row.artisan_story || row.artisanStory || '',
+    artisanStory: rawStory,
     preservation: row.preservation || '',
-    badge: row.badge || undefined,
+    badge: displayBadge,
     isFeatured: Boolean(row.is_featured),
-    approvalStatus: row.approval_status || row.approvalStatus || (row.badge?.includes('Chờ') ? 'pending' : 'approved'),
-    rejectionReason: row.rejection_reason || row.rejectionReason,
-    artisanName: row.artisan_name || row.artisanName,
-    submittedAt: row.submitted_at || row.submittedAt,
+    approvalStatus,
+    rejectionReason,
+    artisanName: artisanName || 'Nghệ nhân Phạm Văn Tuấn (Xưởng Gốm Bát Tràng)',
+    submittedAt: row.created_at || row.submitted_at || row.submittedAt,
   };
 }
 
 export function mapProductToRow(p: Product): any {
+  // Determine encoded badge for Supabase storage without violating schema
+  let encodedBadge = p.badge || null;
+  if (p.approvalStatus === 'pending') {
+    encodedBadge = p.badge && p.badge.includes('Chờ') ? p.badge : 'Chờ Sàn Kiểm Định & Duyệt';
+  } else if (p.approvalStatus === 'rejected') {
+    encodedBadge = `[REJECTED] ${p.rejectionReason || 'Yêu cầu hoàn thiện hồ sơ'}`;
+  }
+
+  // Prepend artisan info into artisan_story if not already encoded
+  let artisanStory = p.artisanStory || '';
+  if (p.artisanName && !artisanStory.includes(p.artisanName)) {
+    artisanStory = `[Tác giả: ${p.artisanName}] ${artisanStory}`;
+  }
+
   return {
     id: p.id,
     slug: p.slug,
@@ -104,14 +152,10 @@ export function mapProductToRow(p: Product): any {
     description: p.description,
     material: p.material,
     dimensions: p.dimensions,
-    artisan_story: p.artisanStory,
+    artisan_story: artisanStory,
     preservation: p.preservation,
-    badge: p.badge || null,
+    badge: encodedBadge,
     is_featured: Boolean(p.isFeatured),
-    approval_status: p.approvalStatus || (p.badge?.includes('Chờ') ? 'pending' : 'approved'),
-    rejection_reason: p.rejectionReason || null,
-    artisan_name: p.artisanName || null,
-    submitted_at: p.submittedAt || null,
   };
 }
 
@@ -178,8 +222,18 @@ export async function updateProductInDb(id: string, updates: Partial<Product>): 
     if (updates.dimensions !== undefined) rowUpdates.dimensions = updates.dimensions;
     if (updates.artisanStory !== undefined) rowUpdates.artisan_story = updates.artisanStory;
     if (updates.preservation !== undefined) rowUpdates.preservation = updates.preservation;
-    if (updates.badge !== undefined) rowUpdates.badge = updates.badge;
     if (updates.isFeatured !== undefined) rowUpdates.is_featured = updates.isFeatured;
+
+    // Tự động map approvalStatus sang badge tương thích với schema Supabase
+    if (updates.approvalStatus === 'approved') {
+      rowUpdates.badge = updates.badge || 'Di sản thủ công';
+    } else if (updates.approvalStatus === 'rejected') {
+      rowUpdates.badge = `[REJECTED] ${updates.rejectionReason || updates.badge || 'Yêu cầu hoàn thiện hồ sơ'}`;
+    } else if (updates.approvalStatus === 'pending') {
+      rowUpdates.badge = updates.badge || 'Chờ Sàn Kiểm Định & Duyệt';
+    } else if (updates.badge !== undefined) {
+      rowUpdates.badge = updates.badge;
+    }
 
     const { error } = await client.from('products').update(rowUpdates).eq('id', id);
     if (error) {

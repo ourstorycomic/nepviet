@@ -53,11 +53,17 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
-  // Lọc sản phẩm theo từ khóa
+  // Lọc sản phẩm theo từ khóa (chỉ hiển thị sản phẩm đã được kiểm định phê duyệt)
   const matchingProducts = useMemo(() => {
     if (!searchTerm.trim()) return [];
     const query = searchTerm.toLowerCase().trim();
     return products.filter((p) => {
+      const isApproved =
+        p.approvalStatus !== 'pending' &&
+        p.approvalStatus !== 'rejected' &&
+        (!p.badge || !p.badge.includes('Chờ'));
+      if (!isApproved) return false;
+
       return (
         p.name.toLowerCase().includes(query) ||
         p.summary.toLowerCase().includes(query) ||

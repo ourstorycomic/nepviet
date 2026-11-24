@@ -90,7 +90,15 @@ export default function HomePage() {
   ];
 
   const { products } = useProducts();
-  const featuredProducts = products.filter((p) => p.isFeatured).slice(0, 4);
+  const featuredProducts = products
+    .filter(
+      (p) =>
+        p.isFeatured &&
+        p.approvalStatus !== 'pending' &&
+        p.approvalStatus !== 'rejected' &&
+        (!p.badge || !p.badge.includes('Chờ'))
+    )
+    .slice(0, 4);
 
   return (
     <div className="space-y-16 sm:space-y-20 pb-20 overflow-hidden">

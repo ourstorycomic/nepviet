@@ -678,7 +678,7 @@ export default function AdminPage() {
 
       {/* Top Admin Navigation Header */}
       <header className="bg-stone-900 text-white border-b border-stone-800 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <div className="max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-nepred-600 text-white flex items-center justify-center font-serif text-lg font-bold shadow-md">
               NV
@@ -748,7 +748,7 @@ export default function AdminPage() {
       </header>
 
       {/* Main Admin Dashboard Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-1 space-y-6">
+      <div className="max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-1 space-y-6">
 
         {/* Banner điều hướng dành cho Nghệ Nhân khi vào Cổng Admin Toàn Sàn */}
         {adminUser?.role === 'artisan' && (
@@ -967,28 +967,28 @@ export default function AdminPage() {
               </div>
 
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
+                <table className="w-full text-left text-xs table-auto">
                   <thead className="bg-stone-50 text-stone-500 uppercase tracking-wider text-[10px]">
                     <tr>
-                      <th className="p-3 rounded-l-xl">Mã Đơn</th>
-                      <th className="p-3">Khách Hàng</th>
-                      <th className="p-3">Số Điện Thoại</th>
-                      <th className="p-3">Khu Vực</th>
-                      <th className="p-3">Tổng Tiền</th>
-                      <th className="p-3">Phương Thức</th>
-                      <th className="p-3">Trạng Thái</th>
-                      <th className="p-3 rounded-r-xl">Thao Tác</th>
+                      <th className="py-3 px-2 sm:px-3 rounded-l-xl">Mã Đơn</th>
+                      <th className="py-3 px-2 sm:px-3">Khách Hàng</th>
+                      <th className="py-3 px-2 sm:px-3">Số Điện Thoại</th>
+                      <th className="py-3 px-2 sm:px-3">Khu Vực</th>
+                      <th className="py-3 px-2 sm:px-3">Tổng Tiền</th>
+                      <th className="py-3 px-2 sm:px-3">Phương Thức</th>
+                      <th className="py-3 px-2 sm:px-3">Trạng Thái</th>
+                      <th className="py-3 px-3 text-right whitespace-nowrap sticky right-0 bg-stone-50 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.08)] z-10 rounded-r-xl">Thao Tác</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-stone-100 font-medium">
                     {orders.slice(0, 4).map((order) => (
-                      <tr key={order.id} className="hover:bg-stone-50/70 transition-colors">
-                        <td className="p-3 font-mono font-bold text-nepred-600">{order.id}</td>
-                        <td className="p-3 text-stone-900">{order.customerName}</td>
-                        <td className="p-3 text-stone-600 font-mono">{order.phone}</td>
-                        <td className="p-3 text-stone-600">{order.city}</td>
-                        <td className="p-3 font-bold text-stone-900 price-tag">{formatCurrency(order.total)}</td>
-                        <td className="p-3">
+                      <tr key={order.id} className="group hover:bg-stone-50/70 transition-colors">
+                        <td className="py-2.5 px-2 sm:px-3 font-mono font-bold text-nepred-600">{order.id}</td>
+                        <td className="py-2.5 px-2 sm:px-3 text-stone-900">{order.customerName}</td>
+                        <td className="py-2.5 px-2 sm:px-3 text-stone-600 font-mono">{order.phone}</td>
+                        <td className="py-2.5 px-2 sm:px-3 text-stone-600">{order.city}</td>
+                        <td className="py-2.5 px-2 sm:px-3 font-bold text-stone-900 price-tag">{formatCurrency(order.total)}</td>
+                        <td className="py-2.5 px-2 sm:px-3">
                           {order.paymentMethod === 'VIETQR' ? (
                             <button
                               type="button"
@@ -1005,7 +1005,7 @@ export default function AdminPage() {
                             </span>
                           )}
                         </td>
-                        <td className="p-3">
+                        <td className="py-2.5 px-2 sm:px-3">
                           <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${order.status === 'completed'
                             ? 'bg-emerald-50 text-emerald-700'
                             : order.status === 'shipping'
@@ -1015,7 +1015,7 @@ export default function AdminPage() {
                             {order.status === 'completed' ? 'Đã giao' : order.status === 'shipping' ? 'Đang giao' : 'Chờ xác nhận'}
                           </span>
                         </td>
-                        <td className="p-3">
+                        <td className="py-2.5 px-3 text-right whitespace-nowrap sticky right-0 bg-white group-hover:bg-stone-50/90 transition-colors shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.08)] z-10">
                           {order.status === 'pending' ? (
                             <button
                               onClick={() => updateOrderStatus(order.id, 'shipping')}
@@ -1112,31 +1112,31 @@ export default function AdminPage() {
             </div>
 
             {/* Orders Table */}
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-stone-50 text-stone-500 uppercase tracking-wider text-[10px]">
+            <div className="overflow-x-auto rounded-2xl border border-stone-200 shadow-xs">
+              <table className="w-full text-left text-xs table-auto">
+                <thead className="bg-stone-50 text-stone-600 uppercase tracking-wider text-[10px] border-b border-stone-200">
                   <tr>
-                    <th className="p-3.5">Mã Đơn</th>
-                    <th className="p-3.5">Thời Gian</th>
-                    <th className="p-3.5">Khách Hàng</th>
-                    <th className="p-3.5">Số Điện Thoại</th>
-                    <th className="p-3.5">Địa Chỉ</th>
-                    <th className="p-3.5">Tổng Tiền</th>
-                    <th className="p-3.5">Thanh Toán</th>
-                    <th className="p-3.5">Trạng Thái</th>
-                    <th className="p-3.5">Hành Động</th>
+                    <th className="py-3 px-2 sm:px-3">Mã Đơn</th>
+                    <th className="py-3 px-2 sm:px-3">Thời Gian</th>
+                    <th className="py-3 px-2 sm:px-3">Khách Hàng</th>
+                    <th className="py-3 px-2 sm:px-3">Số Điện Thoại</th>
+                    <th className="py-3 px-2 sm:px-3 max-w-[150px]">Địa Chỉ</th>
+                    <th className="py-3 px-2 sm:px-3">Tổng Tiền</th>
+                    <th className="py-3 px-2 sm:px-3">Thanh Toán</th>
+                    <th className="py-3 px-2 sm:px-3">Trạng Thái</th>
+                    <th className="py-3 px-3 text-right whitespace-nowrap sticky right-0 bg-stone-50 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.08)] z-10">Hành Động</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-stone-100 font-medium">
                   {filteredOrders.map((order) => (
-                    <tr key={order.id} className="hover:bg-stone-50/70 transition-colors">
-                      <td className="p-3.5 font-mono font-bold text-nepred-600">{order.id}</td>
-                      <td className="p-3.5 text-stone-500">{order.date}</td>
-                      <td className="p-3.5 text-stone-900 font-semibold">{order.customerName}</td>
-                      <td className="p-3.5 text-stone-600 font-mono">{order.phone}</td>
-                      <td className="p-3.5 text-stone-600">{order.city}</td>
-                      <td className="p-3.5 font-bold text-stone-900 price-tag">{formatCurrency(order.total)}</td>
-                      <td className="p-3.5">
+                    <tr key={order.id} className="group hover:bg-stone-50/80 transition-colors">
+                      <td className="py-2.5 px-2 sm:px-3 font-mono font-bold text-nepred-600">{order.id}</td>
+                      <td className="py-2.5 px-2 sm:px-3 text-stone-500 whitespace-nowrap">{order.date}</td>
+                      <td className="py-2.5 px-2 sm:px-3 text-stone-900 font-semibold">{order.customerName}</td>
+                      <td className="py-2.5 px-2 sm:px-3 text-stone-600 font-mono whitespace-nowrap">{order.phone}</td>
+                      <td className="py-2.5 px-2 sm:px-3 text-stone-600 max-w-[150px] truncate" title={order.city}>{order.city}</td>
+                      <td className="py-2.5 px-2 sm:px-3 font-bold text-stone-900 price-tag whitespace-nowrap">{formatCurrency(order.total)}</td>
+                      <td className="py-2.5 px-2 sm:px-3">
                         {order.paymentMethod === 'VIETQR' ? (
                           <button
                             type="button"
@@ -1153,7 +1153,7 @@ export default function AdminPage() {
                           </span>
                         )}
                       </td>
-                      <td className="p-3.5">
+                      <td className="py-2.5 px-2 sm:px-3 whitespace-nowrap">
                         <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${order.status === 'completed'
                           ? 'bg-emerald-50 text-emerald-700'
                           : order.status === 'shipping'
@@ -1163,12 +1163,12 @@ export default function AdminPage() {
                           {order.status === 'completed' ? 'Đã hoàn tất' : order.status === 'shipping' ? 'Đang giao hàng' : 'Chờ xác nhận'}
                         </span>
                       </td>
-                      <td className="p-3.5">
-                        <div className="flex items-center gap-1.5">
+                      <td className="py-2.5 px-3 text-right whitespace-nowrap sticky right-0 bg-white group-hover:bg-stone-50/90 transition-colors shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.08)] z-10">
+                        <div className="flex items-center justify-end gap-1.5">
                           {order.status === 'pending' && (
                             <button
                               onClick={() => updateOrderStatus(order.id, 'shipping')}
-                              className="px-2.5 py-1 rounded-lg bg-nepred-600 text-white hover:bg-nepred-700 text-[10px] font-bold"
+                              className="px-2.5 py-1 rounded-lg bg-nepred-600 text-white hover:bg-nepred-700 text-[10px] font-bold shadow-xs"
                             >
                               Giao hàng
                             </button>
@@ -1176,13 +1176,13 @@ export default function AdminPage() {
                           {order.status === 'shipping' && (
                             <button
                               onClick={() => updateOrderStatus(order.id, 'completed')}
-                              className="px-2.5 py-1 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 text-[10px] font-bold"
+                              className="px-2.5 py-1 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 text-[10px] font-bold shadow-xs"
                             >
                               Hoàn tất
                             </button>
                           )}
                           {order.status === 'completed' && (
-                            <span className="text-[11px] text-emerald-600 flex items-center gap-1">
+                            <span className="text-[11px] text-emerald-600 font-bold flex items-center gap-1">
                               <CheckCircle2 className="w-3.5 h-3.5" /> Xong
                             </span>
                           )}
@@ -1264,18 +1264,18 @@ export default function AdminPage() {
             </div>
 
             {/* Products Table */}
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-stone-50 text-stone-500 uppercase tracking-wider text-[10px]">
+            <div className="overflow-x-auto rounded-2xl border border-stone-200 shadow-xs">
+              <table className="w-full text-left text-xs table-auto">
+                <thead className="bg-stone-50 text-stone-600 uppercase tracking-wider text-[10px] border-b border-stone-200">
                   <tr>
-                    <th className="p-3">Ảnh</th>
-                    <th className="p-3">Tên Sản Phẩm</th>
-                    <th className="p-3">Danh Mục</th>
-                    <th className="p-3">Làng Nghề Xuất Xứ</th>
-                    <th className="p-3">Giá Bán</th>
-                    <th className="p-3">Đánh Giá</th>
-                    <th className="p-3">Tình Trạng</th>
-                    <th className="p-3 text-right">Thao Tác</th>
+                    <th className="py-3 px-2 sm:px-3 w-14">Ảnh</th>
+                    <th className="py-3 px-2 sm:px-3 min-w-[150px] max-w-[220px]">Tên Sản Phẩm</th>
+                    <th className="py-3 px-2 sm:px-3 whitespace-nowrap">Danh Mục</th>
+                    <th className="py-3 px-2 sm:px-3 max-w-[150px]">Làng Nghề Xuất Xứ</th>
+                    <th className="py-3 px-2 sm:px-3 whitespace-nowrap">Giá Bán</th>
+                    <th className="py-3 px-2 sm:px-3 whitespace-nowrap">Đánh Giá</th>
+                    <th className="py-3 px-2 sm:px-3 whitespace-nowrap text-center">Tình Trạng</th>
+                    <th className="py-3 px-3 text-right whitespace-nowrap sticky right-0 bg-stone-50 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.08)] z-10">Thao Tác</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-stone-100 font-medium">
@@ -1287,9 +1287,9 @@ export default function AdminPage() {
                     </tr>
                   ) : (
                     filteredProducts.map((prod) => (
-                      <tr key={prod.id} className="hover:bg-stone-50/70 transition-colors">
-                        <td className="p-3">
-                          <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-stone-100 border border-stone-200 flex-shrink-0">
+                      <tr key={prod.id} className="group hover:bg-stone-50/80 transition-colors">
+                        <td className="py-2.5 px-2 sm:px-3">
+                          <div className="relative w-11 h-11 rounded-xl overflow-hidden bg-stone-100 border border-stone-200 flex-shrink-0">
                             <Image
                               src={prod.images[0] || '/products/bo-am-chen-men-lam-bat-trang.jpg'}
                               alt={prod.name}
@@ -1298,13 +1298,12 @@ export default function AdminPage() {
                             />
                           </div>
                         </td>
-                        <td className="p-3 font-serif font-bold text-stone-900 max-w-xs">
-                          <div className="truncate">
+                        <td className="py-2.5 px-2 sm:px-3 font-serif font-bold text-stone-900 min-w-[150px] max-w-[220px]">
+                          <div className="truncate" title={prod.name}>
                             <Link
                               href={`/san-pham/${prod.slug}`}
                               target="_blank"
                               className="hover:text-nepred-600 transition-colors"
-                              title={prod.name}
                             >
                               {prod.name}
                             </Link>
@@ -1312,15 +1311,15 @@ export default function AdminPage() {
                           <div className="flex items-center gap-1.5 mt-0.5">
                             <span className="font-mono text-[10px] text-stone-400">{prod.id}</span>
                             {prod.badge && (
-                              <span className="px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 text-[9px] font-bold">
+                              <span className="px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 text-[9px] font-bold truncate max-w-[120px]" title={prod.badge}>
                                 {prod.badge}
                               </span>
                             )}
                           </div>
                         </td>
-                        <td className="p-3 text-stone-600 whitespace-nowrap">{prod.categoryName}</td>
-                        <td className="p-3 text-stone-500 text-[11px] max-w-xs truncate">{prod.village}</td>
-                        <td className="p-3 font-bold text-nepred-600 price-tag whitespace-nowrap">
+                        <td className="py-2.5 px-2 sm:px-3 text-stone-600 whitespace-nowrap text-[11px]">{prod.categoryName}</td>
+                        <td className="py-2.5 px-2 sm:px-3 text-stone-500 text-[11px] max-w-[150px] truncate" title={prod.village}>{prod.village}</td>
+                        <td className="py-2.5 px-2 sm:px-3 font-bold text-nepred-600 price-tag whitespace-nowrap">
                           {formatCurrency(prod.price)}
                           {prod.originalPrice && (
                             <span className="block text-[10px] text-stone-400 line-through font-normal price-tag">
@@ -1328,13 +1327,13 @@ export default function AdminPage() {
                             </span>
                           )}
                         </td>
-                        <td className="p-3 text-amber-500 font-bold whitespace-nowrap">
+                        <td className="py-2.5 px-2 sm:px-3 text-amber-500 font-bold whitespace-nowrap">
                           <span className="inline-flex items-center gap-1">
                             <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
                             <span>{prod.rating}</span>
                           </span> <span className="text-[10px] text-stone-400">({prod.reviewsCount})</span>
                         </td>
-                        <td className="p-3 whitespace-nowrap">
+                        <td className="py-2.5 px-2 sm:px-3 whitespace-nowrap text-center">
                           <button
                             type="button"
                             onClick={() => handleToggleStock(prod)}
@@ -1347,12 +1346,12 @@ export default function AdminPage() {
                             {prod.inStock ? 'Còn hàng' : 'Tạm hết'}
                           </button>
                         </td>
-                        <td className="p-3 text-right whitespace-nowrap">
+                        <td className="py-2.5 px-3 text-right whitespace-nowrap sticky right-0 bg-white group-hover:bg-stone-50/90 transition-colors shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.08)] z-10">
                           <div className="flex items-center justify-end gap-1.5">
                             <button
                               type="button"
                               onClick={() => handleOpenEditModal(prod)}
-                              className="p-1.5 rounded-lg bg-stone-100 hover:bg-nepred-50 hover:text-nepred-600 text-stone-600 transition-colors"
+                              className="p-1.5 rounded-lg bg-stone-100 hover:bg-nepred-100 hover:text-nepred-700 text-stone-700 transition-colors"
                               title="Sửa sản phẩm"
                             >
                               <Edit className="w-3.5 h-3.5" />
@@ -1360,7 +1359,7 @@ export default function AdminPage() {
                             <button
                               type="button"
                               onClick={() => handleDeleteProduct(prod)}
-                              className="p-1.5 rounded-lg bg-stone-100 hover:bg-red-50 hover:text-red-600 text-stone-600 transition-colors"
+                              className="p-1.5 rounded-lg bg-red-50 hover:bg-red-600 hover:text-white text-red-600 transition-colors border border-red-200/60"
                               title="Xóa sản phẩm"
                             >
                               <Trash2 className="w-3.5 h-3.5" />

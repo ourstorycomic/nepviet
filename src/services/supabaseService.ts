@@ -79,6 +79,10 @@ export function mapRowToProduct(row: any): Product {
     preservation: row.preservation || '',
     badge: row.badge || undefined,
     isFeatured: Boolean(row.is_featured),
+    approvalStatus: row.approval_status || row.approvalStatus || (row.badge?.includes('Chờ') ? 'pending' : 'approved'),
+    rejectionReason: row.rejection_reason || row.rejectionReason,
+    artisanName: row.artisan_name || row.artisanName,
+    submittedAt: row.submitted_at || row.submittedAt,
   };
 }
 
@@ -104,6 +108,10 @@ export function mapProductToRow(p: Product): any {
     preservation: p.preservation,
     badge: p.badge || null,
     is_featured: Boolean(p.isFeatured),
+    approval_status: p.approvalStatus || (p.badge?.includes('Chờ') ? 'pending' : 'approved'),
+    rejection_reason: p.rejectionReason || null,
+    artisan_name: p.artisanName || null,
+    submitted_at: p.submittedAt || null,
   };
 }
 

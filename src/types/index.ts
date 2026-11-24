@@ -19,6 +19,10 @@ export interface Product {
   preservation: string;
   badge?: string;
   isFeatured?: boolean;
+  approvalStatus?: 'approved' | 'pending' | 'rejected';
+  rejectionReason?: string;
+  artisanName?: string;
+  submittedAt?: string;
 }
 
 export interface CartItem {

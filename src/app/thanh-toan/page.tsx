@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
+import { insertOrderToDb } from '@/services/supabaseService';
 import { formatCurrency } from '@/utils/format';
 import {
   ShieldCheck,
@@ -229,6 +230,68 @@ export default function CheckoutPage() {
       };
 
       setSuccessOrder(orderData);
+
+      // Lưu đơn hàng lập tức vào cơ sở dữ liệu hệ thống (cho cả Admin và Kênh Nghệ Nhân)
+      try {
+        const existing = JSON.parse(localStorage.getItem('nepviet_custom_orders') || '[]');
+        const newOrderRecord = {
+          id: generatedOrderId,
+          customer: formData.name.trim(),
+          customerName: formData.name.trim(),
+          phone: formData.phone.trim(),
+          address: formData.address.trim(),
+          city: formData.city,
+          total: subtotal,
+          method: formData.paymentMethod === 'BANK' ? 'VIETQR' : 'COD',
+          paymentMethod: formData.paymentMethod === 'BANK' ? 'VIETQR' : 'COD',
+          status: 'pending',
+          items: cart.map((i) => ({
+            id: i.product.id,
+            name: i.product.name,
+            price: i.product.price,
+            quantity: i.quantity,
+            image: i.product.images[0] || '/products/bo-am-chen-men-lam-bat-trang.jpg',
+            village: i.product.village,
+          })),
+          date: formattedDate,
+        };
+        localStorage.setItem('nepviet_custom_orders', JSON.stringify([newOrderRecord, ...existing]));
+
+        // Đồng bộ đơn hàng lên bảng public.orders trên Supabase Cloud
+        insertOrderToDb({
+          id: generatedOrderId,
+          customer_name: formData.name.trim(),
+          phone: formData.phone.trim(),
+          city: formData.city,
+          address: formData.address.trim(),
+          notes: formData.notes.trim() || undefined,
+          items: newOrderRecord.items,
+          total: subtotal,
+          payment_method: formData.paymentMethod === 'BANK' ? 'VIETQR' : 'COD',
+          status: 'pending',
+          transaction_code: orderData.bankInfo?.memo,
+        }).catch((err) => console.warn('Supabase sync order warning:', err));
+
+        // Cập nhật tức thì vào bộ nhớ Admin Portal
+        const adminOrders = JSON.parse(localStorage.getItem('nepviet_orders_db') || '[]');
+        const adminFormatted = {
+          id: generatedOrderId,
+          customerName: formData.name.trim(),
+          phone: formData.phone.trim(),
+          city: formData.city,
+          itemsCount: cart.length,
+          total: subtotal,
+          paymentMethod: (formData.paymentMethod === 'BANK' ? 'VIETQR' : 'COD') as any,
+          status: 'pending' as const,
+          date: formattedDate,
+          transactionCode: orderData.bankInfo?.memo,
+          isPaid: false,
+        };
+        localStorage.setItem('nepviet_orders_db', JSON.stringify([adminFormatted, ...adminOrders]));
+      } catch (e) {
+        console.error(e);
+      }
+
       clearCart();
       setIsSubmitting(false);
     }, 700);

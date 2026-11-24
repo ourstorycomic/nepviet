@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { CRAFT_VILLAGES, CATEGORIES } from '@/data/products';
 import { useProducts } from '@/utils/productsCatalog';
 import { formatCurrency } from '@/utils/format';
@@ -65,6 +66,7 @@ import {
   QrCode,
   Store,
   ArrowRight,
+  Award,
 } from 'lucide-react';
 
 interface MockOrder {
@@ -109,9 +111,28 @@ const PRESET_IMAGES = [
 ];
 
 export default function AdminPage() {
+  const router = useRouter();
   const { adminUser, isAdminLoggedIn, logoutAdmin } = useAuth();
 
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'orders' | 'products' | 'artisans' | 'accounts' | 'settings'>('dashboard');
+  const isStaff = adminUser?.role === 'staff';
+  const isArtisan = adminUser?.role === 'artisan';
+  const isMaster = adminUser?.role === 'admin';
+
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'orders' | 'products' | 'inspections' | 'artisans' | 'accounts' | 'settings'>('dashboard');
+
+  // Điều hướng nghệ nhân trực tiếp sang Kênh Nghệ Nhân Studio
+  useEffect(() => {
+    if (isArtisan) {
+      router.replace('/kenh-nghe-nhan');
+    }
+  }, [isArtisan, router]);
+
+  // Tự động chuyển về orders nếu staff chọn tab không có quyền
+  useEffect(() => {
+    if (isStaff && (activeTab === 'accounts' || activeTab === 'settings')) {
+      setActiveTab('orders');
+    }
+  }, [isStaff, activeTab]);
   const [orderSearchTerm, setOrderSearchTerm] = useState('');
   const [orderStatusFilter, setOrderStatusFilter] = useState<string>('all');
 
@@ -370,10 +391,16 @@ export default function AdminPage() {
   ]);
 
   const updateOrderStatus = (orderId: string, newStatus: MockOrder['status']) => {
-    setOrders((prev) =>
-      prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o))
-    );
-    showToast(`Đã cập nhật trạng thái đơn ${orderId}`);
+    setOrders((prev) => {
+      const updated = prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o));
+      try {
+        localStorage.setItem('nepviet_orders_db', JSON.stringify(updated));
+      } catch (e) {
+        console.error(e);
+      }
+      return updated;
+    });
+    showToast(`Đã cập nhật trạng thái đơn ${orderId} thành "${newStatus === 'completed' ? 'Hoàn tất' : newStatus === 'shipping' ? 'Đang giao' : newStatus === 'cancelled' ? 'Đã hủy' : 'Chờ xử lý'}"`);
   };
 
   const handleToggleStock = (prod: Product) => {
@@ -567,8 +594,9 @@ export default function AdminPage() {
     setIsModalOpen(false);
   };
 
-  const totalRevenue = orders.reduce((sum, o) => sum + o.total, 0) + 14850000;
-  const completedOrders = orders.filter((o) => o.status === 'completed').length + 84;
+  const totalRevenue = orders.reduce((sum, o) => sum + (o.status === 'completed' || o.isPaid ? o.total : 0), 0);
+  const totalGmv = orders.reduce((sum, o) => sum + o.total, 0);
+  const completedOrders = orders.filter((o) => o.status === 'completed').length;
   const pendingOrders = orders.filter((o) => o.status === 'pending').length;
 
   const filteredOrders = orders.filter((order) => {
@@ -600,6 +628,37 @@ export default function AdminPage() {
     }
     return true;
   });
+
+  const pendingProducts = products.filter(
+    (p) => p.approvalStatus === 'pending' || (p.badge && p.badge.includes('Chờ'))
+  );
+  const approvedProducts = products.filter(
+    (p) => p.approvalStatus === 'approved' || (!p.approvalStatus && (!p.badge || !p.badge.includes('Chờ')))
+  );
+
+  const handleApproveInspection = async (prodId: string, badgeName = 'Tem OCOP 4 Sao') => {
+    await updateProduct(prodId, {
+      approvalStatus: 'approved',
+      badge: badgeName,
+      inStock: true,
+    });
+    showToast(`Đã phê duyệt tác phẩm đạt chuẩn ${badgeName} và mở bán trực tiếp lên sàn!`);
+  };
+
+  const handleRejectInspection = async (prodId: string, prodName: string) => {
+    const reason = prompt(
+      `Nhập lý do hoặc yêu cầu hoàn thiện hồ sơ gửi nghệ nhân cho "${prodName}":`,
+      'Ảnh chụp thiếu mộc triện xưởng ở đáy sản phẩm. Vui lòng bổ sung giấy kiểm định nung củi khử oxy.'
+    );
+    if (reason && reason.trim()) {
+      await updateProduct(prodId, {
+        approvalStatus: 'rejected',
+        rejectionReason: reason.trim(),
+        badge: 'Yêu cầu hoàn thiện hồ sơ',
+      });
+      showToast(`Đã gửi yêu cầu bổ sung hồ sơ tới xưởng nghệ nhân!`);
+    }
+  };
 
   // Kiểm tra phân quyền đăng nhập Admin Portal
   if (!isAdminLoggedIn) {
@@ -642,15 +701,6 @@ export default function AdminPage() {
           </div>
 
           <div className="flex items-center gap-3">
-            <div
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-emerald-500/50 bg-emerald-950/70 text-emerald-300 text-xs font-semibold"
-              title="Cơ sở dữ liệu Supabase được kết nối tự động qua file .env.local"
-            >
-              <Database className="w-3.5 h-3.5" />
-              <span>Supabase: Đã Kết Nối (.env)</span>
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            </div>
-
             <Link
               href="/"
               target="_blank"
@@ -727,17 +777,17 @@ export default function AdminPage() {
           </div>
         )}
 
-        {/* Staff Role Notice - Minh bạch quyền hạn theo chuẩn RBAC Doanh nghiệp */}
+        {/* Staff Role Notice */}
         {adminUser?.role === 'staff' && (
           <div className="p-4 rounded-2xl bg-blue-50 border border-blue-200 text-blue-900 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs shadow-xs animate-fadeIn">
             <div className="flex items-center gap-2.5">
               <ShieldCheck className="w-5 h-5 text-blue-600 flex-shrink-0" />
               <span>
-                Quyền hạn hiện tại: <strong>Nhân Viên Vận Hành & Kho</strong>. Bạn có thẩm quyền xử lý Đơn Hàng & Kiểm kê Kho Sản Phẩm. Các tab Quản Trị Phân Quyền & Cấu Hình Ngân Hàng Doanh Nghiệp đã được khóa theo chính sách RBAC.
+                Quyền hạn tài khoản: <strong>Nhân Viên Vận Hành & Kho ({adminUser?.email})</strong>. Bạn đang quản lý luồng tiếp nhận đơn hàng, cập nhật vận đơn và kiểm kê số lượng sản phẩm làng nghề.
               </span>
             </div>
             <span className="px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 text-[10px] font-bold flex-shrink-0 border border-blue-200">
-              Quyền Nghiệp Vụ Kho
+              Phân Hệ Vận Hành Kho
             </span>
           </div>
         )}
@@ -749,38 +799,41 @@ export default function AdminPage() {
               id: 'dashboard',
               label: 'Tổng Quan & Thống Kê',
               icon: LayoutDashboard,
-              locked: false,
             },
             {
               id: 'orders',
               label: `Quản Lý Đơn Hàng (${orders.length})`,
               icon: ShoppingBag,
-              locked: false,
             },
             {
               id: 'products',
               label: `Quản Lý Sản Phẩm & Kho (${products.length})`,
               icon: Package,
-              locked: false,
+            },
+            {
+              id: 'inspections',
+              label: pendingProducts.length > 0 ? `Kiểm Định & Duyệt (${pendingProducts.length})` : 'Kiểm Định & Duyệt',
+              icon: Award,
             },
             {
               id: 'artisans',
               label: `Nghệ Nhân & Làng Nghề (${CRAFT_VILLAGES.length})`,
               icon: Users,
-              locked: false,
             },
-            {
-              id: 'accounts',
-              label: adminUser?.role === 'staff' ? 'Tài Khoản & Phân Quyền (🔒 Khóa)' : `Tài Khoản & Phân Quyền (${accountsList.length})`,
-              icon: ShieldCheck,
-              locked: adminUser?.role === 'staff',
-            },
-            {
-              id: 'settings',
-              label: adminUser?.role === 'staff' ? 'Cài Đặt Hệ Thống (🔒 Khóa)' : 'Cài Đặt Hệ Thống',
-              icon: Settings,
-              locked: adminUser?.role === 'staff',
-            },
+            ...(!isStaff
+              ? [
+                  {
+                    id: 'accounts',
+                    label: `Tài Khoản & Phân Quyền (${accountsList.length})`,
+                    icon: ShieldCheck,
+                  },
+                  {
+                    id: 'settings',
+                    label: 'Cài Đặt Hệ Thống',
+                    icon: Settings,
+                  },
+                ]
+              : []),
           ].map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -791,8 +844,6 @@ export default function AdminPage() {
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
                   isActive
                     ? 'bg-nepred-600 text-white shadow-md shadow-nepred-600/20'
-                    : tab.locked
-                    ? 'text-stone-400 hover:text-stone-600 hover:bg-stone-50 cursor-pointer'
                     : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100'
                 }`}
               >
@@ -806,6 +857,33 @@ export default function AdminPage() {
         {/* TAB 1: DASHBOARD OVERVIEW */}
         {activeTab === 'dashboard' && (
           <div className="space-y-6">
+
+            {/* Banner Thông Báo Có Tác Phẩm Chờ Duyệt Kiểm Định */}
+            {pendingProducts.length > 0 && (
+              <div className="p-5 rounded-2xl bg-gradient-to-r from-amber-600 via-amber-700 to-stone-900 text-white shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-fadeIn">
+                <div className="flex items-center gap-3.5">
+                  <div className="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center font-bold text-amber-100 flex-shrink-0">
+                    <Award className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <p className="font-bold text-sm">Hội Đồng Kiểm Định: Có {pendingProducts.length} tác phẩm mới gửi lên chờ cấp tem OCOP</p>
+                      <span className="px-2 py-0.5 rounded-full bg-white/25 text-[10px] font-bold">Chờ Thẩm Định</span>
+                    </div>
+                    <p className="text-xs text-cream-100 mt-0.5">
+                      Nghệ nhân từ Xưởng Bát Tràng vừa nộp hồ sơ tác phẩm mới. Vui lòng thẩm định chất lượng đất sét, lò nung và cấp tem trước khi niêm yết lên sàn.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('inspections')}
+                  className="px-4 py-2 rounded-xl bg-white text-stone-900 font-bold text-xs shadow-sm hover:bg-cream-100 transition-colors whitespace-nowrap flex-shrink-0"
+                >
+                  Thẩm Định Ngay →
+                </button>
+              </div>
+            )}
 
             {/* Top Stat Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -832,7 +910,7 @@ export default function AdminPage() {
                   </div>
                 </div>
                 <p className="font-serif text-2xl font-bold text-stone-900 price-tag">
-                  {completedOrders + pendingOrders}
+                  {orders.length}
                 </p>
                 <p className="text-[11px] text-amber-600 font-medium">
                   {pendingOrders} đơn đang chờ xác nhận
@@ -862,7 +940,7 @@ export default function AdminPage() {
                   </div>
                 </div>
                 <p className="font-serif text-2xl font-bold text-stone-900 price-tag">
-                  15+
+                  {CRAFT_VILLAGES.length}
                 </p>
                 <p className="text-[11px] text-stone-500">
                   Hà Nội, Bắc Ninh, Quảng Nam...
@@ -1298,6 +1376,211 @@ export default function AdminPage() {
           </div>
         )}
 
+        {/* TAB: INSPECTIONS & OCOP APPROVAL */}
+        {activeTab === 'inspections' && (
+          <div className="space-y-6 animate-fadeIn">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h2 className="font-serif font-bold text-xl text-stone-900 flex items-center gap-2">
+                  <Award className="w-5 h-5 text-amber-600" />
+                  <span>Hội Đồng Kiểm Định & Phê Duyệt Di Sản Nếp Việt</span>
+                </h2>
+                <p className="text-xs text-stone-500">
+                  Quy trình thẩm định 3 bước: Thẩm định nguyên liệu thổ nhưỡng bản địa → Kiểm định lò nung & chứng thư kim loại chì/cadimi → Cấp tem OCOP chuẩn quốc gia trước khi xuất bản lên sàn bán lẻ.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="px-3 py-1.5 rounded-xl bg-amber-50 text-amber-800 border border-amber-200 text-xs font-bold">
+                  Chờ Thẩm Định: {pendingProducts.length}
+                </span>
+                <span className="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold">
+                  Đã Lên Sàn: {approvedProducts.length}
+                </span>
+              </div>
+            </div>
+
+            {/* Pending Inspection Queue */}
+            {pendingProducts.length === 0 ? (
+              <div className="bg-white rounded-3xl p-8 sm:p-12 border border-stone-200 text-center space-y-3 shadow-sm">
+                <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto">
+                  <CheckCircle2 className="w-8 h-8" />
+                </div>
+                <h3 className="font-serif font-bold text-base text-stone-900">
+                  Hồ Sơ Kiểm Định Đang Trống
+                </h3>
+                <p className="text-xs text-stone-500 max-w-md mx-auto">
+                  Hiện tại toàn bộ tác phẩm gửi lên đều đã được Hội Đồng Giám Định Nếp Việt thẩm định và cấp phép mở bán thành công.
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <h3 className="text-xs font-bold text-stone-600 uppercase tracking-wider">
+                  Danh Sách Tác Phẩm Chờ Thẩm Định ({pendingProducts.length})
+                </h3>
+                <div className="grid grid-cols-1 gap-5">
+                  {pendingProducts.map((prod) => (
+                    <div
+                      key={prod.id}
+                      className="bg-white rounded-3xl p-6 sm:p-7 border-2 border-amber-300 shadow-sm space-y-5"
+                    >
+                      <div className="flex flex-col lg:flex-row gap-6">
+                        {/* Product Image */}
+                        <div className="relative w-full sm:w-48 h-48 rounded-2xl overflow-hidden bg-stone-100 border border-cream-200 flex-shrink-0">
+                          <Image
+                            src={prod.images[0] || '/products/bo-am-chen-men-lam-bat-trang.jpg'}
+                            alt={prod.name}
+                            fill
+                            className="object-cover"
+                          />
+                          <span className="absolute top-2 left-2 px-2.5 py-1 rounded-md bg-amber-600 text-white text-[10px] font-bold uppercase tracking-wider">
+                            Chờ Kiểm Định
+                          </span>
+                        </div>
+
+                        {/* Details */}
+                        <div className="flex-1 space-y-3">
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="px-2.5 py-0.5 rounded-full bg-cream-100 text-amber-900 text-[10px] font-bold">
+                                {prod.categoryName || 'Gốm Sứ Bát Tràng'}
+                              </span>
+                              <span className="text-xs text-stone-400 font-mono">#{prod.id}</span>
+                            </div>
+                            <h4 className="font-serif font-bold text-lg text-stone-900 mt-1">
+                              {prod.name}
+                            </h4>
+                            <p className="text-xs text-stone-600">
+                              Nghệ nhân gửi hồ sơ: <strong className="text-stone-900">{prod.artisanName || 'Nghệ nhân Phạm Văn Tuấn (Xưởng Gốm Bát Tràng)'}</strong>
+                            </p>
+                            <p className="text-[11px] text-stone-500">
+                              Làng nghề: {prod.village}
+                            </p>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 bg-stone-50 rounded-2xl border border-stone-200 text-xs">
+                            <div>
+                              <span className="text-[11px] text-stone-500">Chất liệu chế tác:</span>
+                              <p className="font-semibold text-stone-800">{prod.material}</p>
+                            </div>
+                            <div>
+                              <span className="text-[11px] text-stone-500">Giá xuất xưởng đề xuất:</span>
+                              <p className="font-serif font-bold text-nepred-600 text-sm price-tag">
+                                {formatCurrency(prod.price)}
+                              </p>
+                            </div>
+                          </div>
+
+                          <p className="text-xs text-stone-600 leading-relaxed">
+                            <strong>Thuyết minh tác phẩm:</strong> {prod.summary || prod.description}
+                          </p>
+
+                          {/* Quality Check Badges */}
+                          <div className="flex flex-wrap items-center gap-3 pt-1 text-[11px] text-emerald-800">
+                            <span className="flex items-center gap-1 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 font-medium">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Đất sét cao lanh đạt chuẩn
+                            </span>
+                            <span className="flex items-center gap-1 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 font-medium">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Nung khử oxy 1.300°C
+                            </span>
+                            <span className="flex items-center gap-1 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 font-medium">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Hàm lượng chì/cadimi: 0%
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Approval Actions Bar */}
+                      <div className="pt-4 border-t border-stone-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                        <div className="flex items-center gap-2 text-xs">
+                          <span className="font-semibold text-stone-600">Cấp tem chuẩn:</span>
+                          <span className="px-2.5 py-1 rounded-lg bg-nepgold-500/10 text-nepgold-700 font-bold border border-nepgold-500/30 text-[11px]">
+                            Tem OCOP 4 Sao Quốc Gia
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-2.5 justify-end">
+                          <button
+                            type="button"
+                            onClick={() => handleRejectInspection(prod.id, prod.name)}
+                            className="px-4 py-2 rounded-xl border border-red-200 bg-red-50 hover:bg-red-100 text-red-700 text-xs font-bold transition-colors"
+                          >
+                            ✕ Yêu Cầu Hoàn Thiện
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleApproveInspection(prod.id, 'Tem OCOP 4 Sao')}
+                            className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md transition-all flex items-center gap-1.5"
+                          >
+                            <CheckCircle2 className="w-4 h-4" />
+                            <span>✓ Phê Duyệt & Xuất Bản Lên Sàn</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Approved Heritage Archive Table */}
+            <div className="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
+              <h3 className="font-serif font-bold text-base text-stone-900">
+                Lịch Sử Tác Phẩm Đã Được Cấp Phép & Đang Mở Bán ({approvedProducts.length})
+              </h3>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-stone-50 text-stone-500 uppercase tracking-wider text-[10px]">
+                    <tr>
+                      <th className="p-3 rounded-l-xl">Tác Phẩm</th>
+                      <th className="p-3">Làng Nghề</th>
+                      <th className="p-3">Giá Niêm Yết</th>
+                      <th className="p-3">Tem Chứng Nhận</th>
+                      <th className="p-3">Trạng Thái Sàn</th>
+                      <th className="p-3 text-right rounded-r-xl">Hành Động</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-stone-100">
+                    {approvedProducts.slice(0, 8).map((prod) => (
+                      <tr key={prod.id} className="hover:bg-stone-50/60">
+                        <td className="p-3 font-semibold text-stone-900 flex items-center gap-2.5">
+                          <div className="relative w-9 h-9 rounded-lg overflow-hidden bg-stone-100 flex-shrink-0">
+                            <Image src={prod.images[0] || '/products/bo-am-chen-men-lam-bat-trang.jpg'} alt={prod.name} fill className="object-cover" />
+                          </div>
+                          <span className="line-clamp-1">{prod.name}</span>
+                        </td>
+                        <td className="p-3 text-stone-600">{prod.village}</td>
+                        <td className="p-3 font-bold text-nepred-600">{formatCurrency(prod.price)}</td>
+                        <td className="p-3">
+                          <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-bold border border-emerald-200">
+                            {prod.badge || 'Tem OCOP 4 Sao'}
+                          </span>
+                        </td>
+                        <td className="p-3">
+                          <span className="inline-flex items-center gap-1 text-emerald-700 font-bold text-[11px]">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                            Đang mở bán live
+                          </span>
+                        </td>
+                        <td className="p-3 text-right">
+                          <Link
+                            href={`/san-pham/${prod.slug}`}
+                            target="_blank"
+                            className="text-nepred-600 hover:underline font-bold text-xs inline-flex items-center gap-1"
+                          >
+                            <span>Xem trang bán</span>
+                            <ExternalLink className="w-3 h-3" />
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* TAB 4: ARTISANS & VILLAGES */}
         {activeTab === 'artisans' && (
           <div className="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-6">
@@ -1329,31 +1612,7 @@ export default function AdminPage() {
         )}
 
         {/* TAB 5: ACCOUNTS & RBAC MANAGEMENT */}
-        {activeTab === 'accounts' && (
-          adminUser?.role === 'staff' ? (
-            <div className="bg-white rounded-3xl p-8 sm:p-12 border border-red-200 text-center space-y-4 max-w-xl mx-auto shadow-sm animate-fadeIn">
-              <div className="w-16 h-16 rounded-3xl bg-red-50 text-red-600 flex items-center justify-center mx-auto border border-red-200">
-                <Lock className="w-8 h-8" />
-              </div>
-              <h3 className="font-serif font-bold text-xl text-stone-900">
-                Quyền Truy Cập Bị Từ Chối (403 Forbidden)
-              </h3>
-              <p className="text-xs text-stone-600 leading-relaxed">
-                Tài khoản của bạn thuộc vai trò <strong>Nhân Viên Vận Hành & Kho ({adminUser?.email})</strong>. 
-                Theo chính sách phân quyền RBAC của doanh nghiệp, chức năng <strong>Quản Trị Phân Quyền & Tài Khoản</strong> chỉ dành riêng cho <strong>Admin Master (Ban Giám Đốc)</strong>.
-              </p>
-              <div className="p-3 bg-cream-50 rounded-xl text-stone-500 text-[11px]">
-                Nếu bạn cần cấp quyền điều chỉnh cấu hình, vui lòng liên hệ Admin Master: <strong>admin@nepviet.vn</strong>
-              </div>
-              <button
-                type="button"
-                onClick={() => setActiveTab('orders')}
-                className="px-5 py-2.5 rounded-xl bg-nepred-600 hover:bg-nepred-700 text-white font-bold text-xs shadow-md transition-all"
-              >
-                Quay Về Quản Lý Đơn Hàng
-              </button>
-            </div>
-          ) : (
+        {!isStaff && activeTab === 'accounts' && (
           <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
@@ -1598,34 +1857,10 @@ export default function AdminPage() {
               </div>
             </div>
           </div>
-          )
         )}
 
         {/* TAB 6: SYSTEM SETTINGS & SUPABASE DATABASE */}
-        {activeTab === 'settings' && (
-          adminUser?.role === 'staff' ? (
-            <div className="bg-white rounded-3xl p-8 sm:p-12 border border-red-200 text-center space-y-4 max-w-xl mx-auto shadow-sm animate-fadeIn">
-              <div className="w-16 h-16 rounded-3xl bg-red-50 text-red-600 flex items-center justify-center mx-auto border border-red-200">
-                <Lock className="w-8 h-8" />
-              </div>
-              <h3 className="font-serif font-bold text-xl text-stone-900">
-                Quyền Truy Cập Bị Từ Chối (403 Forbidden)
-              </h3>
-              <p className="text-xs text-stone-600 leading-relaxed">
-                Tài khoản <strong>Nhân Viên Vận Hành ({adminUser?.email})</strong> không có thẩm quyền điều chỉnh số tài khoản ngân hàng thụ hưởng VietQR công ty hoặc cấu hình cơ sở dữ liệu Supabase.
-              </p>
-              <div className="p-3 bg-cream-50 rounded-xl text-stone-500 text-[11px]">
-                Theo chính sách an toàn bảo mật dòng tiền của sàn Nếp Việt, chỉ <strong>Admin Master (Ban Giám Đốc)</strong> mới có thẩm quyền thay đổi thông tin này.
-              </div>
-              <button
-                type="button"
-                onClick={() => setActiveTab('orders')}
-                className="px-5 py-2.5 rounded-xl bg-nepred-600 hover:bg-nepred-700 text-white font-bold text-xs shadow-md transition-all"
-              >
-                Quay Về Quản Lý Đơn Hàng
-              </button>
-            </div>
-          ) : (
+        {!isStaff && activeTab === 'settings' && (
           <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-sm space-y-8 max-w-4xl">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-stone-200">
               <div>
@@ -1834,7 +2069,6 @@ export default function AdminPage() {
               </div>
             </div>
           </div>
-          )
         )}
 
       </div>

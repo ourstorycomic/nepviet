@@ -15,7 +15,7 @@ interface ProductDetailViewProps {
 export function ProductDetailView({ slug, initialProduct }: ProductDetailViewProps) {
   const { products, isLoaded } = useProducts();
 
-  const product = initialProduct || products.find((p) => p.slug === slug);
+  const product = products.find((p) => p.slug === slug) || initialProduct;
 
   if (!product) {
     if (!isLoaded) {

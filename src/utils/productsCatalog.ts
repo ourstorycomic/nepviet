@@ -25,7 +25,7 @@ export function getStoredProducts(): Product[] {
     const raw = localStorage.getItem(PRODUCTS_STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed) && parsed.length >= PRODUCTS.length) {
+      if (Array.isArray(parsed) && parsed.length > 0) {
         return parsed;
       }
     }

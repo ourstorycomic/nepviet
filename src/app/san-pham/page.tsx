@@ -48,6 +48,11 @@ function ProductsFilterView() {
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
+      // Chỉ hiển thị các sản phẩm đã qua kiểm định duyệt lên sàn
+      if (product.approvalStatus === 'pending' || product.approvalStatus === 'rejected') {
+        return false;
+      }
+
       if (selectedCategory !== 'all' && product.category !== selectedCategory) {
         return false;
       }
@@ -165,50 +170,49 @@ function ProductsFilterView() {
             {[
               {
                 title: 'Mây Tre Phú Vinh',
-                count: '5 mẫu thủ công',
                 img: '/showcase/may-tre-dan-phu-vinh.webp',
                 slug: 'may-tre',
               },
               {
                 title: 'Đồ Chơi Dân Gian',
-                count: '5 mẫu truyền thống',
                 img: '/showcase/qua-tang-do-choi-dan-gian.webp',
                 slug: 'do-choi-qua-tang',
               },
               {
                 title: 'Lụa Vạn Phúc & Canvas',
-                count: '5 mẫu dệt may',
                 img: '/showcase/lua-to-tam-van-phuc.jpg',
                 slug: 'phu-kien-thoi-trang',
               },
               {
                 title: 'Ẩm Thực Cổ Truyền',
-                count: '4 món tiến vua',
                 img: '/showcase/am-thuc-tra-co-truyen.jpg',
                 slug: 'am-thuc',
               },
-            ].map((item, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => setSelectedCategory(item.slug)}
-                className="relative rounded-2xl overflow-hidden aspect-[4/3] group border border-cream-200 shadow-sm text-left block w-full"
-              >
-                <Image
-                  src={item.img}
-                  alt={item.title}
-                  fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-500 filter brightness-[0.7]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute bottom-3 left-3 right-3 text-white">
-                  <h4 className="font-serif font-bold text-xs sm:text-sm group-hover:text-amber-300 transition-colors">
-                    {item.title}
-                  </h4>
-                  <p className="text-[10px] text-cream-200">{item.count}</p>
-                </div>
-              </button>
-            ))}
+            ].map((item, idx) => {
+              const count = products.filter(p => p.category === item.slug && p.approvalStatus !== 'pending' && p.approvalStatus !== 'rejected').length;
+              return (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setSelectedCategory(item.slug)}
+                  className="relative rounded-2xl overflow-hidden aspect-[4/3] group border border-cream-200 shadow-sm text-left block w-full"
+                >
+                  <Image
+                    src={item.img}
+                    alt={item.title}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-500 filter brightness-[0.7]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute bottom-3 left-3 right-3 text-white">
+                    <h4 className="font-serif font-bold text-xs sm:text-sm group-hover:text-amber-300 transition-colors">
+                      {item.title}
+                    </h4>
+                    <p className="text-[10px] text-cream-200">{count} mẫu chế tác</p>
+                  </div>
+                </button>
+              );
+            })}
           </div>
 
         </div>

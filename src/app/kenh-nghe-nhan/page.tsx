@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, useMemo, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import { useProducts } from '@/utils/productsCatalog';
 import { formatCurrency } from '@/utils/format';
 import {
   Store,
@@ -40,6 +41,7 @@ import {
 
 interface ArtisanProduct {
   id: string;
+  slug?: string;
   name: string;
   category: string;
   price: number;
@@ -47,11 +49,43 @@ interface ArtisanProduct {
   inStock: boolean;
   stockCount: number;
   image: string;
-  status: 'active' | 'pending' | 'out_of_stock';
+  status: 'active' | 'pending' | 'rejected' | 'out_of_stock';
   material: string;
   badge?: string;
   totalSold: number;
+  rejectionReason?: string;
 }
+
+interface ArtisanPayout {
+  id: string;
+  period: string;
+  date: string;
+  revenue: number;
+  fee: number;
+  amount: number;
+  status: 'completed' | 'processing';
+}
+
+const DEFAULT_ARTISAN_PAYOUTS: ArtisanPayout[] = [
+  {
+    id: 'PAY-2026-11A',
+    period: '01/11/2026 - 15/11/2026',
+    date: '16/11/2026',
+    revenue: 12500000,
+    fee: 1000000,
+    amount: 11500000,
+    status: 'completed',
+  },
+  {
+    id: 'PAY-2026-10B',
+    period: '16/10/2026 - 31/10/2026',
+    date: '01/11/2026',
+    revenue: 8400000,
+    fee: 672000,
+    amount: 7728000,
+    status: 'completed',
+  },
+];
 
 interface ArtisanOrder {
   id: string;
@@ -217,10 +251,41 @@ const INITIAL_ARTISAN_ORDERS: ArtisanOrder[] = [
 function ArtisanStudioContent() {
   const router = useRouter();
   const { adminUser, logoutAdmin } = useAuth();
+  const { products: catalogProducts, addProduct, updateProduct } = useProducts();
 
   const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'orders' | 'wallet' | 'profile'>('overview');
-  const [products, setProducts] = useState<ArtisanProduct[]>(INITIAL_ARTISAN_PRODUCTS);
-  const [orders, setOrders] = useState<ArtisanOrder[]>(INITIAL_ARTISAN_ORDERS);
+
+  // Load artisan-specific craft pieces from shared catalog
+  const [customArtisanProducts, setCustomArtisanProducts] = useState<ArtisanProduct[]>([]);
+
+  // Orders state persisted in LocalStorage
+  const [orders, setOrders] = useState<ArtisanOrder[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('nepviet_artisan_orders');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch (e) { }
+    }
+    return INITIAL_ARTISAN_ORDERS;
+  });
+
+  // Payout history state persisted in LocalStorage
+  const [payouts, setPayouts] = useState<ArtisanPayout[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const raw = localStorage.getItem('nepviet_artisan_payouts');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch (e) { }
+    }
+    return DEFAULT_ARTISAN_PAYOUTS;
+  });
+
   const [searchQuery, setSearchQuery] = useState('');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -234,72 +299,248 @@ function ArtisanStudioContent() {
 
   // Payout request modal
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
-  const [withdrawAmount, setWithdrawAmount] = useState('15000000');
+  const [withdrawAmount, setWithdrawAmount] = useState('2000000');
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 3000);
   };
 
-  // Workshop financial calculations
-  const totalRevenue = orders.reduce((sum, ord) => sum + ord.total, 0) + 38000000;
-  const platformFee = Math.round(totalRevenue * 0.08); // 8% sàn Nếp Việt
+  // Synchronize new incoming customer orders from localStorage
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('nepviet_custom_orders');
+      if (raw) {
+        const customOrders = JSON.parse(raw);
+        if (Array.isArray(customOrders) && customOrders.length > 0) {
+          const mappedOrders: ArtisanOrder[] = [];
+          customOrders.forEach((co: any) => {
+            if (co.items && Array.isArray(co.items)) {
+              co.items.forEach((item: any, idx: number) => {
+                mappedOrders.push({
+                  id: `${co.id}-${idx + 1}`,
+                  customerName: co.customer || 'Khách Hàng Nếp Việt',
+                  customerPhone: co.phone || '0988 888 888',
+                  city: co.city || 'Hà Nội',
+                  productName: item.name || 'Bộ Tác Phẩm Men Lam Bát Tràng',
+                  productImage: item.image || '/products/bo-am-chen-men-lam-bat-trang.jpg',
+                  quantity: item.quantity || 1,
+                  price: item.price || co.total,
+                  total: (item.price || co.total) * (item.quantity || 1),
+                  status: co.status === 'Đã thanh toán' ? 'crafting' : 'received',
+                  orderDate: co.date || 'Hôm nay',
+                  customNote: co.address ? `Địa chỉ giao: ${co.address}` : 'Đơn đặt hàng trực tuyến từ Nếp Việt',
+                });
+              });
+            } else {
+              mappedOrders.push({
+                id: co.id,
+                customerName: co.customer || 'Khách Hàng Nếp Việt',
+                customerPhone: co.phone || '0988 888 888',
+                city: co.city || 'Hà Nội',
+                productName: 'Tác Phẩm Gốm Chế Tác Theo Yêu Cầu',
+                productImage: '/products/bo-am-chen-men-lam-bat-trang.jpg',
+                quantity: 1,
+                price: co.total,
+                total: co.total,
+                status: co.status === 'Đã thanh toán' ? 'crafting' : 'received',
+                orderDate: co.date || 'Hôm nay',
+                customNote: co.address || 'Đơn hàng mới từ website',
+              });
+            }
+          });
+
+          setOrders((prev) => {
+            const existingIds = new Set(prev.map((p) => p.id));
+            const newOnes = mappedOrders.filter((m) => !existingIds.has(m.id));
+            if (newOnes.length === 0) return prev;
+            const updated = [...newOnes, ...prev];
+            try {
+              localStorage.setItem('nepviet_artisan_orders', JSON.stringify(updated));
+            } catch (e) { }
+            return updated;
+          });
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
+
+  // Compute products list belonging to this workshop
+  const products: ArtisanProduct[] = useMemo(() => {
+    // 1. Get pottery / Bat Trang items from catalog
+    const fromCatalog: ArtisanProduct[] = catalogProducts
+      .filter((p) => p.category === 'gom-su' || (p.village && p.village.toLowerCase().includes('bát tràng')))
+      .map((p) => ({
+        id: p.id,
+        name: p.name,
+        category: 'Gốm Sứ Mỹ Nghệ',
+        price: p.price,
+        originalPrice: p.originalPrice || Math.round(p.price * 1.2),
+        inStock: p.inStock,
+        stockCount: p.inStock ? 14 : 0,
+        image: (p.images && p.images[0]) || '/products/bo-am-chen-men-lam-bat-trang.jpg',
+        status: !p.inStock
+          ? 'out_of_stock'
+          : p.approvalStatus === 'pending' || (p.badge && p.badge.includes('Chờ'))
+          ? 'pending'
+          : p.approvalStatus === 'rejected'
+          ? 'rejected'
+          : 'active',
+        material: p.material || 'Gốm sa khoáng nung khử 1.300°C',
+        badge: p.badge || (p.isFeatured ? 'Di sản tiêu biểu' : undefined),
+        totalSold: p.reviewsCount ? p.reviewsCount * 3 + 8 : 16,
+        rejectionReason: p.rejectionReason,
+        slug: p.slug,
+      }));
+
+    // Merge with any custom artisan additions
+    const catalogIds = new Set(fromCatalog.map((p) => p.id));
+    const nonDuplicated = customArtisanProducts.filter((p) => !catalogIds.has(p.id));
+    return [...nonDuplicated, ...fromCatalog];
+  }, [catalogProducts, customArtisanProducts]);
+
+  // Workshop financial calculations - 100% dynamic without static fake additions
+  const totalRevenue = orders.reduce((sum, ord) => sum + ord.total, 0);
+  const platformFee = Math.round(totalRevenue * 0.08); // 8% phí sàn Nếp Việt
   const netEarnings = totalRevenue - platformFee;
-  const availableBalance = 24850000;
+  const totalWithdrawn = payouts.filter((p) => p.status === 'completed').reduce((sum, p) => sum + p.amount, 0);
+  const availableBalance = Math.max(0, netEarnings - totalWithdrawn);
+  const pendingReviewRevenue = orders.filter((o) => o.status !== 'shipped').reduce((sum, o) => sum + o.total, 0);
 
   // Handle advancing order status in artisan workshop
   const handleAdvanceOrderStatus = (orderId: string) => {
-    setOrders((prev) =>
-      prev.map((ord) => {
+    setOrders((prev) => {
+      const next = prev.map((ord) => {
         if (ord.id === orderId) {
-          if (ord.status === 'received') return { ...ord, status: 'crafting' };
-          if (ord.status === 'crafting') return { ...ord, status: 'packed' };
-          if (ord.status === 'packed') return { ...ord, status: 'shipped' };
+          if (ord.status === 'received') return { ...ord, status: 'crafting' as const };
+          if (ord.status === 'crafting') return { ...ord, status: 'packed' as const };
+          if (ord.status === 'packed') return { ...ord, status: 'shipped' as const };
         }
         return ord;
-      })
-    );
+      });
+      try {
+        localStorage.setItem('nepviet_artisan_orders', JSON.stringify(next));
+      } catch (e) { }
+      return next;
+    });
     showToast(`Đã cập nhật tiến độ đơn xưởng #${orderId}!`);
   };
 
-  // Handle submitting new craft piece for platform approval
-  const handleFormSubmitNewPiece = (e: React.FormEvent) => {
+  // Handle submitting new craft piece for platform approval & saving to shared catalog
+  const handleFormSubmitNewPiece = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newProductName.trim()) {
       alert('Vui lòng nhập tên tác phẩm!');
       return;
     }
 
-    const newPiece: ArtisanProduct = {
-      id: `art-prod-${Date.now().toString().slice(-4)}`,
+    const price = Number(newProductPrice) || 350000;
+    const stock = Number(newProductStock) || 5;
+
+    const added = await addProduct({
       name: newProductName.trim(),
-      category: 'Gốm Sứ Mỹ Nghệ',
-      price: Number(newProductPrice) || 300000,
-      originalPrice: Math.round((Number(newProductPrice) || 300000) * 1.2),
-      inStock: true,
-      stockCount: Number(newProductStock) || 5,
-      image: '/products/bo-am-chen-men-lam-bat-trang.jpg',
-      status: 'pending',
+      slug: newProductName.trim().toLowerCase().replace(/[^a-z0-9]/g, '-'),
+      category: 'gom-su',
+      categoryName: 'Gốm Sứ Bát Tràng',
+      village: 'Làng gốm Bát Tràng, Gia Lâm, Hà Nội',
+      price,
+      originalPrice: Math.round(price * 1.2),
+      rating: 5,
+      reviewsCount: 0,
+      inStock: stock > 0,
+      images: ['/products/bo-am-chen-men-lam-bat-trang.jpg'],
+      summary: newProductStory.trim() || 'Tác phẩm thủ công gốm Bát Tràng vuốt tay bởi nghệ nhân Phạm Văn Tuấn.',
+      description: newProductStory.trim() || 'Chế tác hoàn toàn thủ công bằng kỹ thuật vuốt tay truyền thống kết hợp nung khử oxy lò củi 1.300°C.',
       material: newProductMaterial.trim() || 'Cốt gốm Bát Tràng thủ công',
+      dimensions: 'Quy cách chuẩn thủ công mỹ nghệ',
+      artisanStory: 'Tác phẩm được chế tác độc bản tại xưởng gốm dòng tộc Bát Tràng.',
+      preservation: 'Tránh va chạm mạnh, rửa bằng nước ấm.',
+      badge: 'Chờ Sàn Kiểm Định & Duyệt',
+      approvalStatus: 'pending',
+      artisanName: 'Nghệ nhân Phạm Văn Tuấn (Xưởng Gốm Bát Tràng)',
+      isFeatured: false,
+    });
+
+    const newPiece: ArtisanProduct = {
+      id: added.id,
+      name: added.name,
+      category: 'Gốm Sứ Mỹ Nghệ',
+      price: added.price,
+      originalPrice: added.originalPrice || Math.round(added.price * 1.2),
+      inStock: added.inStock,
+      stockCount: stock,
+      image: (added.images && added.images[0]) || '/products/bo-am-chen-men-lam-bat-trang.jpg',
+      status: 'pending',
+      material: added.material || 'Cốt gốm Bát Tràng thủ công',
       badge: 'Chờ Sàn Kiểm Định & Duyệt',
       totalSold: 0,
     };
 
-    setProducts([newPiece, ...products]);
+    setCustomArtisanProducts((prev) => [newPiece, ...prev]);
     setIsSubmitModalOpen(false);
     setNewProductName('');
     setNewProductMaterial('');
     setNewProductStory('');
-    showToast('Tác phẩm đã gửi Ban Kiểm Định Di Sản Nếp Việt. Trạng thái: Chờ duyệt!');
+    showToast('Tác phẩm đã gửi Ban Kiểm Định Di Sản Nếp Việt và đồng bộ vào danh mục sàn!');
   };
 
+  // Handle artisan withdraw request - completely dynamic
   const handleWithdrawRequest = (e: React.FormEvent) => {
     e.preventDefault();
+    const amt = Number(withdrawAmount);
+    if (!amt || amt <= 0) {
+      alert('Vui lòng nhập số tiền rút hợp lệ!');
+      return;
+    }
+    if (amt > availableBalance) {
+      alert(`Số dư khả dụng hiện tại chỉ có ${formatCurrency(availableBalance)}. Vui lòng rút số tiền không vượt quá số dư khả dụng!`);
+      return;
+    }
+
+    const fee = Math.round(amt * 0.08);
+    const netAmt = amt - fee;
+    const newPayout: ArtisanPayout = {
+      id: `PAY-${Date.now().toString().slice(-6)}`,
+      period: `${new Date().toLocaleDateString('vi-VN')} - Rút tiền nhanh VietQR`,
+      date: new Date().toLocaleDateString('vi-VN'),
+      revenue: amt,
+      fee,
+      amount: netAmt,
+      status: 'completed',
+    };
+
+    const nextPayouts = [newPayout, ...payouts];
+    setPayouts(nextPayouts);
+    try {
+      localStorage.setItem('nepviet_artisan_payouts', JSON.stringify(nextPayouts));
+    } catch (err) { }
+
     setIsWithdrawModalOpen(false);
-    showToast(`Đã gửi yêu cầu rút ${formatCurrency(Number(withdrawAmount))} về tài khoản MB Bank của nghệ nhân!`);
+    showToast(`Đã giải ngân thành công ${formatCurrency(netAmt)} về tài khoản MB Bank 0912 345 678 của nghệ nhân!`);
   };
 
-  const filteredProducts = products.filter(p =>
+  const handleUpdatePrice = async (prodId: string, currentPrice: number, prodName: string) => {
+    const newPrice = prompt(`Cập nhật giá xuất xưởng cho "${prodName}" (VNĐ):`, String(currentPrice));
+    if (newPrice && !isNaN(Number(newPrice)) && Number(newPrice) > 0) {
+      await updateProduct(prodId, { price: Number(newPrice) });
+      setCustomArtisanProducts((prev) =>
+        prev.map((p) => (p.id === prodId ? { ...p, price: Number(newPrice) } : p))
+      );
+      showToast('Đã cập nhật giá tác phẩm thành công trên toàn hệ thống sàn!');
+    }
+  };
+
+  const handleUpdateStock = async (prodId: string, newStock: number) => {
+    await updateProduct(prodId, { inStock: newStock > 0 });
+    setCustomArtisanProducts((prev) =>
+      prev.map((p) => (p.id === prodId ? { ...p, stockCount: newStock, inStock: newStock > 0 } : p))
+    );
+    showToast(`Đã lưu tồn kho xưởng: ${newStock} chiếc`);
+  };
+
+  const filteredProducts = products.filter((p) =>
     p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     p.material.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -318,7 +559,7 @@ function ArtisanStudioContent() {
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-cream-200/90 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20 gap-4">
-            
+
             {/* Workshop Badge & Brand */}
             <div className="flex items-center gap-3">
               <Link href="/" className="flex items-center gap-2.5 group">
@@ -400,11 +641,10 @@ function ArtisanStudioContent() {
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
-                  isActive
-                    ? 'bg-amber-600 text-white shadow-md shadow-amber-600/20'
-                    : 'text-stone-600 hover:text-stone-900 hover:bg-cream-100/70'
-                }`}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${isActive
+                  ? 'bg-amber-600 text-white shadow-md shadow-amber-600/20'
+                  : 'text-stone-600 hover:text-stone-900 hover:bg-cream-100/70'
+                  }`}
               >
                 <Icon className="w-4 h-4" />
                 <span>{tab.label}</span>
@@ -492,7 +732,10 @@ function ArtisanStudioContent() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => setIsWithdrawModalOpen(true)}
+                  onClick={() => {
+                    setWithdrawAmount(Math.min(availableBalance, 1000000).toString());
+                    setIsWithdrawModalOpen(true);
+                  }}
                   className="px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/20 transition-all flex items-center gap-2"
                 >
                   <Banknote className="w-4 h-4" />
@@ -546,15 +789,14 @@ function ArtisanStudioContent() {
                       <button
                         type="button"
                         onClick={() => handleAdvanceOrderStatus(ord.id)}
-                        className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                          ord.status === 'received'
-                            ? 'bg-nepred-600 text-white hover:bg-nepred-700 shadow-xs'
-                            : ord.status === 'crafting'
+                        className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${ord.status === 'received'
+                          ? 'bg-nepred-600 text-white hover:bg-nepred-700 shadow-xs'
+                          : ord.status === 'crafting'
                             ? 'bg-amber-600 text-white hover:bg-amber-700 shadow-xs'
                             : ord.status === 'packed'
-                            ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-xs'
-                            : 'bg-emerald-100 text-emerald-800 cursor-default'
-                        }`}
+                              ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-xs'
+                              : 'bg-emerald-100 text-emerald-800 cursor-default'
+                          }`}
                       >
                         {ord.status === 'received' && 'Tiếp nhận chế tác →'}
                         {ord.status === 'crafting' && 'Đã nung xong, đóng gói →'}
@@ -653,8 +895,7 @@ function ArtisanStudioContent() {
                               className="w-16 px-2 py-1 bg-stone-50 border border-cream-300 rounded-lg text-xs font-semibold text-center focus:outline-none focus:border-amber-500"
                               onChange={(e) => {
                                 const val = Number(e.target.value);
-                                setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, stockCount: val, inStock: val > 0 } : p));
-                                showToast(`Đã lưu tồn kho: ${val} chiếc`);
+                                handleUpdateStock(prod.id, val);
                               }}
                             />
                             <span className="text-[11px] text-stone-500">chiếc</span>
@@ -663,16 +904,57 @@ function ArtisanStudioContent() {
 
                         <td className="py-4 px-4">
                           {prod.status === 'active' && (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold border border-emerald-200">
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                              Đang Mở Bán
-                            </span>
+                            <div className="space-y-1">
+                              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold border border-emerald-200">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                Đã Duyệt • Đang Mở Bán
+                              </span>
+                              {prod.slug && (
+                                <Link
+                                  href={`/san-pham/${prod.slug}`}
+                                  target="_blank"
+                                  className="block text-[10px] text-nepred-600 hover:underline font-semibold"
+                                >
+                                  Xem live trên sàn →
+                                </Link>
+                              )}
+                            </div>
                           )}
                           {prod.status === 'pending' && (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[11px] font-bold border border-amber-200">
-                              <Clock className="w-3 h-3 text-amber-500" />
-                              Chờ Sàn Kiểm Định
-                            </span>
+                            <div className="space-y-0.5 max-w-xs">
+                              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[11px] font-bold border border-amber-200">
+                                <Clock className="w-3 h-3 text-amber-500" />
+                                Chờ Sàn Kiểm Định OCOP
+                              </span>
+                              <p className="text-[10px] text-stone-500">
+                                Hồ sơ đang được Hội Đồng Thẩm Định Nếp Việt xét duyệt
+                              </p>
+                            </div>
+                          )}
+                          {prod.status === 'rejected' && (
+                            <div className="space-y-1 max-w-xs">
+                              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-red-50 text-red-700 text-[11px] font-bold border border-red-200">
+                                Yêu Cầu Bổ Sung Hồ Sơ
+                              </span>
+                              {prod.rejectionReason && (
+                                <p className="text-[10px] text-red-600 italic">
+                                  "{prod.rejectionReason}"
+                                </p>
+                              )}
+                              <button
+                                type="button"
+                                onClick={async () => {
+                                  await updateProduct(prod.id, {
+                                    approvalStatus: 'pending',
+                                    badge: 'Chờ Sàn Kiểm Định & Duyệt',
+                                  });
+                                  showToast('Đã gửi lại hồ sơ cho Hội Đồng Kiểm Định!');
+                                }}
+                                className="px-2 py-0.5 rounded bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold text-[10px]"
+                              >
+                                Gửi Lại Kiểm Định →
+                              </button>
+                            </div>
                           )}
                           {prod.status === 'out_of_stock' && (
                             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-stone-100 text-stone-600 text-[11px] font-bold">
@@ -688,13 +970,7 @@ function ArtisanStudioContent() {
                         <td className="py-4 px-4 text-right">
                           <button
                             type="button"
-                            onClick={() => {
-                              const newPrice = prompt(`Cập nhật giá xuất xưởng cho "${prod.name}" (VNĐ):`, String(prod.price));
-                              if (newPrice && !isNaN(Number(newPrice))) {
-                                setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, price: Number(newPrice) } : p));
-                                showToast('Đã cập nhật giá tác phẩm thành công!');
-                              }
-                            }}
+                            onClick={() => handleUpdatePrice(prod.id, prod.price, prod.name)}
                             className="px-3 py-1.5 rounded-lg bg-cream-100 hover:bg-cream-200 text-stone-700 text-xs font-semibold transition-colors mr-2"
                           >
                             Đổi Giá
@@ -794,15 +1070,14 @@ function ArtisanStudioContent() {
                       <button
                         type="button"
                         onClick={() => handleAdvanceOrderStatus(ord.id)}
-                        className={`w-full sm:w-auto px-4 py-2 rounded-xl text-xs font-bold shadow-xs transition-all flex items-center justify-center gap-1.5 ${
-                          ord.status === 'received'
-                            ? 'bg-nepred-600 hover:bg-nepred-700 text-white'
-                            : ord.status === 'crafting'
+                        className={`w-full sm:w-auto px-4 py-2 rounded-xl text-xs font-bold shadow-xs transition-all flex items-center justify-center gap-1.5 ${ord.status === 'received'
+                          ? 'bg-nepred-600 hover:bg-nepred-700 text-white'
+                          : ord.status === 'crafting'
                             ? 'bg-amber-600 hover:bg-amber-700 text-white'
                             : ord.status === 'packed'
-                            ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                            : 'bg-emerald-600 text-white opacity-80 cursor-default'
-                        }`}
+                              ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                              : 'bg-emerald-600 text-white opacity-80 cursor-default'
+                          }`}
                       >
                         {ord.status === 'received' && <><span>Nhận Đơn Làm Ngay</span> →</>}
                         {ord.status === 'crafting' && <><span>Hoàn Thiện & Đóng Gói</span> →</>}
@@ -832,7 +1107,10 @@ function ArtisanStudioContent() {
 
               <button
                 type="button"
-                onClick={() => setIsWithdrawModalOpen(true)}
+                onClick={() => {
+                  setWithdrawAmount(Math.min(availableBalance, 1000000).toString());
+                  setIsWithdrawModalOpen(true);
+                }}
                 className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition-all flex-shrink-0"
               >
                 <Banknote className="w-4 h-4" />
@@ -853,7 +1131,7 @@ function ArtisanStudioContent() {
               <div className="bg-white p-6 rounded-3xl border border-cream-200 shadow-xs space-y-2">
                 <span className="text-xs text-stone-500 font-semibold">Doanh Thu Chờ Đối Soát (Kỳ Này)</span>
                 <p className="font-serif text-3xl font-bold text-amber-600">
-                  {formatCurrency(14572000)}
+                  {formatCurrency(pendingReviewRevenue)}
                 </p>
                 <p className="text-[11px] text-stone-400">Đơn hàng đang bưu tá vận chuyển trên đường</p>
               </div>
@@ -887,30 +1165,20 @@ function ArtisanStudioContent() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-cream-100">
-                    <tr>
-                      <td className="py-3.5 px-4 font-mono font-bold text-stone-900">PAY-2026-11A</td>
-                      <td className="py-3.5 px-4">01/11/2026 - 15/11/2026</td>
-                      <td className="py-3.5 px-4 font-semibold">{formatCurrency(22500000)}</td>
-                      <td className="py-3.5 px-4 text-stone-500">-{formatCurrency(1800000)}</td>
-                      <td className="py-3.5 px-4 font-bold text-emerald-700">{formatCurrency(20700000)}</td>
-                      <td className="py-3.5 px-4">
-                        <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold">
-                          ✓ Đã chuyển VietQR
-                        </span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="py-3.5 px-4 font-mono font-bold text-stone-900">PAY-2026-10B</td>
-                      <td className="py-3.5 px-4">16/10/2026 - 31/10/2026</td>
-                      <td className="py-3.5 px-4 font-semibold">{formatCurrency(18400000)}</td>
-                      <td className="py-3.5 px-4 text-stone-500">-{formatCurrency(1472000)}</td>
-                      <td className="py-3.5 px-4 font-bold text-emerald-700">{formatCurrency(16928000)}</td>
-                      <td className="py-3.5 px-4">
-                        <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold">
-                          ✓ Đã chuyển VietQR
-                        </span>
-                      </td>
-                    </tr>
+                    {payouts.map((pay) => (
+                      <tr key={pay.id}>
+                        <td className="py-3.5 px-4 font-mono font-bold text-stone-900">{pay.id}</td>
+                        <td className="py-3.5 px-4">{pay.period}</td>
+                        <td className="py-3.5 px-4 font-semibold">{formatCurrency(pay.revenue)}</td>
+                        <td className="py-3.5 px-4 text-stone-500">-{formatCurrency(pay.fee)}</td>
+                        <td className="py-3.5 px-4 font-bold text-emerald-700">{formatCurrency(pay.amount)}</td>
+                        <td className="py-3.5 px-4">
+                          <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold">
+                            ✓ {pay.status === 'completed' ? 'Đã chuyển VietQR' : 'Đang xử lý'}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -1170,9 +1438,9 @@ function ArtisanStudioContent() {
                 <label className="font-bold text-stone-700">Số Tiền Muốn Rút (VNĐ)</label>
                 <input
                   type="number"
-                  min="500000"
-                  max={availableBalance}
-                  step="100000"
+                  min="50000"
+                  max={Math.max(50000, availableBalance)}
+                  step="50000"
                   value={withdrawAmount}
                   onChange={(e) => setWithdrawAmount(e.target.value)}
                   className="w-full px-3.5 py-2.5 rounded-xl border border-cream-300 font-serif font-bold text-base text-stone-900 focus:outline-none focus:border-emerald-500"

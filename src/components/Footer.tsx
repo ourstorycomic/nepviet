@@ -75,8 +75,9 @@ export function Footer() {
           {/* Brand Info */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3.5">
-              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-nepred-700 to-nepbrown-800 text-white flex items-center justify-center font-han text-2xl font-bold shadow-md border border-nepgold-500/30 select-none">
-                越
+              <div className="relative w-11 h-11 rounded-2xl bg-gradient-to-br from-nepred-700 via-nepred-600 to-nepbrown-800 text-white flex items-center justify-center shadow-md shadow-nepred-950/30 border border-nepgold-500/40 select-none flex-shrink-0">
+                <div className="absolute inset-0.5 rounded-xl border border-dashed border-nepgold-400/40 pointer-events-none" />
+                <span className="font-han text-2xl font-bold text-cream-50 drop-shadow-sm">越</span>
               </div>
               <div className="flex flex-col">
                 <div className="flex items-baseline gap-2">

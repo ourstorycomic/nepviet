@@ -647,12 +647,20 @@ function ArtisanStudioContent() {
             {/* Workshop Badge & Brand */}
             <div className="flex items-center gap-3">
               <Link href="/" className="flex items-center gap-2.5 group">
-                <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-700 via-amber-600 to-stone-900 text-white flex items-center justify-center font-han text-2xl font-bold shadow-md border border-amber-500/40">
-                  越
+                <div className="relative w-10 h-10 rounded-2xl bg-gradient-to-br from-nepred-700 via-nepred-600 to-nepbrown-800 text-white flex items-center justify-center shadow-md shadow-nepred-950/20 border border-nepgold-500/40 group-hover:scale-105 transition-all duration-300 flex-shrink-0">
+                  <div className="absolute inset-0.5 rounded-xl border border-dashed border-nepgold-400/40 pointer-events-none" />
+                  <span className="font-han text-2xl font-bold text-cream-50 drop-shadow-sm select-none">
+                    越
+                  </span>
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5">
-                    <span className="font-serif font-bold text-base text-stone-900 tracking-tight">KÊNH NGHỆ NHÂN</span>
+                    <span className="font-serif font-black text-base text-stone-900 tracking-tight group-hover:text-nepred-600 transition-colors">
+                      NẾP VIỆT ARTISAN
+                    </span>
+                    <span className="font-han text-xs font-bold text-nepred-700 select-none tracking-wider" title="惗越 (Nếp Việt - Hán Nôm)">
+                      惗越
+                    </span>
                     <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold border border-amber-300">
                       Studio Làng Nghề
                     </span>
@@ -1634,15 +1642,14 @@ function ArtisanStudioContent() {
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className={`pointer-events-auto p-4 rounded-2xl shadow-2xl border flex items-start gap-3 transition-all transform translate-y-0 animate-slideInRight ${
-              toast.type === 'error'
-                ? 'bg-stone-900 text-white border-red-500/50 shadow-red-950/30'
-                : toast.type === 'warning'
+            className={`pointer-events-auto p-4 rounded-2xl shadow-2xl border flex items-start gap-3 transition-all transform translate-y-0 animate-slideInRight ${toast.type === 'error'
+              ? 'bg-stone-900 text-white border-red-500/50 shadow-red-950/30'
+              : toast.type === 'warning'
                 ? 'bg-stone-900 text-white border-amber-500/50 shadow-amber-950/30'
                 : toast.type === 'info'
-                ? 'bg-stone-900 text-white border-blue-500/50 shadow-blue-950/30'
-                : 'bg-stone-900 text-white border-emerald-500/50 shadow-emerald-950/30'
-            }`}
+                  ? 'bg-stone-900 text-white border-blue-500/50 shadow-blue-950/30'
+                  : 'bg-stone-900 text-white border-emerald-500/50 shadow-emerald-950/30'
+              }`}
           >
             <div className="flex-shrink-0 mt-0.5">
               {toast.type === 'error' ? (

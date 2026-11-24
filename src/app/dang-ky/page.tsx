@@ -83,8 +83,11 @@ export default function RegisterPage() {
         {/* Brand header */}
         <div className="text-center space-y-2">
           <Link href="/" className="inline-flex items-center gap-2 group">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-nepred-700 via-nepred-600 to-nepbrown-800 text-white flex items-center justify-center font-han text-2xl font-bold shadow-md border border-nepgold-500/30 group-hover:scale-105 transition-transform select-none">
-              越
+            <div className="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-nepred-700 via-nepred-600 to-nepbrown-800 text-white flex items-center justify-center shadow-md shadow-nepred-900/20 border border-nepgold-500/30 group-hover:scale-105 transition-all duration-300">
+              <div className="absolute inset-0.5 rounded-xl border border-dashed border-nepgold-400/40 pointer-events-none" />
+              <span className="font-han text-2xl font-bold tracking-normal text-cream-50 select-none">
+                越
+              </span>
             </div>
           </Link>
           <div className="flex items-center justify-center gap-2">

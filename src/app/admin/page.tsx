@@ -268,27 +268,46 @@ export default function AdminPage() {
 
   useEffect(() => {
     try {
+      // 1. Khôi phục đơn hàng đã lưu trong nepviet_orders_db (kèm trạng thái xử lý kho)
+      const savedAdminOrders = localStorage.getItem('nepviet_orders_db');
+      let baseOrders: MockOrder[] = [];
+      if (savedAdminOrders) {
+        const parsed = JSON.parse(savedAdminOrders);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          baseOrders = parsed;
+          setOrders(parsed);
+        }
+      }
+
+      // 2. Đồng bộ các đơn đặt hàng mới từ cổng Checkout khách hàng
       const raw = localStorage.getItem('nepviet_custom_orders');
       if (raw) {
         const customOrders = JSON.parse(raw);
         if (Array.isArray(customOrders) && customOrders.length > 0) {
           const formatted: MockOrder[] = customOrders.map((co: any) => ({
             id: co.id,
-            customerName: co.customer,
-            phone: co.phone,
-            city: co.city,
-            itemsCount: 1,
+            customerName: co.customer || co.customerName || 'Khách vãng lai',
+            phone: co.phone || '0981234567',
+            city: co.city || 'Hà Nội',
+            itemsCount: co.items?.length || 1,
             total: co.total,
-            paymentMethod: 'VIETQR',
-            status: co.status === 'Đã thanh toán' ? 'completed' : 'pending',
-            date: co.date,
+            paymentMethod: (co.paymentMethod === 'BANK' || co.method === 'VIETQR' ? 'VIETQR' : 'COD') as any,
+            status: co.status === 'Đã thanh toán' ? 'completed' : co.status === 'shipping' ? 'shipping' : 'pending',
+            date: co.date || co.paidAt || new Date().toISOString().split('T')[0],
             transactionCode: co.transactionCode,
-            isPaid: true,
+            isPaid: co.method === 'VIETQR' || co.paymentMethod === 'VIETQR' || co.status === 'Đã thanh toán',
           }));
           setOrders((prev) => {
-            const existingIds = new Set(prev.map(p => p.id));
+            const currentList = baseOrders.length > 0 ? baseOrders : prev;
+            const existingIds = new Set(currentList.map(p => p.id));
             const newOnes = formatted.filter(f => !existingIds.has(f.id));
-            return [...newOnes, ...prev];
+            const merged = [...newOnes, ...currentList];
+            try {
+              localStorage.setItem('nepviet_orders_db', JSON.stringify(merged));
+            } catch (err) {
+              console.error(err);
+            }
+            return merged;
           });
         }
       }
@@ -526,12 +545,12 @@ export default function AdminPage() {
       isOpen: true,
       type: 'warning',
       title: 'Khôi Phục Danh Mục Gốc',
-      message: 'Hệ thống sẽ đặt lại toàn bộ danh mục sản phẩm về 14 tuyệt tác di sản nguyên bản của Nếp Việt với đầy đủ hình ảnh gốc chất lượng cao.',
+      message: 'Hệ thống sẽ đặt lại toàn bộ danh mục sản phẩm về các tuyệt tác di sản nguyên bản của Nếp Việt với đầy đủ hình ảnh chuẩn OCOP chất lượng cao.',
       confirmText: 'Khôi Phục Ngay',
       cancelText: 'Hủy Bỏ',
       onConfirm: () => {
         resetToDefault();
-        showToast('Đã khôi phục 14 sản phẩm nguyên bản của Nếp Việt!', 'success');
+        showToast('Đã khôi phục danh mục di sản nguyên bản của Nếp Việt thành công!', 'success');
       },
     });
   };
@@ -741,15 +760,14 @@ export default function AdminPage() {
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className={`pointer-events-auto p-4 rounded-2xl shadow-2xl border flex items-start gap-3 transition-all transform translate-y-0 animate-slideInRight ${
-              toast.type === 'error'
-                ? 'bg-stone-900 text-white border-red-500/50 shadow-red-950/30'
-                : toast.type === 'warning'
+            className={`pointer-events-auto p-4 rounded-2xl shadow-2xl border flex items-start gap-3 transition-all transform translate-y-0 animate-slideInRight ${toast.type === 'error'
+              ? 'bg-stone-900 text-white border-red-500/50 shadow-red-950/30'
+              : toast.type === 'warning'
                 ? 'bg-stone-900 text-white border-amber-500/50 shadow-amber-950/30'
                 : toast.type === 'info'
-                ? 'bg-stone-900 text-white border-blue-500/50 shadow-blue-950/30'
-                : 'bg-stone-900 text-white border-emerald-500/50 shadow-emerald-950/30'
-            }`}
+                  ? 'bg-stone-900 text-white border-blue-500/50 shadow-blue-950/30'
+                  : 'bg-stone-900 text-white border-emerald-500/50 shadow-emerald-950/30'
+              }`}
           >
             <div className="flex-shrink-0 mt-0.5">
               {toast.type === 'error' ? (
@@ -779,26 +797,34 @@ export default function AdminPage() {
       {/* Top Admin Navigation Header */}
       <header className="bg-stone-900 text-white border-b border-stone-800 sticky top-0 z-40">
         <div className="max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-nepred-600 text-white flex items-center justify-center font-serif text-lg font-bold shadow-md">
-              NV
+          <Link href="/" className="flex items-center gap-3 group flex-shrink-0">
+            <div className="relative w-10 h-10 rounded-2xl bg-gradient-to-br from-nepred-700 via-nepred-600 to-nepbrown-800 text-white flex items-center justify-center shadow-lg shadow-nepred-950/40 border border-nepgold-500/40 group-hover:scale-105 transition-all duration-300 flex-shrink-0">
+              <div className="absolute inset-0.5 rounded-xl border border-dashed border-nepgold-400/40 pointer-events-none" />
+              <span className="font-han text-2xl font-bold tracking-normal text-cream-50 drop-shadow-sm select-none">
+                越
+              </span>
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-serif text-lg font-bold tracking-wide text-cream-50">
+                <span className="font-serif text-lg font-black tracking-wide text-cream-50 group-hover:text-amber-300 transition-colors">
                   {adminUser?.role === 'artisan' ? 'NẾP VIỆT ARTISAN' : 'NẾP VIỆT ADMIN'}
                 </span>
-                <span className="px-2 py-0.5 rounded bg-nepgold-500/20 text-nepgold-400 text-[10px] font-bold uppercase tracking-wider border border-nepgold-500/30">
-                  {adminUser?.role === 'artisan' ? 'Cổng Nghệ Nhân & Đối Tác' : 'Hệ Thống Quản Trị'}
+                <span className="font-han text-xs font-bold text-nepgold-400 select-none tracking-wider opacity-90" title="惗越 (Nếp Việt - Hán Nôm)">
+                  惗越
+                </span>
+                <span className="px-2 py-0.5 rounded-full bg-nepgold-500/20 text-nepgold-400 text-[10px] font-bold uppercase tracking-wider border border-nepgold-500/30">
+                  {adminUser?.role === 'artisan' ? 'Cổng Đối Tác Xưởng' : adminUser?.role === 'staff' ? 'Phân Hệ Vận Hành Kho' : 'Trung Tâm Quản Trị'}
                 </span>
               </div>
               <p className="text-[10px] text-stone-400 -mt-0.5">
                 {adminUser?.role === 'artisan'
-                  ? 'Luồng Nghệ nhân / Đối tác cung cấp (Artisan/Partner Flow)'
-                  : 'Bảng điều khiển theo sơ đồ phân cấp (Administrator Flow)'}
+                  ? 'Luồng Nghệ nhân / Đối tác cung cấp (Artisan Studio Flow)'
+                  : adminUser?.role === 'staff'
+                  ? 'Hệ thống vận hành xử lý đơn hàng & xuất nhập kho (Operations Flow)'
+                  : 'Hệ thống điều hành thương mại điện tử di sản toàn sàn (Master Administrator Flow)'}
               </p>
             </div>
-          </div>
+          </Link>
 
           <div className="flex items-center gap-3">
             <Link
@@ -922,17 +948,17 @@ export default function AdminPage() {
             },
             ...(!isStaff
               ? [
-                  {
-                    id: 'accounts',
-                    label: `Tài Khoản & Phân Quyền (${accountsList.length})`,
-                    icon: ShieldCheck,
-                  },
-                  {
-                    id: 'settings',
-                    label: 'Cài Đặt Hệ Thống',
-                    icon: Settings,
-                  },
-                ]
+                {
+                  id: 'accounts',
+                  label: `Tài Khoản & Phân Quyền (${accountsList.length})`,
+                  icon: ShieldCheck,
+                },
+                {
+                  id: 'settings',
+                  label: 'Cài Đặt Hệ Thống',
+                  icon: Settings,
+                },
+              ]
               : []),
           ].map((tab) => {
             const Icon = tab.icon;
@@ -941,11 +967,10 @@ export default function AdminPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
-                  isActive
-                    ? 'bg-nepred-600 text-white shadow-md shadow-nepred-600/20'
-                    : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100'
-                }`}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${isActive
+                  ? 'bg-nepred-600 text-white shadow-md shadow-nepred-600/20'
+                  : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100'
+                  }`}
               >
                 <Icon className="w-4 h-4" />
                 <span>{tab.label}</span>
@@ -1314,10 +1339,10 @@ export default function AdminPage() {
                   type="button"
                   onClick={handleResetCatalog}
                   className="inline-flex items-center gap-1.5 px-3 py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-semibold rounded-xl transition-colors border border-stone-300"
-                  title="Khôi phục lại 14 sản phẩm ban đầu với ảnh gốc"
+                  title="Khôi phục lại danh mục sản phẩm di sản chuẩn ban đầu của sàn"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
-                  <span>Khôi phục 14 ảnh gốc</span>
+                  <span>Khôi Phục Danh Mục Gốc</span>
                 </button>
 
                 <button
@@ -3022,15 +3047,14 @@ CREATE POLICY "Public delete reviews" ON public.reviews FOR DELETE USING (true);
             {/* Header with Type Icon */}
             <div className="flex items-start gap-4">
               <div
-                className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm ${
-                  confirmDialog.type === 'danger'
-                    ? 'bg-red-100 text-red-600 border border-red-200'
-                    : confirmDialog.type === 'warning'
+                className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm ${confirmDialog.type === 'danger'
+                  ? 'bg-red-100 text-red-600 border border-red-200'
+                  : confirmDialog.type === 'warning'
                     ? 'bg-amber-100 text-amber-700 border border-amber-200'
                     : confirmDialog.type === 'prompt'
-                    ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                    : 'bg-stone-100 text-stone-700 border border-stone-200'
-                }`}
+                      ? 'bg-blue-100 text-blue-700 border border-blue-200'
+                      : 'bg-stone-100 text-stone-700 border border-stone-200'
+                  }`}
               >
                 {confirmDialog.type === 'danger' ? (
                   <Trash2 className="w-6 h-6" />
@@ -3116,13 +3140,12 @@ CREATE POLICY "Public delete reviews" ON public.reviews FOR DELETE USING (true);
                   setConfirmDialog(null);
                   await onConf(val);
                 }}
-                className={`px-5 py-2.5 rounded-xl text-white text-xs font-bold shadow-md transition-all flex items-center gap-1.5 ${
-                  confirmDialog.type === 'danger'
-                    ? 'bg-red-600 hover:bg-red-700 shadow-red-600/30'
-                    : confirmDialog.type === 'warning'
+                className={`px-5 py-2.5 rounded-xl text-white text-xs font-bold shadow-md transition-all flex items-center gap-1.5 ${confirmDialog.type === 'danger'
+                  ? 'bg-red-600 hover:bg-red-700 shadow-red-600/30'
+                  : confirmDialog.type === 'warning'
                     ? 'bg-amber-600 hover:bg-amber-700 shadow-amber-600/30'
                     : 'bg-nepred-600 hover:bg-nepred-700 shadow-nepred-600/30'
-                }`}
+                  }`}
               >
                 {confirmDialog.type === 'danger' && <Trash2 className="w-3.5 h-3.5" />}
                 <span>{confirmDialog.confirmText || 'Xác nhận'}</span>

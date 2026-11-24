@@ -62,12 +62,18 @@ export function AdminLoginGate() {
       <div className="relative z-10 max-w-md w-full space-y-6">
         {/* Brand Header */}
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-nepred-600 text-white font-han text-3xl font-bold shadow-xl shadow-nepred-600/30 mb-2 border border-nepred-500/40 select-none">
-            越
+          <div className="relative inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-nepred-700 via-nepred-600 to-nepbrown-800 text-white font-han text-3xl font-bold shadow-xl shadow-nepred-950/50 mb-2 border border-nepgold-500/40 select-none">
+            <div className="absolute inset-0.5 rounded-xl border border-dashed border-nepgold-400/40 pointer-events-none" />
+            <span className="drop-shadow-sm">越</span>
           </div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-white tracking-wide">
-            NẾP VIỆT ADMIN PORTAL
-          </h1>
+          <div className="flex items-center justify-center gap-2">
+            <h1 className="font-serif text-2xl sm:text-3xl font-black text-white tracking-wide">
+              NẾP VIỆT ADMIN
+            </h1>
+            <span className="font-han text-base font-bold text-nepgold-400 select-none tracking-wider" title="惗越 (Nếp Việt - Hán Nôm)">
+              惗越
+            </span>
+          </div>
           <p className="text-xs text-stone-400">
             Hệ thống quản trị thương mại điện tử & di sản thủ công
           </p>

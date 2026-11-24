@@ -9,6 +9,7 @@ import {
   Clock,
   Send,
   CheckCircle2,
+  AlertCircle,
   HelpCircle,
   ShieldCheck,
   Truck,
@@ -27,14 +28,16 @@ export default function ContactPage() {
     message: '',
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name.trim() || !formData.phone.trim()) {
-      alert('Vui lòng nhập họ tên và số điện thoại liên hệ.');
+      setFormError('Vui lòng nhập họ tên và số điện thoại liên hệ.');
       return;
     }
+    setFormError(null);
     setIsSubmitted(true);
   };
 
@@ -154,6 +157,12 @@ export default function ContactPage() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4 text-xs">
+                {formError && (
+                  <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 flex-shrink-0 text-red-500" />
+                    <span>{formError}</span>
+                  </div>
+                )}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <label className="font-bold text-stone-700">Họ và tên của bạn <span className="text-nepred-600">*</span></label>

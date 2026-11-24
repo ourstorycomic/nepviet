@@ -193,7 +193,7 @@ export default function CheckoutPage() {
     if (!validate()) return;
 
     if (cart.length === 0 && !successOrder) {
-      alert('Giỏ hàng trống! Vui lòng chọn sản phẩm trước khi thanh toán.');
+      setErrors((prev) => ({ ...prev, cart: 'Giỏ hàng đang trống! Vui lòng chọn sản phẩm trước khi thanh toán.' }));
       router.push('/san-pham');
       return;
     }

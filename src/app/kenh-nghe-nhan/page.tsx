@@ -17,6 +17,8 @@ import {
   Clock,
   CheckCircle2,
   AlertCircle,
+  AlertTriangle,
+  Info,
   Truck,
   Flame,
   ArrowUpRight,
@@ -298,7 +300,30 @@ function ArtisanStudioContent() {
   });
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // Stacked Toasts State
+  interface ToastItem {
+    id: number;
+    message: string;
+    type: 'success' | 'error' | 'warning' | 'info';
+  }
+  const [toasts, setToasts] = useState<ToastItem[]>([]);
+
+  const showToast = (message: string, type: 'success' | 'error' | 'warning' | 'info' = 'success') => {
+    const id = Date.now() + Math.random();
+    setToasts((prev) => [...prev, { id, message, type }]);
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id));
+    }, 4000);
+  };
+
+  const removeToast = (id: number) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
+
+  // Price Edit Custom Modal State
+  const [editingPriceItem, setEditingPriceItem] = useState<{ id: string; name: string; price: number } | null>(null);
+  const [inputNewPrice, setInputNewPrice] = useState<number>(350000);
 
   // New Product Submission Modal State
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
@@ -311,11 +336,6 @@ function ArtisanStudioContent() {
   // Payout request modal
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState('2000000');
-
-  const showToast = (msg: string) => {
-    setToastMessage(msg);
-    setTimeout(() => setToastMessage(null), 3000);
-  };
 
   // Synchronize new incoming customer orders from localStorage
   useEffect(() => {
@@ -388,10 +408,10 @@ function ArtisanStudioContent() {
           const newStatus: ArtisanProduct['status'] = !catItem.inStock
             ? 'out_of_stock'
             : catItem.approvalStatus === 'pending' || (catItem.badge && catItem.badge.includes('Chờ'))
-            ? 'pending'
-            : catItem.approvalStatus === 'rejected'
-            ? 'rejected'
-            : 'active';
+              ? 'pending'
+              : catItem.approvalStatus === 'rejected'
+                ? 'rejected'
+                : 'active';
           if (newStatus !== cap.status || catItem.badge !== cap.badge || catItem.rejectionReason !== cap.rejectionReason) {
             changed = true;
             return {
@@ -484,7 +504,7 @@ function ArtisanStudioContent() {
   const handleFormSubmitNewPiece = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newProductName.trim()) {
-      alert('Vui lòng nhập tên tác phẩm!');
+      showToast('Vui lòng nhập tên tác phẩm!', 'warning');
       return;
     }
 
@@ -551,11 +571,11 @@ function ArtisanStudioContent() {
     e.preventDefault();
     const amt = Number(withdrawAmount);
     if (!amt || amt <= 0) {
-      alert('Vui lòng nhập số tiền rút hợp lệ!');
+      showToast('Vui lòng nhập số tiền rút hợp lệ!', 'warning');
       return;
     }
     if (amt > availableBalance) {
-      alert(`Số dư khả dụng hiện tại chỉ có ${formatCurrency(availableBalance)}. Vui lòng rút số tiền không vượt quá số dư khả dụng!`);
+      showToast(`Số dư khả dụng hiện tại chỉ có ${formatCurrency(availableBalance)}. Vui lòng rút số tiền không vượt quá số dư khả dụng!`, 'warning');
       return;
     }
 
@@ -581,15 +601,26 @@ function ArtisanStudioContent() {
     showToast(`Đã giải ngân thành công ${formatCurrency(netAmt)} về tài khoản MB Bank 0912 345 678 của nghệ nhân!`);
   };
 
-  const handleUpdatePrice = async (prodId: string, currentPrice: number, prodName: string) => {
-    const newPrice = prompt(`Cập nhật giá xuất xưởng cho "${prodName}" (VNĐ):`, String(currentPrice));
-    if (newPrice && !isNaN(Number(newPrice)) && Number(newPrice) > 0) {
-      await updateProduct(prodId, { price: Number(newPrice) });
-      setCustomArtisanProducts((prev) =>
-        prev.map((p) => (p.id === prodId ? { ...p, price: Number(newPrice) } : p))
-      );
-      showToast('Đã cập nhật giá tác phẩm thành công trên toàn hệ thống sàn!');
+  const handleOpenPriceModal = (prodId: string, currentPrice: number, prodName: string) => {
+    setEditingPriceItem({ id: prodId, name: prodName, price: currentPrice });
+    setInputNewPrice(currentPrice);
+  };
+
+  const handleSavePrice = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingPriceItem) return;
+    const priceNum = Number(inputNewPrice);
+    if (!priceNum || priceNum <= 0) {
+      showToast('Vui lòng nhập mức giá hợp lệ lớn hơn 0đ!', 'warning');
+      return;
     }
+    await updateProduct(editingPriceItem.id, { price: priceNum });
+    setCustomArtisanProducts((prev) =>
+      prev.map((p) => (p.id === editingPriceItem.id ? { ...p, price: priceNum } : p))
+    );
+    const savedName = editingPriceItem.name;
+    setEditingPriceItem(null);
+    showToast(`Đã cập nhật giá "${savedName}" thành ${formatCurrency(priceNum)}!`, 'success');
   };
 
   const handleUpdateStock = async (prodId: string, newStock: number) => {
@@ -607,13 +638,6 @@ function ArtisanStudioContent() {
 
   return (
     <div className="bg-[#FAF8F5] min-h-screen text-stone-900 font-sans flex flex-col">
-      {/* Toast Notification */}
-      {toastMessage && (
-        <div className="fixed top-5 right-5 z-50 bg-stone-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-2.5 text-xs font-semibold animate-fadeIn border border-amber-500/30">
-          <CheckCircle2 className="w-4 h-4 text-amber-400 flex-shrink-0" />
-          <span>{toastMessage}</span>
-        </div>
-      )}
 
       {/* Top Header - Artisan Studio Identity */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-cream-200/90 shadow-xs">
@@ -1030,7 +1054,7 @@ function ArtisanStudioContent() {
                         <td className="py-4 px-4 text-right">
                           <button
                             type="button"
-                            onClick={() => handleUpdatePrice(prod.id, prod.price, prod.name)}
+                            onClick={() => handleOpenPriceModal(prod.id, prod.price, prod.name)}
                             className="px-3 py-1.5 rounded-lg bg-cream-100 hover:bg-cream-200 text-stone-700 text-xs font-semibold transition-colors mr-2"
                           >
                             Đổi Giá
@@ -1530,6 +1554,120 @@ function ArtisanStudioContent() {
           </div>
         </div>
       )}
+
+      {/* Custom Price Update Modal for Artisan */}
+      {editingPriceItem && (
+        <div className="fixed inset-0 z-50 bg-stone-950/70 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-stone-200/90 space-y-5 animate-scaleUp">
+            <div className="flex items-start justify-between gap-3 pb-3 border-b border-stone-100">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center flex-shrink-0">
+                  <DollarSign className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-serif font-bold text-base text-stone-900">
+                    Cập Nhật Giá Xuất Xưởng
+                  </h3>
+                  <p className="text-xs text-stone-500 truncate max-w-xs">{editingPriceItem.name}</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setEditingPriceItem(null)}
+                className="text-stone-400 hover:text-stone-600 p-1 rounded-lg"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSavePrice} className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-stone-700">Giá bán niêm yết mới (VNĐ):</label>
+                <input
+                  type="number"
+                  min="10000"
+                  step="10000"
+                  value={inputNewPrice}
+                  onChange={(e) => setInputNewPrice(Number(e.target.value))}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 font-serif font-bold text-lg text-stone-900 focus:outline-none focus:border-amber-600 price-tag"
+                />
+              </div>
+
+              {/* Fee Breakdown Calculation */}
+              <div className="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200/70 space-y-1.5 text-xs">
+                <div className="flex justify-between text-stone-600">
+                  <span>Giá bán khách trả:</span>
+                  <span className="font-bold text-stone-900 price-tag">{formatCurrency(inputNewPrice || 0)}</span>
+                </div>
+                <div className="flex justify-between text-stone-500 text-[11px]">
+                  <span>Phí sàn Nếp Việt (8%):</span>
+                  <span>- {formatCurrency(Math.round((inputNewPrice || 0) * 0.08))}</span>
+                </div>
+                <div className="flex justify-between pt-1 border-t border-amber-200 font-bold text-amber-900">
+                  <span>Thực nhận xưởng:</span>
+                  <span className="text-emerald-700 price-tag">{formatCurrency((inputNewPrice || 0) - Math.round((inputNewPrice || 0) * 0.08))}</span>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-2.5 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setEditingPriceItem(null)}
+                  className="px-4 py-2.5 rounded-xl border border-stone-300 bg-white hover:bg-stone-100 text-stone-700 text-xs font-bold transition-colors"
+                >
+                  Hủy Bỏ
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold shadow-md shadow-amber-600/30 transition-all"
+                >
+                  Lưu Giá Mới
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Custom Stacked Toasts */}
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-2.5 max-w-sm pointer-events-none">
+        {toasts.map((toast) => (
+          <div
+            key={toast.id}
+            className={`pointer-events-auto p-4 rounded-2xl shadow-2xl border flex items-start gap-3 transition-all transform translate-y-0 animate-slideInRight ${
+              toast.type === 'error'
+                ? 'bg-stone-900 text-white border-red-500/50 shadow-red-950/30'
+                : toast.type === 'warning'
+                ? 'bg-stone-900 text-white border-amber-500/50 shadow-amber-950/30'
+                : toast.type === 'info'
+                ? 'bg-stone-900 text-white border-blue-500/50 shadow-blue-950/30'
+                : 'bg-stone-900 text-white border-emerald-500/50 shadow-emerald-950/30'
+            }`}
+          >
+            <div className="flex-shrink-0 mt-0.5">
+              {toast.type === 'error' ? (
+                <AlertCircle className="w-5 h-5 text-red-400" />
+              ) : toast.type === 'warning' ? (
+                <AlertTriangle className="w-5 h-5 text-amber-400" />
+              ) : toast.type === 'info' ? (
+                <Info className="w-5 h-5 text-blue-400" />
+              ) : (
+                <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+              )}
+            </div>
+            <div className="flex-1 text-xs font-semibold leading-relaxed">
+              {toast.message}
+            </div>
+            <button
+              type="button"
+              onClick={() => removeToast(toast.id)}
+              className="text-stone-400 hover:text-white transition-colors p-0.5 -mr-1 -mt-1"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

@@ -42,6 +42,9 @@ import {
   Clock,
   Truck,
   AlertCircle,
+  AlertTriangle,
+  Info,
+  FileText,
   ExternalLink,
   ChevronRight,
   ShieldCheck,
@@ -204,8 +207,46 @@ export default function AdminPage() {
     isFeatured: false,
   });
 
-  // Notification Toast state
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  // Custom Toast State
+  interface ToastItem {
+    id: number;
+    message: string;
+    type: 'success' | 'error' | 'warning' | 'info';
+  }
+  const [toasts, setToasts] = useState<ToastItem[]>([]);
+
+  const showToast = (message: string, type: 'success' | 'error' | 'warning' | 'info' = 'success') => {
+    const id = Date.now() + Math.random();
+    setToasts((prev) => [...prev, { id, message, type }]);
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id));
+    }, 4000);
+  };
+
+  const removeToast = (id: number) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
+
+  // Custom Confirmation / Prompt Modal Dialog State
+  interface ConfirmDialogState {
+    isOpen: boolean;
+    type: 'danger' | 'warning' | 'info' | 'prompt';
+    title: string;
+    message: string;
+    itemPreview?: {
+      name: string;
+      id?: string;
+      image?: string;
+      price?: number;
+      badge?: string;
+    };
+    confirmText?: string;
+    cancelText?: string;
+    promptPlaceholder?: string;
+    onConfirm: (val?: string) => void | Promise<void>;
+  }
+  const [confirmDialog, setConfirmDialog] = useState<ConfirmDialogState | null>(null);
+  const [promptInput, setPromptInput] = useState('');
 
   // VietQR Order Modal state
   const [selectedVietQrOrder, setSelectedVietQrOrder] = useState<MockOrder | null>(null);
@@ -289,7 +330,7 @@ export default function AdminPage() {
   const handleCreateAccount = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newAccountData.email.trim() || !newAccountData.full_name.trim() || !newAccountData.password?.trim()) {
-      alert('Vui lòng điền đầy đủ Email, Mật khẩu và Họ tên.');
+      showToast('Vui lòng điền đầy đủ Email, Mật khẩu và Họ tên.', 'warning');
       return;
     }
 
@@ -325,11 +366,6 @@ export default function AdminPage() {
       city: 'Hà Nội',
       loyalty_points: 0,
     });
-  };
-
-  const showToast = (msg: string) => {
-    setToastMessage(msg);
-    setTimeout(() => setToastMessage(null), 3500);
   };
 
   const [orders, setOrders] = useState<MockOrder[]>([
@@ -456,24 +492,48 @@ export default function AdminPage() {
 
   const handleDeleteProduct = (prod: Product) => {
     if (adminUser?.role !== 'admin') {
-      alert('Tài khoản của bạn là Nghệ Nhân / Nhân Viên Vận Hành. Chỉ Admin Master mới có quyền xóa sản phẩm khỏi cơ sở dữ liệu!');
+      showToast('Tài khoản của bạn là Nghệ Nhân / Nhân Viên Vận Hành. Chỉ Admin Master mới có quyền xóa sản phẩm khỏi cơ sở dữ liệu!', 'error');
       return;
     }
-    if (confirm(`Bạn có chắc chắn muốn xóa sản phẩm "${prod.name}" khỏi danh mục không?`)) {
-      deleteProduct(prod.id);
-      showToast(`Đã xóa vĩnh viễn sản phẩm "${prod.name}"`);
-    }
+
+    setConfirmDialog({
+      isOpen: true,
+      type: 'danger',
+      title: 'Xác Nhận Xóa Tác Phẩm',
+      message: 'Bạn có chắc chắn muốn xóa vĩnh viễn tác phẩm này khỏi danh mục sàn Nếp Việt? Thao tác này sẽ đồng bộ trên toàn hệ thống và không thể hoàn tác.',
+      itemPreview: {
+        name: prod.name,
+        id: prod.id,
+        image: prod.images[0] || '/products/bo-am-chen-men-lam-bat-trang.jpg',
+        price: prod.price,
+      },
+      confirmText: 'Xóa Vĩnh Viễn',
+      cancelText: 'Giữ Lại Tác Phẩm',
+      onConfirm: async () => {
+        await deleteProduct(prod.id);
+        showToast(`Đã xóa vĩnh viễn sản phẩm "${prod.name}" thành công!`, 'success');
+      },
+    });
   };
 
   const handleResetCatalog = () => {
     if (adminUser?.role === 'staff') {
-      alert('Tài khoản Staff không có quyền khôi phục danh mục!');
+      showToast('Tài khoản Staff không có quyền khôi phục danh mục!', 'error');
       return;
     }
-    if (confirm('Khôi phục danh mục về 14 sản phẩm gốc ban đầu với đầy đủ ảnh chuẩn?')) {
-      resetToDefault();
-      showToast('Đã khôi phục 14 sản phẩm nguyên bản của Nếp Việt!');
-    }
+
+    setConfirmDialog({
+      isOpen: true,
+      type: 'warning',
+      title: 'Khôi Phục Danh Mục Gốc',
+      message: 'Hệ thống sẽ đặt lại toàn bộ danh mục sản phẩm về 14 tuyệt tác di sản nguyên bản của Nếp Việt với đầy đủ hình ảnh gốc chất lượng cao.',
+      confirmText: 'Khôi Phục Ngay',
+      cancelText: 'Hủy Bỏ',
+      onConfirm: () => {
+        resetToDefault();
+        showToast('Đã khôi phục 14 sản phẩm nguyên bản của Nếp Việt!', 'success');
+      },
+    });
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -481,7 +541,7 @@ export default function AdminPage() {
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      alert('Vui lòng chọn tệp hình ảnh (.jpg, .png, .webp, .avif)!');
+      showToast('Vui lòng chọn tệp hình ảnh (.jpg, .png, .webp, .avif)!', 'warning');
       return;
     }
 
@@ -529,7 +589,7 @@ export default function AdminPage() {
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name.trim()) {
-      alert('Vui lòng nhập tên sản phẩm.');
+      showToast('Vui lòng nhập tên sản phẩm.', 'warning');
       return;
     }
 
@@ -646,18 +706,26 @@ export default function AdminPage() {
   };
 
   const handleRejectInspection = async (prodId: string, prodName: string) => {
-    const reason = prompt(
-      `Nhập lý do hoặc yêu cầu hoàn thiện hồ sơ gửi nghệ nhân cho "${prodName}":`,
-      'Ảnh chụp thiếu mộc triện xưởng ở đáy sản phẩm. Vui lòng bổ sung giấy kiểm định nung củi khử oxy.'
-    );
-    if (reason && reason.trim()) {
-      await updateProduct(prodId, {
-        approvalStatus: 'rejected',
-        rejectionReason: reason.trim(),
-        badge: 'Yêu cầu hoàn thiện hồ sơ',
-      });
-      showToast(`Đã gửi yêu cầu bổ sung hồ sơ tới xưởng nghệ nhân!`);
-    }
+    const defaultReason = 'Ảnh chụp thiếu mộc triện xưởng ở đáy sản phẩm. Vui lòng bổ sung giấy kiểm định nung củi khử oxy.';
+    setPromptInput(defaultReason);
+    setConfirmDialog({
+      isOpen: true,
+      type: 'prompt',
+      title: 'Yêu Cầu Bổ Sung Hồ Sơ',
+      message: `Gửi phản hồi hướng dẫn nghệ nhân hoàn thiện hồ sơ kiểm định cho tác phẩm "${prodName}":`,
+      promptPlaceholder: 'Nhập nội dung yêu cầu gửi xưởng nghệ nhân...',
+      confirmText: 'Gửi Nghệ Nhân',
+      cancelText: 'Đóng',
+      onConfirm: async (reason) => {
+        const finalReason = (reason && reason.trim()) || defaultReason;
+        await updateProduct(prodId, {
+          approvalStatus: 'rejected',
+          rejectionReason: finalReason,
+          badge: 'Yêu cầu hoàn thiện hồ sơ',
+        });
+        showToast(`Đã gửi yêu cầu bổ sung hồ sơ tới xưởng nghệ nhân!`, 'info');
+      },
+    });
   };
 
   // Kiểm tra phân quyền đăng nhập Admin Portal
@@ -668,13 +736,45 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-stone-100/90 text-stone-900 flex flex-col font-sans">
 
-      {/* Toast Alert */}
-      {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-stone-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border border-nepgold-500/30 animate-bounce">
-          <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-          <span className="text-xs font-semibold">{toastMessage}</span>
-        </div>
-      )}
+      {/* Custom Stacked Toasts */}
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-2.5 max-w-sm pointer-events-none">
+        {toasts.map((toast) => (
+          <div
+            key={toast.id}
+            className={`pointer-events-auto p-4 rounded-2xl shadow-2xl border flex items-start gap-3 transition-all transform translate-y-0 animate-slideInRight ${
+              toast.type === 'error'
+                ? 'bg-stone-900 text-white border-red-500/50 shadow-red-950/30'
+                : toast.type === 'warning'
+                ? 'bg-stone-900 text-white border-amber-500/50 shadow-amber-950/30'
+                : toast.type === 'info'
+                ? 'bg-stone-900 text-white border-blue-500/50 shadow-blue-950/30'
+                : 'bg-stone-900 text-white border-emerald-500/50 shadow-emerald-950/30'
+            }`}
+          >
+            <div className="flex-shrink-0 mt-0.5">
+              {toast.type === 'error' ? (
+                <AlertCircle className="w-5 h-5 text-red-400" />
+              ) : toast.type === 'warning' ? (
+                <AlertTriangle className="w-5 h-5 text-amber-400" />
+              ) : toast.type === 'info' ? (
+                <Info className="w-5 h-5 text-blue-400" />
+              ) : (
+                <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+              )}
+            </div>
+            <div className="flex-1 text-xs font-semibold leading-relaxed">
+              {toast.message}
+            </div>
+            <button
+              type="button"
+              onClick={() => removeToast(toast.id)}
+              className="text-stone-400 hover:text-white transition-colors p-0.5 -mr-1 -mt-1"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        ))}
+      </div>
 
       {/* Top Admin Navigation Header */}
       <header className="bg-stone-900 text-white border-b border-stone-800 sticky top-0 z-40">
@@ -2909,6 +3009,123 @@ CREATE POLICY "Public delete reviews" ON public.reviews FOR DELETE USING (true);
                 className="flex-1 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold text-xs transition-colors"
               >
                 Đóng Cửa Sổ
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Custom Confirmation / Action Modal Dialog */}
+      {confirmDialog && confirmDialog.isOpen && (
+        <div className="fixed inset-0 z-50 bg-stone-950/70 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-stone-200/90 space-y-5 animate-scaleUp overflow-hidden relative">
+            {/* Header with Type Icon */}
+            <div className="flex items-start gap-4">
+              <div
+                className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm ${
+                  confirmDialog.type === 'danger'
+                    ? 'bg-red-100 text-red-600 border border-red-200'
+                    : confirmDialog.type === 'warning'
+                    ? 'bg-amber-100 text-amber-700 border border-amber-200'
+                    : confirmDialog.type === 'prompt'
+                    ? 'bg-blue-100 text-blue-700 border border-blue-200'
+                    : 'bg-stone-100 text-stone-700 border border-stone-200'
+                }`}
+              >
+                {confirmDialog.type === 'danger' ? (
+                  <Trash2 className="w-6 h-6" />
+                ) : confirmDialog.type === 'warning' ? (
+                  <AlertTriangle className="w-6 h-6" />
+                ) : confirmDialog.type === 'prompt' ? (
+                  <FileText className="w-6 h-6" />
+                ) : (
+                  <CheckCircle2 className="w-6 h-6" />
+                )}
+              </div>
+              <div className="flex-1">
+                <h3 className="font-serif font-bold text-lg text-stone-900 leading-snug">
+                  {confirmDialog.title}
+                </h3>
+                <p className="text-xs text-stone-500 mt-1 leading-relaxed">
+                  {confirmDialog.message}
+                </p>
+              </div>
+            </div>
+
+            {/* Item Preview Card (For Product Deletion) */}
+            {confirmDialog.itemPreview && (
+              <div className="p-3.5 rounded-2xl bg-stone-50 border border-stone-200 flex items-center gap-3.5">
+                <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-stone-200 border border-stone-300 flex-shrink-0">
+                  <Image
+                    src={confirmDialog.itemPreview.image || '/products/bo-am-chen-men-lam-bat-trang.jpg'}
+                    alt={confirmDialog.itemPreview.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="font-serif font-bold text-stone-900 text-xs sm:text-sm truncate">
+                    {confirmDialog.itemPreview.name}
+                  </p>
+                  <div className="flex items-center gap-2 mt-1">
+                    {confirmDialog.itemPreview.id && (
+                      <span className="font-mono text-stone-400 text-[10px]">
+                        {confirmDialog.itemPreview.id}
+                      </span>
+                    )}
+                    {confirmDialog.itemPreview.price && (
+                      <span className="font-bold text-nepred-600 text-xs price-tag">
+                        {formatCurrency(confirmDialog.itemPreview.price)}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Prompt Text Input / Area (For Inspection Rejection Reason) */}
+            {confirmDialog.type === 'prompt' && (
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-stone-700">Nội dung phản hồi gửi nghệ nhân:</label>
+                <textarea
+                  rows={3}
+                  value={promptInput}
+                  onChange={(e) => setPromptInput(e.target.value)}
+                  placeholder={confirmDialog.promptPlaceholder || 'Nhập lý do...'}
+                  className="w-full p-3 text-xs rounded-xl border border-stone-300 bg-stone-50 focus:bg-white focus:outline-none focus:border-nepred-600 transition-colors"
+                />
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            <div className="flex items-center justify-end gap-2.5 pt-2 border-t border-stone-100">
+              <button
+                type="button"
+                onClick={() => {
+                  setConfirmDialog(null);
+                }}
+                className="px-4 py-2.5 rounded-xl border border-stone-300 bg-white hover:bg-stone-100 text-stone-700 text-xs font-bold transition-colors"
+              >
+                {confirmDialog.cancelText || 'Hủy bỏ'}
+              </button>
+              <button
+                type="button"
+                onClick={async () => {
+                  const val = promptInput;
+                  const onConf = confirmDialog.onConfirm;
+                  setConfirmDialog(null);
+                  await onConf(val);
+                }}
+                className={`px-5 py-2.5 rounded-xl text-white text-xs font-bold shadow-md transition-all flex items-center gap-1.5 ${
+                  confirmDialog.type === 'danger'
+                    ? 'bg-red-600 hover:bg-red-700 shadow-red-600/30'
+                    : confirmDialog.type === 'warning'
+                    ? 'bg-amber-600 hover:bg-amber-700 shadow-amber-600/30'
+                    : 'bg-nepred-600 hover:bg-nepred-700 shadow-nepred-600/30'
+                }`}
+              >
+                {confirmDialog.type === 'danger' && <Trash2 className="w-3.5 h-3.5" />}
+                <span>{confirmDialog.confirmText || 'Xác nhận'}</span>
               </button>
             </div>
           </div>

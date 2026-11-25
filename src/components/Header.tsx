@@ -65,27 +65,33 @@ export function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-cream-200/80 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.04)] transition-all">
-        {/* Top Banner Bar - Heritage Quality */}
-        <div className="bg-nepgreen-900 text-cream-100 text-xs py-1.5 sm:py-2 px-3 sm:px-4 border-b border-nepgreen-800">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <header className="sticky top-0 z-40 bg-[#16110F]/95 backdrop-blur-md border-b border-[#2C211D] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.5)] transition-all">
+        {/* Top Banner Bar - Heritage Quality with Traditional Lacquer Pattern */}
+        <div className="relative bg-[#3D0A10] text-[#EDE4D8] text-xs py-2 px-3 sm:px-4 border-b border-[#52121A] overflow-hidden">
+          {/* Dong Son Lacquer Pattern - Clearly visible */}
+          <div
+            className="absolute inset-0 bg-cover bg-center pointer-events-none opacity-90"
+            style={{ backgroundImage: `url('/patterns/background-hoa-van.webp')` }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/20 pointer-events-none" />
+          <div className="relative z-10 max-w-7xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-nepgreen-800/90 text-nepgold-400 font-semibold text-[10px] tracking-wider uppercase">
-                <span className="w-1.5 h-1.5 rounded-full bg-nepgold-400" />
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#3D0F15]/90 text-[#D4AF37] font-semibold text-[10px] tracking-wider uppercase border border-[#D4AF37]/40 shadow-xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
                 Thương hiệu di sản
               </span>
-              <span className="hidden md:inline text-cream-200 text-[11px]">
+              <span className="hidden md:inline text-[#D4C8B8] text-[11px]">
                 Giao hàng hỏa tốc toàn quốc • Miễn phí vận chuyển cho đơn từ 300.000đ
               </span>
             </div>
 
-            <div className="flex items-center gap-3 sm:gap-4 text-[11px] text-cream-200">
+            <div className="flex items-center gap-3 sm:gap-4 text-[11px] text-[#D4C8B8]">
               <div className="hidden sm:flex items-center gap-1">
-                <PhoneCall className="w-3.5 h-3.5 text-nepgold-400" strokeWidth={1.5} />
-                <span>CSKH: <strong className="text-cream-50 font-sans">1900 6868</strong></span>
+                <PhoneCall className="w-3.5 h-3.5 text-[#D4AF37]" strokeWidth={1.5} />
+                <span>CSKH: <strong className="text-white font-sans">1900 6868</strong></span>
               </div>
-              <span className="hidden sm:inline text-nepgreen-700">|</span>
-              <div className="flex items-center gap-1.5 text-cream-200 text-[10px] sm:text-[11px]">
+              <span className="hidden sm:inline text-stone-600">|</span>
+              <div className="flex items-center gap-1.5 text-[#D4C8B8] text-[10px] sm:text-[11px]">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 <span>VN | VNĐ (₫)</span>
               </div>
@@ -102,7 +108,7 @@ export function Header() {
               {/* Mobile Hamburger Button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden p-2 rounded-xl text-stone-800 hover:text-nepred-600 hover:bg-cream-100 transition-colors"
+                className="lg:hidden p-2 rounded-xl text-[#EDE4D8] hover:text-[#E2CA9E] hover:bg-[#251C1A] transition-colors"
                 aria-label={mobileMenuOpen ? 'Đóng menu' : 'Mở menu'}
               >
                 {mobileMenuOpen ? (
@@ -114,7 +120,7 @@ export function Header() {
 
               {/* Brand Logo - Phong cách Triện thư Hán Nôm */}
               <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group flex-shrink-0">
-                <div className="relative w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-nepred-700 via-nepred-600 to-nepbrown-800 text-white flex items-center justify-center shadow-md shadow-nepred-900/20 border border-nepgold-500/30 group-hover:scale-105 transition-all duration-300 flex-shrink-0">
+                <div className="relative w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-nepred-700 via-nepred-600 to-nepbrown-800 text-white flex items-center justify-center shadow-md shadow-nepred-900/40 border border-nepgold-500/40 group-hover:scale-105 transition-all duration-300 flex-shrink-0">
                   <div className="absolute inset-0.5 rounded-xl border border-dashed border-nepgold-400/40 pointer-events-none" />
                   <span className="font-han text-xl sm:text-2xl font-bold tracking-normal text-cream-50 drop-shadow-sm select-none">
                     越
@@ -122,14 +128,14 @@ export function Header() {
                 </div>
                 <div className="flex flex-col">
                   <div className="flex items-baseline gap-1.5 leading-tight">
-                    <span className="font-serif text-lg sm:text-2xl font-black tracking-wide text-stone-900 group-hover:text-nepred-600 transition-colors">
+                    <span className="font-headline text-lg sm:text-2xl font-black tracking-wide text-white group-hover:text-[#E2CA9E] transition-colors">
                       NẾP VIỆT
                     </span>
-                    <span className="font-han text-xs sm:text-sm font-bold text-nepred-700 select-none tracking-wider opacity-90" title="惗越 (Nếp Việt - Hán Nôm)">
+                    <span className="font-han text-xs sm:text-sm font-bold text-[#D4AF37] select-none tracking-wider opacity-95" title="惗越 (Nếp Việt - Hán Nôm)">
                       惗越
                     </span>
                   </div>
-                  <span className="text-[8px] sm:text-[10px] uppercase tracking-[0.16em] sm:tracking-[0.2em] text-nepgreen-800 font-bold font-sans">
+                  <span className="text-[8px] sm:text-[10px] uppercase tracking-[0.16em] sm:tracking-[0.2em] text-[#C5A880] font-bold font-sans">
                     Tinh hoa thủ công di sản
                   </span>
                 </div>
@@ -145,8 +151,8 @@ export function Header() {
                     key={link.href}
                     href={link.href}
                     className={`text-xs xl:text-sm font-semibold tracking-tight transition-all relative py-1 ${isActive
-                      ? 'text-nepred-600 font-bold after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-nepred-600 after:rounded-full'
-                      : 'text-stone-700 hover:text-nepred-600'
+                      ? 'text-[#E2CA9E] font-bold after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-[#C5A880] after:rounded-full'
+                      : 'text-[#CFC2B2] hover:text-[#E2CA9E]'
                       }`}
                   >
                     {link.label}
@@ -160,15 +166,15 @@ export function Header() {
               {/* Search Trigger Button */}
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="flex items-center gap-2 px-2.5 sm:px-3.5 py-2 rounded-full bg-cream-100 hover:bg-cream-200 border border-cream-200 text-stone-700 hover:text-nepred-600 transition-all text-xs group shadow-xs"
+                className="flex items-center gap-2 px-2.5 sm:px-3.5 py-2 rounded-full bg-[#221A17] hover:bg-[#2D221F] border border-[#382B26] text-[#CFC2B2] hover:text-[#E2CA9E] transition-all text-xs group shadow-xs"
                 aria-label="Mở tìm kiếm"
                 title="Tìm kiếm sản phẩm (Ctrl + K)"
               >
-                <Search className="w-4 h-4 text-stone-500 group-hover:text-nepred-600 transition-colors" strokeWidth={1.5} />
-                <span className="hidden sm:inline text-stone-500 group-hover:text-stone-800 font-medium">
+                <Search className="w-4 h-4 text-stone-400 group-hover:text-[#E2CA9E] transition-colors" strokeWidth={1.5} />
+                <span className="hidden sm:inline text-stone-300 group-hover:text-white font-medium">
                   Tìm kiếm...
                 </span>
-                <kbd className="hidden xl:inline-flex items-center px-1.5 py-0.5 text-[9px] font-mono text-stone-400 bg-white border border-cream-300 rounded shadow-2xs">
+                <kbd className="hidden xl:inline-flex items-center px-1.5 py-0.5 text-[9px] font-mono text-stone-400 bg-[#16110F] border border-stone-700 rounded">
                   ⌘K
                 </kbd>
               </button>
@@ -179,13 +185,13 @@ export function Header() {
                   <div className="relative">
                     <button
                       onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                      className="flex items-center gap-1.5 sm:gap-2 p-1.5 sm:px-3 sm:py-1.5 rounded-full hover:bg-cream-100 border border-cream-200 transition-colors"
+                      className="flex items-center gap-1.5 sm:gap-2 p-1.5 sm:px-3 sm:py-1.5 rounded-full hover:bg-[#251C1A] border border-[#382B26] transition-colors"
                       title={user?.name || 'Tài khoản người dùng'}
                     >
-                      <div className="w-7 h-7 rounded-full bg-nepgreen-800 text-cream-50 flex items-center justify-center text-xs font-bold font-sans flex-shrink-0">
+                      <div className="w-7 h-7 rounded-full bg-[#8C5033] text-cream-50 flex items-center justify-center text-xs font-bold font-sans flex-shrink-0">
                         {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
                       </div>
-                      <span className="hidden sm:inline text-xs font-semibold text-stone-800 max-w-[80px] xl:max-w-[110px] truncate">
+                      <span className="hidden sm:inline text-xs font-semibold text-stone-200 max-w-[80px] xl:max-w-[110px] truncate">
                         {user?.name}
                       </span>
                       <ChevronDown className="w-3.5 h-3.5 text-stone-400 hidden sm:inline" strokeWidth={1.5} />
@@ -194,23 +200,23 @@ export function Header() {
                     {userDropdownOpen && (
                       <div
                         onMouseLeave={() => setUserDropdownOpen(false)}
-                        className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-cream-200 py-2 z-50 animate-in fade-in slide-in-from-top-1"
+                        className="absolute right-0 mt-2 w-56 bg-[#1C1614] rounded-2xl shadow-2xl border border-[#382B26] py-2 z-50 text-[#EDE4D8]"
                       >
-                        <div className="px-4 py-2.5 border-b border-cream-100 bg-cream-50/50">
-                          <p className="text-xs font-bold text-stone-900 truncate">{user?.name}</p>
-                          <p className="text-[11px] text-stone-500 truncate">{user?.email}</p>
+                        <div className="px-4 py-2.5 border-b border-[#382B26] bg-[#241C1A]">
+                          <p className="text-xs font-bold text-white truncate">{user?.name}</p>
+                          <p className="text-[11px] text-stone-400 truncate">{user?.email}</p>
                         </div>
                         <Link
                           href="/san-pham"
                           onClick={() => setUserDropdownOpen(false)}
-                          className="flex items-center gap-2 px-4 py-2 text-xs text-stone-700 hover:bg-cream-50 hover:text-nepred-600 transition-colors"
+                          className="flex items-center gap-2 px-4 py-2 text-xs text-stone-300 hover:bg-[#251C1A] hover:text-[#E2CA9E] transition-colors"
                         >
                           Khám phá sản phẩm
                         </Link>
                         <Link
                           href="/gio-hang"
                           onClick={() => setUserDropdownOpen(false)}
-                          className="flex items-center gap-2 px-4 py-2 text-xs text-stone-700 hover:bg-cream-50 hover:text-nepred-600 transition-colors"
+                          className="flex items-center gap-2 px-4 py-2 text-xs text-stone-300 hover:bg-[#251C1A] hover:text-[#E2CA9E] transition-colors"
                         >
                           Quản lý giỏ hàng
                         </Link>
@@ -218,81 +224,81 @@ export function Header() {
                           <Link
                             href="/kenh-nghe-nhan"
                             onClick={() => setUserDropdownOpen(false)}
-                            className="flex items-center gap-2 px-4 py-2 text-xs text-amber-700 bg-amber-50 hover:bg-amber-100 font-bold transition-colors"
+                            className="flex items-center gap-2 px-4 py-2 text-xs text-amber-400 bg-amber-950/40 hover:bg-amber-900/50 font-bold transition-colors"
                           >
-                            <Store className="w-3.5 h-3.5 text-amber-600" />
+                            <Store className="w-3.5 h-3.5 text-amber-400" />
                             <span>Kênh Nghệ Nhân (Studio)</span>
                           </Link>
                         ) : user?.role === 'admin' || user?.role === 'staff' ? (
                           <Link
                             href="/admin"
                             onClick={() => setUserDropdownOpen(false)}
-                            className="flex items-center gap-2 px-4 py-2 text-xs text-nepred-600 hover:bg-nepred-50 font-bold transition-colors"
+                            className="flex items-center gap-2 px-4 py-2 text-xs text-nepred-400 hover:bg-nepred-950/50 font-bold transition-colors"
                           >
                             <ShieldCheck className="w-3.5 h-3.5" strokeWidth={1.5} />
                             <span>Trang Quản Trị (Admin)</span>
                           </Link>
                         ) : null}
-                        <div className="pt-1 mt-1 border-t border-cream-100">
+                        <div className="pt-1 mt-1 border-t border-[#382B26]">
                           <button
                             onClick={() => {
-                              logout();
-                              setUserDropdownOpen(false);
-                            }}
-                            className="w-full flex items-center gap-2 px-4 py-2 text-xs text-red-600 hover:bg-red-50 transition-colors text-left font-medium"
-                          >
-                            <LogOut className="w-3.5 h-3.5" strokeWidth={1.5} />
-                            Đăng xuất tài khoản
-                          </button>
-                        </div>
+                            logout();
+                            setUserDropdownOpen(false);
+                          }}
+                          className="w-full flex items-center gap-2 px-4 py-2 text-xs text-red-400 hover:bg-red-950/40 transition-colors text-left font-medium"
+                        >
+                          <LogOut className="w-3.5 h-3.5" strokeWidth={1.5} />
+                          Đăng xuất tài khoản
+                        </button>
                       </div>
-                    )}
-                  </div>
-                ) : (
-                  <div className="flex items-center">
-                    <Link
-                      href="/dang-nhap"
-                      className="flex items-center gap-1.5 p-2 sm:px-3 sm:py-2 text-xs font-semibold text-stone-700 hover:text-nepred-600 hover:bg-cream-100 rounded-full transition-colors border border-cream-200 sm:border-transparent"
-                      title="Đăng nhập tài khoản"
-                    >
-                      <UserIcon className="w-4 h-4 text-stone-600" strokeWidth={1.5} />
-                      <span className="hidden sm:inline">Tài khoản</span>
-                    </Link>
-                  </div>
-                )}
-              </div>
-
-              {/* Shopping Cart Button */}
-              <Link
-                href="/gio-hang"
-                className="relative p-2.5 rounded-full bg-cream-100 hover:bg-cream-200 border border-cream-200 text-stone-900 transition-all flex items-center justify-center group shadow-xs"
-                aria-label="Xem giỏ hàng"
-              >
-                <ShoppingBag className="w-4 h-4 group-hover:scale-110 transition-transform text-stone-800" strokeWidth={1.5} />
-                {totalItems > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-nepred-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-md animate-pulse">
-                    {totalItems > 99 ? '99+' : totalItems}
-                  </span>
-                )}
-              </Link>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="flex items-center">
+                  <Link
+                    href="/dang-nhap"
+                    className="flex items-center gap-1.5 p-2 sm:px-3 sm:py-2 text-xs font-semibold text-stone-300 hover:text-[#E2CA9E] hover:bg-[#251C1A] rounded-full transition-colors border border-[#382B26] sm:border-transparent"
+                    title="Đăng nhập tài khoản"
+                  >
+                    <UserIcon className="w-4 h-4 text-stone-400" strokeWidth={1.5} />
+                    <span className="hidden sm:inline">Tài khoản</span>
+                  </Link>
+                </div>
+              )}
             </div>
+
+            {/* Shopping Cart Button */}
+            <Link
+              href="/gio-hang"
+              className="relative p-2.5 rounded-full bg-[#221A17] hover:bg-[#2D221F] border border-[#382B26] text-white transition-all flex items-center justify-center group shadow-xs"
+              aria-label="Xem giỏ hàng"
+            >
+              <ShoppingBag className="w-4 h-4 group-hover:scale-110 transition-transform text-[#EDE4D8]" strokeWidth={1.5} />
+              {totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 bg-nepred-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-md animate-pulse">
+                  {totalItems > 99 ? '99+' : totalItems}
+                </span>
+              )}
+            </Link>
           </div>
         </div>
+      </div>
 
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-cream-200 bg-white px-4 pt-3 pb-6 space-y-4 shadow-2xl animate-in slide-in-from-top-2">
+          <div className="lg:hidden border-t border-[#2C211D] bg-[#181210] px-4 pt-3 pb-6 space-y-4 shadow-2xl animate-in slide-in-from-top-2 text-[#EDE4D8]">
             {/* Quick Search Button in Mobile Menu */}
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
                 setIsSearchOpen(true);
               }}
-              className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-cream-100 hover:bg-cream-200 text-stone-600 text-xs font-medium border border-cream-200 transition-colors"
+              className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-[#231A17] hover:bg-[#2D221F] text-stone-300 text-xs font-medium border border-[#382B26] transition-colors"
             >
-              <Search className="w-4 h-4 text-nepred-600" />
+              <Search className="w-4 h-4 text-[#D4AF37]" />
               <span>Tìm kiếm sản phẩm, làng nghề...</span>
-              <span className="ml-auto text-[10px] text-nepred-600 font-bold">Mở tìm kiếm →</span>
+              <span className="ml-auto text-[10px] text-[#E2CA9E] font-bold">Mở tìm kiếm →</span>
             </button>
 
             {/* Nav Links */}
@@ -305,31 +311,31 @@ export function Header() {
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
                     className={`px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-colors flex items-center justify-between ${isActive
-                      ? 'bg-nepred-50 text-nepred-600'
-                      : 'text-stone-800 hover:bg-cream-100'
+                      ? 'bg-[#2A1714] text-[#E2CA9E] font-bold'
+                      : 'text-stone-300 hover:bg-[#231A17] hover:text-white'
                       }`}
                   >
                     <span>{link.label}</span>
-                    {isActive && <span className="w-1.5 h-1.5 rounded-full bg-nepred-600" />}
+                    {isActive && <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />}
                   </Link>
                 );
               })}
             </nav>
 
             {/* User Account / Auth Buttons in Mobile Drawer */}
-            <div className="pt-3 border-t border-cream-100 flex flex-col gap-2">
+            <div className="pt-3 border-t border-[#2C211D] flex flex-col gap-2">
               {isLoggedIn ? (
-                <div className="flex items-center justify-between px-3.5 py-2.5 bg-cream-50 rounded-xl">
+                <div className="flex items-center justify-between px-3.5 py-2.5 bg-[#231A17] rounded-xl border border-[#382B26]">
                   <div className="min-w-0 pr-2">
-                    <p className="text-xs font-bold text-stone-900 truncate">{user?.name}</p>
-                    <p className="text-[11px] text-stone-500 truncate">{user?.email}</p>
+                    <p className="text-xs font-bold text-white truncate">{user?.name}</p>
+                    <p className="text-[11px] text-stone-400 truncate">{user?.email}</p>
                   </div>
                   <button
                     onClick={() => {
                       logout();
                       setMobileMenuOpen(false);
                     }}
-                    className="text-xs text-red-600 hover:underline flex items-center gap-1 font-semibold flex-shrink-0"
+                    className="text-xs text-red-400 hover:underline flex items-center gap-1 font-semibold flex-shrink-0"
                   >
                     <LogOut className="w-3.5 h-3.5" /> Đăng xuất
                   </button>
@@ -339,7 +345,7 @@ export function Header() {
                   <Link
                     href="/dang-nhap"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="text-center py-2.5 text-xs font-semibold text-stone-800 bg-cream-100 hover:bg-cream-200 rounded-xl transition-colors"
+                    className="text-center py-2.5 text-xs font-semibold text-stone-200 bg-[#251C1A] hover:bg-[#302421] border border-[#382B26] rounded-xl transition-colors"
                   >
                     Đăng nhập
                   </Link>
@@ -355,15 +361,20 @@ export function Header() {
             </div>
 
             {/* Quick Hotline in Mobile Drawer */}
-            <div className="pt-2 text-[11px] text-stone-500 flex items-center justify-between border-t border-cream-100">
+            <div className="pt-2 text-[11px] text-stone-400 flex items-center justify-between border-t border-[#2C211D]">
               <span className="flex items-center gap-1">
-                <PhoneCall className="w-3 h-3 text-nepgold-600" />
-                Tổng đài: <strong className="text-stone-800 font-sans">1900 6868</strong>
+                <PhoneCall className="w-3 h-3 text-[#D4AF37]" />
+                Tổng đài: <strong className="text-[#EDE4D8] font-sans">1900 6868</strong>
               </span>
-              <span className="text-nepgreen-800 font-medium">Miễn phí ship từ 300k</span>
+              <span className="text-[#C5A880] font-medium">Miễn phí ship từ 300k</span>
             </div>
           </div>
         )}
+
+        {/* Subtle Traditional Gold Thread Divider */}
+        <div className="w-full h-[6px] overflow-hidden relative select-none pointer-events-none opacity-60">
+          <div className="wavy-gold-line w-full h-full" />
+        </div>
       </header>
 
       {/* Global Interactive Search Modal Popup */}

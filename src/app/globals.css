@@ -1,12 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900;1,600&family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900;1,500;1,700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Ma+Shan+Zheng&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 44, 30, 22;
-  --background-rgb: 250, 248, 245;
+  --foreground-rgb: 237, 228, 216; /* #EDE4D8 warm ivory/parchment */
+  --background-rgb: 20, 16, 14;     /* #14100E deep lacquer dark */
 }
 
 /* Force Lining Figures globally across all fonts so numbers NEVER jump up and down */
@@ -18,16 +18,33 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background-color: #FAF8F5;
-  font-family: var(--font-sans), 'Be Vietnam Pro', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #14100E;
+  font-family: var(--font-sans), 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
-  letter-spacing: -0.01em;
+  line-height: 1.65;
+  letter-spacing: normal;
 }
 
-h1, h2, h3, h4, .font-serif {
-  font-family: var(--font-serif), 'Lora', 'Playfair Display', Georgia, serif;
-  letter-spacing: -0.01em;
+/* 1. Tiêu đề chính (Headline & Serif): Playfair Display / Lora - Mỹ thuật sơn mài di sản, khoảng cách thoáng đãng tuyệt đối không dính dấu */
+h1, h2, h3, h4, h5, h6, .font-headline, .font-serif {
+  font-family: var(--font-headline), 'Playfair Display', var(--font-accent), 'Lora', Georgia, serif;
+  font-weight: 700;
+  line-height: 1.55;
+  letter-spacing: 0.015em;
   font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* 2. Phụ đề & nội dung thân (Subtext & Body): Be Vietnam Pro - Tối ưu 100% chuẩn xác cho dấu tiếng Việt */
+p, span, a, input, select, textarea, button, .font-subtext, .font-sans {
+  font-family: var(--font-sans), 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+  letter-spacing: normal;
+}
+
+/* 3. Font trang trí nghệ thuật & trích dẫn (Display/Accent): Playfair Display & Lora */
+.font-display, .font-accent, blockquote {
+  font-family: var(--font-headline), 'Playfair Display', var(--font-accent), 'Lora', Georgia, serif;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
 }
 
 /* Font chữ Hán / Thư pháp Hán - Nôm di sản */
@@ -35,32 +52,74 @@ h1, h2, h3, h4, .font-serif {
   font-family: 'Ma Shan Zheng', 'ZCOOL XiaoWei', 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
 }
 
-/* Price specific styling helper - 100% flat, aligned, equal-height numerals */
+/* Price specific styling helper - flat, aligned numerals */
 .price-tag {
-  font-family: var(--font-sans), 'Be Vietnam Pro', system-ui, sans-serif;
+  font-family: var(--font-sans), 'Be Vietnam Pro', sans-serif;
   font-variant-numeric: lining-nums tabular-nums;
   font-feature-settings: "lnum" 1, "tnum" 1;
-  letter-spacing: -0.02em;
+  font-weight: 700;
 }
 
 /* Custom smooth transitions */
-a, button {
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+a, button, input, select, textarea {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - Nguyen Art Gallery Lacquer Bronze */
 ::-webkit-scrollbar {
   width: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #F5EFE6;
+  background: #1A1412;
 }
 ::-webkit-scrollbar-thumb {
-  background: #DEC9A8;
+  background: #3D2D26;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #8C5033;
+  background: #C5A880;
+}
+
+/* Continuous liquid gold wave flow */
+@keyframes goldWaveFlow {
+  0% {
+    background-position-x: 0px;
+  }
+  100% {
+    background-position-x: 750px;
+  }
+}
+
+.animate-gold-wave {
+  animation: goldWaveFlow 32s linear infinite;
+}
+
+/* Organic breathing / gentle float for cultural emblems */
+@keyframes softFloat {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-6px) scale(1.015);
+  }
+}
+
+.animate-soft-float {
+  animation: softFloat 5.5s ease-in-out infinite;
+}
+
+/* Shimmering gold aura */
+@keyframes shimmerGoldAura {
+  0%, 100% {
+    box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.6), 0 0 15px -3px rgba(212, 175, 55, 0.15);
+  }
+  50% {
+    box-shadow: 0 14px 40px -8px rgba(0, 0, 0, 0.75), 0 0 35px 2px rgba(212, 175, 55, 0.35);
+  }
+}
+
+.animate-shimmer-aura {
+  animation: shimmerGoldAura 4.5s ease-in-out infinite;
 }
 
 /* Animation utilities */
@@ -80,7 +139,7 @@ a, button {
 @keyframes scaleUp {
   from {
     opacity: 0;
-    transform: scale(0.95);
+    transform: scale(0.96);
   }
   to {
     opacity: 1;
@@ -91,7 +150,7 @@ a, button {
 @keyframes slideInRight {
   from {
     opacity: 0;
-    transform: translateX(30px);
+    transform: translateX(25px);
   }
   to {
     opacity: 1;
@@ -100,11 +159,88 @@ a, button {
 }
 
 .animate-scaleUp {
-  animation: scaleUp 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-slideInRight {
-  animation: slideInRight 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideInRight 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Lacquer red background with traditional Vietnamese pattern - High Visibility */
+.lacquer-red-pattern {
+  position: relative;
+  background-color: #3D0A10;
+  background-image: url('/patterns/background-hoa-van.webp');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Gold hairline divider with glowing center */
+.gold-line-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(197, 168, 128, 0.15) 15%, rgba(212, 175, 55, 0.75) 50%, rgba(197, 168, 128, 0.15) 85%, transparent 100%);
+}
+
+.gold-line-thick {
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(138, 109, 59, 0.3) 20%, #E5C388 50%, rgba(138, 109, 59, 0.3) 80%, transparent 100%);
+}
+
+/* Wavy gold contour divider (inspired by antique lacquer gilding) */
+.wavy-gold-line {
+  width: 100%;
+  height: 14px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 24' preserveAspectRatio='none'%3E%3Cpath d='M0,12 C150,4 300,20 450,12 C600,4 750,20 900,12 C1050,4 1200,20 1350,12' stroke='%23D4AF37' stroke-width='1.5' stroke-opacity='0.75' fill='none'/%3E%3C/svg%3E");
+  background-size: 750px 14px;
+  background-repeat: repeat-x;
+}
+
+/* Luminous gold text shadow */
+.text-gold-luminous {
+  color: #FAF6F0;
+  text-shadow: 0 0 25px rgba(212, 175, 55, 0.28);
+}
+
+.gold-shimmer-border {
+  border: 1px solid rgba(197, 168, 128, 0.3);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gold-shimmer-border:hover {
+  border-color: rgba(212, 175, 55, 0.75);
+  box-shadow: 0 0 25px -5px rgba(212, 175, 55, 0.25);
+}
+
+/* Soft lacquer card styling */
+.card-lacquer-soft {
+  background-color: #1A1412;
+  border: 1px solid rgba(197, 168, 128, 0.25);
+  border-radius: 28px;
+  box-shadow: 0 12px 35px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-lacquer-soft:hover {
+  border-color: rgba(212, 175, 55, 0.6);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.8), 0 0 35px -4px rgba(212, 175, 55, 0.25);
+}
+
+/* Smooth luxury animation utilities */
+@keyframes gentlePulseGlow {
+  0%, 100% {
+    opacity: 0.35;
+    filter: drop-shadow(0 0 3px rgba(212, 175, 55, 0.25));
+  }
+  50% {
+    opacity: 0.7;
+    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.6));
+  }
+}
+
+.animate-pulse-glow {
+  animation: gentlePulseGlow 4s ease-in-out infinite;
 }
 
 /* Vietnamese traditional arch shape styling */

@@ -439,6 +439,7 @@ function ArtisanStudioContent() {
     const fromCatalog: ArtisanProduct[] = catalogProducts
       .filter(
         (p) =>
+          p.category === 'thu-cong-my-nghe' ||
           p.category === 'gom-su' ||
           (p.village && p.village.toLowerCase().includes('bát tràng')) ||
           (p.artisanName && p.artisanName.toLowerCase().includes('tuấn')) ||
@@ -516,8 +517,8 @@ function ArtisanStudioContent() {
       id: `art-${uniqueSuffix}`,
       name: newProductName.trim(),
       slug: `${newProductName.trim().toLowerCase().replace(/[^a-z0-9]/g, '-')}-${uniqueSuffix}`,
-      category: 'gom-su',
-      categoryName: 'Gốm Sứ Bát Tràng',
+      category: 'thu-cong-my-nghe',
+      categoryName: 'Đồ Thủ Công Mỹ Nghệ',
       village: 'Làng gốm Bát Tràng, Gia Lâm, Hà Nội',
       price,
       originalPrice: Math.round(price * 1.2),
@@ -637,7 +638,7 @@ function ArtisanStudioContent() {
   );
 
   return (
-    <div className="bg-[#FAF8F5] min-h-screen text-stone-900 font-sans flex flex-col">
+    <div className="bg-[#14100E] min-h-screen text-[#EDE4D8] font-sans flex flex-col">
 
       {/* Top Header - Artisan Studio Identity */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-cream-200/90 shadow-xs">
@@ -1683,7 +1684,7 @@ export default function ArtisanStudioPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-[#FAF8F5] flex items-center justify-center">
+        <div className="min-h-screen bg-[#14100E] flex items-center justify-center">
           <div className="text-center">
             <div className="w-8 h-8 border-4 border-amber-600 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
             <p className="text-xs text-stone-500">Đang tải Kênh Nghệ Nhân Nếp Việt...</p>

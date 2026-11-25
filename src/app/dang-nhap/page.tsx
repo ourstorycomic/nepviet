@@ -208,7 +208,7 @@ function LoginFormContent() {
   };
 
   return (
-    <div className="bg-[#FAF8F5] min-h-[90vh] flex items-center justify-center py-12 px-4 sm:px-6">
+    <div className="bg-[#14100E] min-h-[90vh] flex items-center justify-center py-12 px-4 sm:px-6">
       <div className="w-full max-w-xl bg-white rounded-3xl p-6 sm:p-10 border border-cream-200/90 shadow-xl space-y-6">
 
         {/* Brand header với Font Chữ Hán triện thư */}
@@ -467,7 +467,7 @@ export default function LoginPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-[#FAF8F5] flex items-center justify-center py-16">
+        <div className="min-h-screen bg-[#14100E] flex items-center justify-center py-16">
           <div className="text-center">
             <div className="w-8 h-8 border-4 border-nepred-600 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
             <p className="text-xs text-stone-500">Đang tải cổng đăng nhập Nếp Việt...</p>

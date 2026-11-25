@@ -77,7 +77,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="bg-[#FAF8F5] min-h-[85vh] flex items-center justify-center py-12 px-4 sm:px-6">
+    <div className="bg-[#14100E] min-h-[85vh] flex items-center justify-center py-12 px-4 sm:px-6">
       <div className="w-full max-w-md bg-white rounded-3xl p-8 sm:p-10 border border-cream-200 shadow-xl space-y-6">
         
         {/* Brand header */}

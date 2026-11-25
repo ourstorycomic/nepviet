@@ -14,6 +14,7 @@ import {
   CheckCircle2,
   BookmarkCheck,
 } from 'lucide-react';
+import { GoldWavyLine, TraditionalFlourish } from '@/components/GoldWavyLine';
 
 interface RelatedProduct {
   name: string;
@@ -475,21 +476,32 @@ export default function NewsPage() {
   };
 
   return (
-    <div className="bg-[#FAF8F5] min-h-screen py-10 sm:py-16">
+    <div className="bg-[#14100E] text-[#EDE4D8] min-h-screen py-10 sm:py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
-        {/* Header Title */}
-        <div className="text-center max-w-3xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-nepred-50 text-nepred-700 text-xs font-bold border border-nepred-200">
-            <BookOpen className="w-3.5 h-3.5" />
-            <span>Tạp Chí & Cẩm Nang Di Sản Nếp Việt</span>
+        {/* Header Title with Red Lacquer Pattern */}
+        <div className="relative w-full py-16 sm:py-24 px-6 sm:px-12 rounded-[32px] overflow-hidden bg-[#3D0A10] border border-[#52121A] shadow-2xl text-center">
+          {/* Dong Son Lacquer Pattern Background - High Visibility */}
+          <div
+            className="absolute inset-0 bg-cover bg-center pointer-events-none opacity-90"
+            style={{ backgroundImage: `url('/patterns/background-hoa-van.webp')` }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#14100E] via-transparent to-black/40 pointer-events-none" />
+
+          <div className="relative z-10 max-w-3xl mx-auto space-y-4">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1A0608]/90 text-[#D4AF37] text-xs font-bold border border-[#D4AF37]/40 shadow-xs">
+              <BookOpen className="w-3.5 h-3.5 text-[#D4AF37]" />
+              <span>Tạp Chí & Cẩm Nang Di Sản Nếp Việt</span>
+            </div>
+            <h1 className="font-headline font-black text-3xl sm:text-5xl text-[#FAF6F0] tracking-[0.02em] leading-[1.65] text-gold-luminous">
+              Tin Tức, Cẩm Nang Sản Phẩm & Làng Nghề
+            </h1>
+            <TraditionalFlourish />
+            <p className="text-xs sm:text-sm text-[#EDE4D8]/85 leading-relaxed font-subtext max-w-2xl mx-auto">
+              Kho tư liệu hướng dẫn thẩm định đồ thủ công mỹ nghệ thật - giả, bí quyết chế tác bí truyền của nghệ nhân, và những thông tin chi tiết giúp bạn chọn mua sản phẩm di sản chính gốc.
+            </p>
+            <GoldWavyLine className="pt-2" />
           </div>
-          <h1 className="font-serif font-bold text-3xl sm:text-4xl text-stone-900">
-            Tin Tức, Cẩm Nang Sản Phẩm & Làng Nghề
-          </h1>
-          <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-            Kho tư liệu hướng dẫn thẩm định đồ thủ công mỹ nghệ thật - giả, bí quyết chế tác bí truyền của nghệ nhân, và những thông tin chi tiết giúp bạn chọn mua sản phẩm di sản chính gốc.
-          </p>
         </div>
 
         {/* Category filter tabs */}
@@ -501,8 +513,8 @@ export default function NewsPage() {
               onClick={() => setActiveCategory(cat.id)}
               className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
                 activeCategory === cat.id
-                  ? 'bg-nepred-600 text-white shadow-md shadow-nepred-600/20'
-                  : 'bg-white text-stone-700 border border-cream-200 hover:bg-cream-100/60'
+                  ? 'bg-[#A82B1D] text-white shadow-lg border border-[#D4AF37]/40'
+                  : 'bg-[#1C1614] text-[#EDE4D8]/80 border border-[#362924] hover:bg-[#251D1A] hover:text-white'
               }`}
             >
               {cat.name}
@@ -512,7 +524,7 @@ export default function NewsPage() {
 
         {/* Featured Big Card (Article 0) */}
         {filteredArticles.length > 0 && (
-          <div className="bg-white rounded-3xl overflow-hidden border border-cream-200 shadow-md grid grid-cols-1 lg:grid-cols-12 gap-0 items-center">
+          <div className="bg-[#1C1614] rounded-3xl overflow-hidden border border-[#362924] hover:border-[#C5A880]/60 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-0 items-center transition-all duration-300">
             <div className="lg:col-span-7 relative h-72 sm:h-96 w-full cursor-pointer group" onClick={() => setSelectedArticle(filteredArticles[0])}>
               <Image
                 src={filteredArticles[0].image}
@@ -529,34 +541,34 @@ export default function NewsPage() {
             </div>
 
             <div className="lg:col-span-5 p-6 sm:p-10 space-y-4">
-              <div className="flex items-center gap-3 text-xs text-stone-500">
-                <span className="font-semibold text-nepgreen-800">{filteredArticles[0].category}</span>
+              <div className="flex items-center gap-3 text-xs text-[#8C7A70]">
+                <span className="font-semibold text-[#C5A880]">{filteredArticles[0].category}</span>
                 <span>•</span>
-                <span className="flex items-center gap-1">
-                  <Calendar className="w-3.5 h-3.5" />
+                <span className="flex items-center gap-1 text-[#EDE4D8]">
+                  <Calendar className="w-3.5 h-3.5 text-[#C5A880]" />
                   {filteredArticles[0].date}
                 </span>
                 <span>•</span>
-                <span className="flex items-center gap-1">
-                  <Clock className="w-3.5 h-3.5" />
+                <span className="flex items-center gap-1 text-[#EDE4D8]">
+                  <Clock className="w-3.5 h-3.5 text-[#C5A880]" />
                   {filteredArticles[0].readTime}
                 </span>
               </div>
 
               <h2
                 onClick={() => setSelectedArticle(filteredArticles[0])}
-                className="font-serif font-bold text-xl sm:text-2xl text-stone-900 leading-snug cursor-pointer hover:text-nepred-600 transition-colors"
+                className="font-headline font-bold text-xl sm:text-2xl text-[#FAF6F0] leading-snug cursor-pointer hover:text-[#C5A880] transition-colors"
               >
                 {filteredArticles[0].title}
               </h2>
 
-              <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
+              <p className="text-xs sm:text-sm text-[#EDE4D8]/80 leading-relaxed font-subtext">
                 {filteredArticles[0].summary}
               </p>
 
               {filteredArticles[0].relatedProduct && (
-                <div className="p-3 bg-cream-50 rounded-2xl border border-cream-200 flex items-center gap-3">
-                  <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-stone-100 flex-shrink-0">
+                <div className="p-3 bg-[#231B19] rounded-2xl border border-[#382B26] flex items-center gap-3">
+                  <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-[#14100E] flex-shrink-0 border border-[#362924]">
                     <Image
                       src={filteredArticles[0].relatedProduct.image}
                       alt={filteredArticles[0].relatedProduct.name}
@@ -565,22 +577,22 @@ export default function NewsPage() {
                     />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <span className="text-[10px] font-bold text-nepred-600 uppercase tracking-wide">Sản phẩm liên quan</span>
-                    <p className="text-xs font-semibold text-stone-900 truncate">{filteredArticles[0].relatedProduct.name}</p>
-                    <span className="text-xs font-bold text-nepred-700">{filteredArticles[0].relatedProduct.price}</span>
+                    <span className="text-[10px] font-bold text-[#C5A880] uppercase tracking-wide">Sản phẩm liên quan</span>
+                    <p className="text-xs font-semibold text-[#FAF6F0] truncate">{filteredArticles[0].relatedProduct.name}</p>
+                    <span className="text-xs font-bold text-[#D4AF37]">{filteredArticles[0].relatedProduct.price}</span>
                   </div>
                 </div>
               )}
 
               <div className="pt-2 flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-medium text-stone-700">{filteredArticles[0].author}</p>
-                  <p className="text-[10px] text-stone-400 italic">{filteredArticles[0].authorRole}</p>
+                  <p className="text-xs font-medium text-[#FAF6F0]">{filteredArticles[0].author}</p>
+                  <p className="text-[10px] text-[#8C7A70] italic">{filteredArticles[0].authorRole}</p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setSelectedArticle(filteredArticles[0])}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-nepred-600 hover:bg-nepred-700 text-white text-xs font-bold shadow-sm transition-all"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#251D1A] hover:bg-[#322621] text-xs font-bold text-[#C5A880] hover:text-white border border-[#3E2D26] hover:border-[#C5A880]/50 transition-colors"
                 >
                   <span>Đọc cẩm nang</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -595,10 +607,10 @@ export default function NewsPage() {
           {filteredArticles.slice(1).map((article) => (
             <div
               key={article.id}
-              className="bg-white rounded-3xl overflow-hidden border border-cream-200 shadow-sm hover:shadow-md transition-all flex flex-col group"
+              className="bg-[#1C1614] rounded-3xl overflow-hidden border border-[#362924] hover:border-[#C5A880]/60 shadow-xl flex flex-col group hover:-translate-y-1 transition-all duration-300"
             >
               <div
-                className="relative aspect-[16/10] w-full overflow-hidden bg-stone-100 cursor-pointer"
+                className="relative aspect-[16/10] w-full overflow-hidden bg-[#14100E] cursor-pointer"
                 onClick={() => setSelectedArticle(article)}
               >
                 <Image
@@ -606,13 +618,13 @@ export default function NewsPage() {
                   alt={article.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-[0.8]"
                 />
-                <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-stone-900/80 backdrop-blur-xs text-white text-[10px] font-bold">
+                <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-[#14100E]/90 border border-[#362924] text-[#C5A880] text-[10px] font-bold">
                   {article.category}
                 </span>
                 {article.relatedProduct && (
-                  <span className="absolute bottom-3 right-3 px-2 py-0.5 rounded-md bg-nepgreen-900/85 text-nepgold-300 text-[10px] font-semibold backdrop-blur-xs flex items-center gap-1">
+                  <span className="absolute bottom-3 right-3 px-2 py-0.5 rounded-md bg-[#24080B]/90 border border-[#4A1017] text-[#D4AF37] text-[10px] font-semibold flex items-center gap-1">
                     <ShoppingBag className="w-2.5 h-2.5" />
                     Có sản phẩm liên quan
                   </span>
@@ -621,34 +633,34 @@ export default function NewsPage() {
 
               <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
                 <div className="space-y-2.5">
-                  <div className="flex items-center gap-2 text-[11px] text-stone-400">
-                    <Calendar className="w-3.5 h-3.5" />
+                  <div className="flex items-center gap-2 text-[11px] text-[#8C7A70]">
+                    <Calendar className="w-3.5 h-3.5 text-[#C5A880]" />
                     <span>{article.date}</span>
                     <span>•</span>
-                    <Clock className="w-3.5 h-3.5" />
+                    <Clock className="w-3.5 h-3.5 text-[#C5A880]" />
                     <span>{article.readTime}</span>
                   </div>
 
                   <h3
                     onClick={() => setSelectedArticle(article)}
-                    className="font-serif font-bold text-base text-stone-900 group-hover:text-nepred-600 transition-colors leading-snug cursor-pointer line-clamp-2"
+                    className="font-headline font-bold text-base text-[#FAF6F0] group-hover:text-[#C5A880] transition-colors leading-snug cursor-pointer line-clamp-2"
                   >
                     {article.title}
                   </h3>
 
-                  <p className="text-xs text-stone-600 line-clamp-3 leading-relaxed">
+                  <p className="text-xs text-[#EDE4D8]/75 line-clamp-3 leading-relaxed font-subtext">
                     {article.summary}
                   </p>
                 </div>
 
-                <div className="pt-3 border-t border-cream-100 flex items-center justify-between">
+                <div className="pt-3 border-t border-[#362924] flex items-center justify-between">
                   <div className="truncate pr-2">
-                    <p className="text-[11px] font-medium text-stone-600 truncate">{article.author}</p>
+                    <p className="text-[11px] font-medium text-[#FAF6F0] truncate">{article.author}</p>
                   </div>
                   <button
                     type="button"
                     onClick={() => setSelectedArticle(article)}
-                    className="inline-flex items-center gap-1 text-xs font-bold text-nepred-600 hover:text-nepred-700 flex-shrink-0"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-[#C5A880] hover:text-white flex-shrink-0 transition-colors"
                   >
                     <span>Xem bài</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
@@ -660,23 +672,28 @@ export default function NewsPage() {
         </div>
 
         {/* Culture Workshop Invitation Card */}
-        <div className="p-8 rounded-3xl bg-gradient-to-r from-nepgreen-900 via-stone-900 to-nepgreen-950 text-white flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-xl">
-          <div className="space-y-2 max-w-xl">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-nepgreen-800 text-nepgold-400 text-xs font-semibold">
-              <Calendar className="w-3.5 h-3.5" strokeWidth={1.5} />
-              <span>Đăng Ký Tham Gia Workshop Cuối Tuần</span>
+        <div className="relative p-8 md:p-10 rounded-3xl bg-[#3D0A10] border border-[#52121A] text-white flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-2xl overflow-hidden">
+          <div
+            className="absolute inset-0 pointer-events-none opacity-90 bg-cover bg-center"
+            style={{ backgroundImage: `url('/patterns/background-hoa-van.webp')` }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#24080B]/50 via-transparent to-[#14100E]/70 pointer-events-none" />
+          <div className="relative z-10 space-y-2.5 max-w-xl">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#3D1016] border border-[#C5A880]/30 text-[#E8C59A] text-xs font-semibold">
+              <Calendar className="w-3.5 h-3.5 text-[#C5A880]" strokeWidth={1.5} />
+              <span className="uppercase tracking-wider text-[11px]">Đăng Ký Tham Gia Workshop Cuối Tuần</span>
             </span>
-            <h3 className="font-serif font-bold text-2xl text-white">
+            <h3 className="font-headline font-bold text-2xl md:text-3xl text-[#FAF6F0] text-gold-luminous">
               Cùng Nghệ Nhân Thổi Hồn Đất Sét & Nan Tre
             </h3>
-            <p className="text-xs text-cream-200/90 leading-relaxed">
+            <p className="text-xs md:text-sm text-[#EDE4D8]/80 leading-relaxed font-subtext">
               Các lớp học làm đồ thủ công dân gian dành riêng cho sinh viên và bạn trẻ yêu văn hóa. Miễn phí nguyên vật liệu và được mang thành phẩm về nhà.
             </p>
           </div>
 
           <Link
             href="/lien-he"
-            className="px-6 py-3.5 rounded-xl bg-nepred-600 hover:bg-nepred-700 text-white font-bold text-xs shadow-lg transition-all text-center flex-shrink-0"
+            className="relative z-10 px-7 py-3.5 rounded-xl bg-gradient-to-r from-[#8B1E2B] to-[#A32434] hover:from-[#A32434] hover:to-[#B82B3E] text-[#FAF6F0] font-headline font-bold text-xs uppercase tracking-wider shadow-xl transition-all text-center flex-shrink-0 border border-[#C5A880]/30 hover:scale-[1.02]"
           >
             Đăng ký giữ chỗ ngay
           </Link>
@@ -689,26 +706,30 @@ export default function NewsPage() {
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 bg-stone-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto"
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto"
           onClick={() => setSelectedArticle(null)}
         >
           <div
-            className="bg-white w-full max-w-3xl rounded-3xl overflow-hidden shadow-2xl border border-cream-200 max-h-[90vh] flex flex-col my-auto"
+            className="bg-[#171210] w-full max-w-3xl rounded-3xl overflow-hidden shadow-2xl border border-[#362924] max-h-[90vh] flex flex-col my-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header Bar */}
-            <div className="p-4 sm:p-5 border-b border-cream-200 bg-cream-50/70 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="px-2.5 py-1 rounded-full bg-nepred-100 text-nepred-800 text-xs font-bold">
+            <div className="relative p-4 sm:p-5 border-b border-[#362924] bg-[#24080B] flex items-center justify-between overflow-hidden">
+              <div
+                className="absolute inset-0 pointer-events-none opacity-20 mix-blend-luminosity bg-cover bg-center"
+                style={{ backgroundImage: `url('/patterns/background-hoa-van.webp')` }}
+              />
+              <div className="relative z-10 flex items-center gap-2">
+                <span className="px-2.5 py-1 rounded-full bg-[#3D1016] border border-[#C5A880]/40 text-[#E8C59A] text-xs font-bold font-headline uppercase tracking-wider">
                   {selectedArticle.category}
                 </span>
-                <span className="text-xs text-stone-500">• {selectedArticle.readTime}</span>
+                <span className="text-xs text-[#EDE4D8]/70">• {selectedArticle.readTime}</span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="relative z-10 flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => handleShare(selectedArticle)}
-                  className="p-2 rounded-xl text-stone-500 hover:text-stone-800 hover:bg-cream-100 transition-colors"
+                  className="p-2 rounded-xl text-[#EDE4D8]/70 hover:text-[#FAF6F0] hover:bg-white/10 transition-colors"
                   title="Sao chép liên kết bài viết"
                 >
                   <Share2 className="w-4 h-4" />
@@ -716,7 +737,7 @@ export default function NewsPage() {
                 <button
                   type="button"
                   onClick={() => setSelectedArticle(null)}
-                  className="p-2 rounded-xl text-stone-500 hover:text-stone-800 hover:bg-cream-100 transition-colors"
+                  className="p-2 rounded-xl text-[#EDE4D8]/70 hover:text-[#FAF6F0] hover:bg-white/10 transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -727,19 +748,19 @@ export default function NewsPage() {
             <div className="p-6 sm:p-8 overflow-y-auto space-y-6">
               {/* Copy link toast */}
               {copiedLink && (
-                <div className="p-3 bg-emerald-50 text-emerald-800 rounded-xl text-xs font-semibold flex items-center gap-2 border border-emerald-200 animate-fadeIn">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                <div className="p-3 bg-[#1C281F] text-[#86EFAC] rounded-xl text-xs font-semibold flex items-center gap-2 border border-[#22C55E]/30 animate-fadeIn">
+                  <CheckCircle2 className="w-4 h-4 text-[#4ADE80]" />
                   <span>Đã sao chép liên kết bài viết vào clipboard!</span>
                 </div>
               )}
 
               {/* Title & Metadata */}
               <div className="space-y-3">
-                <h1 className="font-serif font-bold text-2xl sm:text-3xl text-stone-900 leading-snug">
+                <h1 className="font-headline font-bold text-2xl sm:text-3xl text-[#FAF6F0] leading-snug text-gold-luminous">
                   {selectedArticle.title}
                 </h1>
-                <div className="flex flex-wrap items-center gap-3 text-xs text-stone-500 pt-1">
-                  <span className="font-semibold text-stone-800">{selectedArticle.author}</span>
+                <div className="flex flex-wrap items-center gap-3 text-xs text-[#EDE4D8]/70 pt-1">
+                  <span className="font-semibold text-[#FAF6F0]">{selectedArticle.author}</span>
                   <span>({selectedArticle.authorRole})</span>
                   <span>•</span>
                   <span>{selectedArticle.date}</span>
@@ -747,7 +768,7 @@ export default function NewsPage() {
               </div>
 
               {/* Banner Image */}
-              <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden bg-stone-100 shadow-sm">
+              <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden bg-[#241D1A] border border-[#362924] shadow-md">
                 <Image
                   src={selectedArticle.image}
                   alt={selectedArticle.title}
@@ -757,19 +778,19 @@ export default function NewsPage() {
               </div>
 
               {/* Summary lead */}
-              <div className="p-4 bg-nepgold-50/70 rounded-2xl border-l-4 border-nepgold-500 text-stone-700 text-sm leading-relaxed italic">
+              <div className="p-4 bg-[#24080B]/60 rounded-2xl border-l-4 border-[#C5A880] text-[#EDE4D8] text-sm leading-relaxed italic font-subtext">
                 {selectedArticle.summary}
               </div>
 
               {/* Article Content Sections */}
-              <div className="space-y-6 text-stone-800 text-sm sm:text-base leading-relaxed">
+              <div className="space-y-6 text-[#EDE4D8] text-sm sm:text-base leading-relaxed">
                 {selectedArticle.sections.map((section, idx) => (
                   <div key={idx} className="space-y-3">
-                    <h2 className="font-serif font-bold text-lg text-nepgreen-950">
+                    <h2 className="font-headline font-bold text-lg text-[#C5A880]">
                       {section.heading}
                     </h2>
                     {section.paragraphs.map((p, pIdx) => (
-                      <p key={pIdx} className="text-stone-700 text-xs sm:text-sm leading-relaxed">
+                      <p key={pIdx} className="text-[#EDE4D8]/85 text-xs sm:text-sm leading-relaxed font-subtext">
                         {p}
                       </p>
                     ))}
@@ -779,14 +800,14 @@ export default function NewsPage() {
 
               {/* Related Craft Product Card */}
               {selectedArticle.relatedProduct && (
-                <div className="mt-8 p-5 rounded-2xl bg-gradient-to-br from-cream-50 to-nepgold-50/30 border border-nepgold-200 space-y-3">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-nepred-700 uppercase tracking-wider">
-                    <BookmarkCheck className="w-4 h-4" />
+                <div className="mt-8 p-5 rounded-2xl bg-[#1C1614] border border-[#362924] space-y-3">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#E8C59A] uppercase tracking-wider">
+                    <BookmarkCheck className="w-4 h-4 text-[#C5A880]" />
                     <span>Sản Phẩm Thủ Công Gợi Ý Cho Bạn</span>
                   </div>
 
                   <div className="flex flex-col sm:flex-row items-center gap-4">
-                    <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-stone-100 flex-shrink-0 border border-cream-200">
+                    <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-[#241D1A] flex-shrink-0 border border-[#362924]">
                       <Image
                         src={selectedArticle.relatedProduct.image}
                         alt={selectedArticle.relatedProduct.name}
@@ -797,21 +818,21 @@ export default function NewsPage() {
 
                     <div className="flex-1 text-center sm:text-left space-y-1">
                       {selectedArticle.relatedProduct.badge && (
-                        <span className="inline-block px-2 py-0.5 rounded-full bg-nepred-100 text-nepred-800 text-[10px] font-bold">
+                        <span className="inline-block px-2 py-0.5 rounded-full bg-[#3D1016] border border-[#C5A880]/30 text-[#E8C59A] text-[10px] font-bold">
                           {selectedArticle.relatedProduct.badge}
                         </span>
                       )}
-                      <h3 className="font-serif font-bold text-sm sm:text-base text-stone-900">
+                      <h3 className="font-headline font-bold text-sm sm:text-base text-[#FAF6F0]">
                         {selectedArticle.relatedProduct.name}
                       </h3>
-                      <p className="text-xs text-stone-500">
+                      <p className="text-xs text-[#EDE4D8]/70">
                         Xuất xứ: {selectedArticle.relatedProduct.craftVillage}
                       </p>
                       <div className="flex items-center justify-center sm:justify-start gap-2 pt-1">
-                        <span className="font-bold text-base text-nepred-600">
+                        <span className="font-bold text-base text-[#C5A880]">
                           {selectedArticle.relatedProduct.price}
                         </span>
-                        <span className="text-xs text-stone-400 line-through">
+                        <span className="text-xs text-[#EDE4D8]/40 line-through">
                           {selectedArticle.relatedProduct.originalPrice}
                         </span>
                       </div>
@@ -819,7 +840,7 @@ export default function NewsPage() {
 
                     <Link
                       href={`/san-pham/${selectedArticle.relatedProduct.slug}`}
-                      className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-nepred-600 hover:bg-nepred-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md transition-all flex-shrink-0"
+                      className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#8B1E2B] to-[#A32434] hover:from-[#A32434] hover:to-[#B82B3E] text-[#FAF6F0] font-headline font-bold text-xs flex items-center justify-center gap-1.5 shadow-md transition-all flex-shrink-0 border border-[#C5A880]/30"
                     >
                       <ShoppingBag className="w-3.5 h-3.5" />
                       <span>Xem sản phẩm</span>
@@ -830,12 +851,12 @@ export default function NewsPage() {
             </div>
 
             {/* Modal Footer */}
-            <div className="p-4 border-t border-cream-200 bg-cream-50/50 flex items-center justify-between">
-              <span className="text-xs text-stone-500">Tạp chí Nếp Việt • Bản quyền di sản thủ công</span>
+            <div className="p-4 border-t border-[#362924] bg-[#14100E] flex items-center justify-between">
+              <span className="text-xs text-[#EDE4D8]/60">Tạp chí Nếp Việt • Bản quyền di sản thủ công</span>
               <button
                 type="button"
                 onClick={() => setSelectedArticle(null)}
-                className="px-4 py-2 rounded-xl bg-white border border-cream-300 text-stone-700 hover:bg-cream-100 text-xs font-semibold"
+                className="px-4 py-2 rounded-xl bg-[#241D1A] border border-[#362924] text-[#EDE4D8] hover:bg-[#322722] text-xs font-semibold transition-colors"
               >
                 Đóng bài viết
               </button>

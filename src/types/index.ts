@@ -2,7 +2,7 @@ export interface Product {
   id: string;
   slug: string;
   name: string;
-  category: 'gom-su' | 'may-tre' | 'do-choi-qua-tang' | 'phu-kien-thoi-trang' | 'am-thuc';
+  category: 'thu-cong-my-nghe' | 'gom-su' | 'may-tre' | 'do-choi-qua-tang' | 'phu-kien-thoi-trang' | 'am-thuc';
   categoryName: string;
   village: string;
   price: number;

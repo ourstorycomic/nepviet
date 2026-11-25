@@ -191,7 +191,7 @@ export default function AdminPage() {
   // Form inputs state
   const [formData, setFormData] = useState({
     name: '',
-    category: 'gom-su' as Product['category'],
+    category: 'thu-cong-my-nghe' as Product['category'],
     village: 'Làng gốm Bát Tràng, Gia Lâm, Hà Nội',
     price: 150000,
     originalPrice: 180000,
@@ -468,7 +468,7 @@ export default function AdminPage() {
     setCurrentEditingId(null);
     setFormData({
       name: '',
-      category: 'gom-su',
+      category: 'thu-cong-my-nghe',
       village: 'Làng gốm Bát Tràng, Gia Lâm, Hà Nội',
       price: 150000,
       originalPrice: 180000,
@@ -1567,7 +1567,7 @@ export default function AdminPage() {
                           <div>
                             <div className="flex items-center gap-2">
                               <span className="px-2.5 py-0.5 rounded-full bg-cream-100 text-amber-900 text-[10px] font-bold">
-                                {prod.categoryName || 'Gốm Sứ Bát Tràng'}
+                                {prod.categoryName || 'Đồ Thủ Công Mỹ Nghệ'}
                               </span>
                               <span className="text-xs text-stone-400 font-mono">#{prod.id}</span>
                             </div>

@@ -9,8 +9,22 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        gallery: {
+          bg: '#14100E',
+          surface: '#1C1614',
+          card: '#231B19',
+          border: '#362924',
+          red: '#360C10',
+          redLight: '#4E1419',
+          vermilion: '#A82B1D',
+          gold: '#C5A880',
+          goldLight: '#E2CA9E',
+          paper: '#FAF6F0',
+          text: '#EDE4D8',
+          muted: '#B0A499',
+        },
         cream: {
-          50: '#FAF8F5',
+          50: '#FAF6F0',
           100: '#F5EFE6',
           200: '#EBDDC9',
           300: '#DEC9A8',
@@ -24,6 +38,7 @@ const config: Config = {
           700: '#942B18',
           800: '#752011',
           900: '#54150A',
+          950: '#320B0F',
         },
         nepgreen: {
           50: '#F1F7F4',
@@ -41,6 +56,7 @@ const config: Config = {
           700: '#6E3C24',
           800: '#522A17',
           900: '#381B0E',
+          950: '#1F140F',
         },
         nepgold: {
           50: '#FFFDF5',
@@ -52,8 +68,11 @@ const config: Config = {
         }
       },
       fontFamily: {
-        serif: ['var(--font-serif)', '"Lora"', '"Playfair Display"', 'Georgia', 'serif'],
-        sans: ['var(--font-sans)', '"Be Vietnam Pro"', 'Inter', 'system-ui', 'sans-serif'],
+        headline: ['var(--font-headline)', '"Playfair Display"', 'Lora', 'Georgia', 'serif'],
+        subtext: ['var(--font-sans)', '"Be Vietnam Pro"', 'system-ui', '-apple-system', 'sans-serif'],
+        display: ['var(--font-headline)', '"Playfair Display"', 'var(--font-accent)', 'Lora', 'serif'],
+        serif: ['var(--font-headline)', '"Playfair Display"', 'Lora', 'Georgia', 'serif'],
+        sans: ['var(--font-sans)', '"Be Vietnam Pro"', 'system-ui', '-apple-system', 'sans-serif'],
         han: ['"Ma Shan Zheng"', '"ZCOOL XiaoWei"', '"Noto Serif SC"', 'serif'],
       },
       borderRadius: {

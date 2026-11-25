@@ -2,7 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { CRAFT_VILLAGES } from '@/data/products';
-import { Sparkles, MapPin, History, Compass, ArrowRight, Award } from 'lucide-react';
+import { MapPin, Compass, ArrowRight } from 'lucide-react';
+import { GoldWavyLine, TraditionalFlourish } from '@/components/GoldWavyLine';
 
 export default function CultureHeritagePage() {
   const steps = [
@@ -29,30 +30,50 @@ export default function CultureHeritagePage() {
   ];
 
   return (
-    <div className="bg-[#FAF8F5] min-h-screen py-10 sm:py-16 space-y-16 sm:space-y-24">
+    <div className="bg-[#14100E] text-[#EDE4D8] min-h-screen py-10 sm:py-16 space-y-16 sm:space-y-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         
-        {/* Hero Section */}
-        <div className="text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-nepgreen-50 text-nepgreen-800 border border-nepgreen-200 text-xs font-semibold">
-            <Compass className="w-3.5 h-3.5 text-nepgreen-700" />
-            <span>Hành trình tìm về nguồn cội thủ công Việt Nam</span>
+        {/* 1. HERO BANNER - SƠN MÀI ĐỎ & HỌA TIẾT CỔ TRUYỀN */}
+        <div className="relative w-full py-16 sm:py-24 px-6 sm:px-12 rounded-[32px] overflow-hidden bg-[#3D0A10] border border-[#52121A] shadow-2xl text-center">
+          {/* Dong Son Lacquer Pattern Background - High Visibility */}
+          <div
+            className="absolute inset-0 bg-cover bg-center pointer-events-none opacity-90"
+            style={{ backgroundImage: `url('/patterns/background-hoa-van.webp')` }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#24080B]/40 via-transparent to-[#14100E]/80 pointer-events-none" />
+
+          <div className="relative z-10 max-w-3xl mx-auto space-y-4">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#180507]/90 text-[#C5A880] border border-[#C5A880]/40 text-xs font-semibold backdrop-blur-sm shadow-md">
+              <Compass className="w-3.5 h-3.5 text-[#D4AF37]" />
+              <span>Hành trình tìm về nguồn cội thủ công Việt Nam</span>
+            </div>
+
+            <h1 className="font-headline text-3xl sm:text-5xl lg:text-6xl font-black text-[#FAF6F0] leading-[1.65] tracking-[0.02em] text-gold-luminous">
+              Văn Hóa & Các Làng Nghề Trăm Năm Tuổi
+            </h1>
+
+            <TraditionalFlourish className="my-2" />
+
+            <p className="text-sm sm:text-base text-[#EDE4D8]/85 leading-relaxed font-subtext max-w-2xl mx-auto">
+              Việt Nam có hàng ngàn làng nghề thủ công truyền thống, nơi lưu giữ tinh hoa trí tuệ và tâm hồn dân tộc qua bao thăng trầm thời gian. Nếp Việt trân trọng đồng hành cùng các nghệ nhân bảo tồn và lan tỏa những giá trị vô giá ấy.
+            </p>
+
+            <GoldWavyLine className="pt-4" />
           </div>
-          <h1 className="font-serif text-3xl sm:text-5xl font-black text-nepbrown-800 leading-tight">
-            Văn Hóa & Các Làng Nghề Trăm Năm Tuổi
-          </h1>
-          <p className="text-xs sm:text-base text-neutral-600 leading-relaxed">
-            Việt Nam có hàng ngàn làng nghề thủ công truyền thống, nơi lưu giữ tinh hoa trí tuệ và tâm hồn dân tộc qua bao thăng trầm thời gian. Nếp Việt trân trọng đồng hành cùng các nghệ nhân bảo tồn và lan tỏa những giá trị vô giá ấy.
-          </p>
         </div>
 
-        {/* Craft Villages Grid */}
-        <div className="space-y-12">
-          <div className="text-center md:text-left">
-            <h2 className="font-serif text-2xl sm:text-3xl font-black text-nepbrown-800">
-              Các Làng Nghề Nổi Bật Tại Nếp Việt
-            </h2>
-            <p className="text-xs sm:text-sm text-neutral-500 mt-1">
+        {/* 2. CRAFT VILLAGES GRID */}
+        <div className="space-y-10">
+          <div className="text-center md:text-left flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 border-b border-[#362924]">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-widest text-[#D4AF37]">
+                Di sản làng nghề
+              </span>
+              <h2 className="font-headline text-2xl sm:text-4xl font-black text-[#FAF6F0] mt-1 leading-snug">
+                Các Làng Nghề Nổi Bật Tại Nếp Việt
+              </h2>
+            </div>
+            <p className="text-xs sm:text-sm text-[#C5A880] font-medium">
               Những cái nôi di sản thủ công được Nếp Việt chọn lọc trực tiếp
             </p>
           </div>
@@ -61,44 +82,45 @@ export default function CultureHeritagePage() {
             {CRAFT_VILLAGES.map((village) => (
               <div
                 key={village.id}
-                className="bg-white rounded-3xl overflow-hidden border border-cream-200 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between"
+                className="group bg-[#1C1614] rounded-[28px] overflow-hidden border border-[#382B26]/80 hover:border-[#D4AF37]/70 shadow-xl hover:-translate-y-2 hover:shadow-[0_22px_45px_-10px_rgba(0,0,0,0.85),0_0_25px_-5px_rgba(212,175,55,0.22)] transition-all duration-400 ease-out flex flex-col justify-between"
               >
-                <div className="relative aspect-[16/10] w-full overflow-hidden bg-cream-100">
+                <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#14100E]">
                   <Image
                     src={village.image}
                     alt={village.name}
                     fill
                     sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover hover:scale-105 transition-transform duration-500"
+                    className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out filter brightness-[0.8]"
                   />
-                  <div className="absolute top-3 left-3">
-                    <span className="px-3 py-1 bg-nepred-600 text-white text-[11px] font-bold rounded-full shadow">
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1C1614] via-transparent to-black/30" />
+                  <div className="absolute top-3.5 left-3.5">
+                    <span className="px-3 py-1 bg-[#A82B1D] text-white text-[11px] font-bold rounded-full shadow-md border border-[#D4AF37]/30">
                       {village.history}
                     </span>
                   </div>
                 </div>
 
-                <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-1.5 text-xs text-nepgreen-700 font-semibold">
-                      <MapPin className="w-3.5 h-3.5" />
+                <div className="p-6 flex-1 flex flex-col justify-between space-y-5">
+                  <div className="space-y-2.5">
+                    <div className="flex items-center gap-1.5 text-xs text-[#C5A880] font-semibold">
+                      <MapPin className="w-3.5 h-3.5 text-[#C5A880]" />
                       <span>{village.location}</span>
                     </div>
-                    <h3 className="font-serif font-bold text-lg text-nepbrown-800">
+                    <h3 className="font-headline font-bold text-xl text-[#FAF6F0] group-hover:text-[#C5A880] transition-colors leading-snug">
                       {village.name}
                     </h3>
-                    <p className="text-xs text-neutral-600 leading-relaxed">
+                    <p className="text-xs text-[#EDE4D8]/80 leading-relaxed font-subtext">
                       {village.highlight}
                     </p>
                   </div>
 
-                  <div className="pt-4 border-t border-cream-100">
+                  <div className="pt-4 border-t border-[#362924]">
                     <Link
-                      href={`/san-pham`}
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-nepred-600 hover:text-nepred-700"
+                      href="/san-pham"
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-[14px] bg-[#251D1A] hover:bg-[#8B1E2B] text-xs font-semibold text-[#EDE4D8] hover:text-white border border-[#3E2D26] hover:border-[#D4AF37]/50 transition-all duration-300"
                     >
                       <span>Xem sản phẩm từ làng nghề</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      <ArrowRight className="w-3.5 h-3.5 text-[#C5A880] group-hover:translate-x-1 transition-transform" />
                     </Link>
                   </div>
                 </div>
@@ -107,34 +129,49 @@ export default function CultureHeritagePage() {
           </div>
         </div>
 
-        {/* Process Flow */}
-        <div className="bg-cream-100/70 rounded-3xl p-8 sm:p-14 border border-cream-200 space-y-10">
-          <div className="text-center max-w-2xl mx-auto space-y-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-nepred-600">
-              Quy trình chế tác
+        {/* 3. PROCESS FLOW - SƠN MÀI ĐỎ & HỌA TIẾT ĐÔNG SƠN */}
+        <div className="relative rounded-[32px] p-8 sm:p-14 overflow-hidden bg-[#3D0A10] border border-[#52121A] shadow-2xl space-y-10">
+          {/* Dong Son Lacquer Pattern Background - High Visibility */}
+          <div
+            className="absolute inset-0 bg-cover bg-center pointer-events-none opacity-85"
+            style={{ backgroundImage: `url('/patterns/background-hoa-van.webp')` }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#24080B]/60 via-transparent to-[#14100E]/85 pointer-events-none" />
+
+          <div className="relative z-10 text-center max-w-2xl mx-auto space-y-3">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#D4AF37]">
+              Quy trình chế tác thủ công
             </span>
-            <h2 className="font-serif text-2xl sm:text-3xl font-black text-nepbrown-800">
+            <h2 className="font-headline text-2xl sm:text-4xl font-black text-[#FAF6F0] tracking-[0.02em] leading-[1.65]">
               Từ Đất, Tre, Tơ Đến Tác Phẩm Nghệ Thuật
             </h2>
-            <p className="text-xs sm:text-sm text-neutral-600">
+            <TraditionalFlourish />
+            <p className="text-xs sm:text-sm text-[#EDE4D8]/85 leading-relaxed font-subtext">
               Để tạo nên một sản phẩm thủ công hoàn chỉnh, mỗi người nghệ nhân phải trải qua hàng chục công đoạn đòi hỏi sự kiên nhẫn và bàn tay khéo léo.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {steps.map((st) => (
-              <div key={st.step} className="bg-white p-6 rounded-2xl border border-cream-200 shadow-sm space-y-3">
-                <span className="font-serif text-3xl font-black text-nepred-600 block">
+              <div
+                key={st.step}
+                className="bg-[#180507]/90 backdrop-blur-md p-6 rounded-[22px] border border-[#3E1015] hover:border-[#D4AF37]/60 shadow-lg hover:-translate-y-1.5 transition-all duration-300 space-y-3 group"
+              >
+                <span className="font-headline text-3xl sm:text-4xl font-black text-[#D4AF37] block group-hover:scale-105 transition-transform">
                   {st.step}
                 </span>
-                <h3 className="font-serif font-bold text-sm text-nepbrown-800">
+                <h3 className="font-headline font-bold text-sm text-[#FAF6F0] leading-snug">
                   {st.title}
                 </h3>
-                <p className="text-xs text-neutral-500 leading-relaxed">
+                <p className="text-xs text-[#EDE4D8]/75 leading-relaxed font-subtext">
                   {st.desc}
                 </p>
               </div>
             ))}
+          </div>
+
+          <div className="relative z-10 pt-4">
+            <GoldWavyLine />
           </div>
         </div>
 

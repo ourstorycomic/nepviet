@@ -26,7 +26,12 @@ export function getStoredProducts(): Product[] {
     if (raw) {
       const parsed = JSON.parse(raw);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        return parsed;
+        // Loại bỏ hoàn toàn các sản phẩm rác kiểm thử như ffff
+        const clean = parsed.filter(p => p.id !== 'art-mwu6rwsm' && p.name?.trim().toLowerCase() !== 'ffff');
+        if (clean.length !== parsed.length) {
+          localStorage.setItem(PRODUCTS_STORAGE_KEY, JSON.stringify(clean));
+        }
+        return clean;
       }
     }
   } catch (err) {
@@ -102,7 +107,9 @@ export function useProducts() {
             return cp;
           });
 
-          const finalMerged = [...localOnly, ...mergedCloud];
+          const finalMerged = [...localOnly, ...mergedCloud].filter(
+            (p) => p.id !== 'art-mwu6rwsm' && p.name?.trim().toLowerCase() !== 'ffff'
+          );
           setProductsState(finalMerged);
           saveStoredProducts(finalMerged);
           setIsCloudSynced(true);

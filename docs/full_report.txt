@@ -1,0 +1,674 @@
+-3809990
+HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG
+KHOA ĐA PHƯƠNG TIỆN
+BÁO CÁO GIỮA KỲ
+HỌC PHẦN ỨNG DỤNG THIẾT KẾ WEB
+Dự án Website Nếp Việt
+GVHD: Th.S Nguyễn Thị Hoài Phương
+Nhóm
+Họ và tên
+MSV
+05
+Dương Yến Nhi
+B24DCTT102
+Nguyễn Ngọc Thảo Vy
+B24DCTT147
+Phạm Minh Anh
+B24DCTT015
+Bùi Thị Mai Anh
+B24DCTT003
+Lục Phương Thảo Chi
+B24DCTT024
+MỤC LỤC
+TOC \h \u \z \t "Heading 1,1,Heading 2,2,Heading 3,3,Heading 4,4,Heading 5,5,Heading 6,6,"MỤC LỤC2
+BẢNG ĐÁNH GIÁ THÀNH VIÊN4
+LỜI MỞ ĐẦU7
+CHƯƠNG 1. XÂY DỰNG Ý TƯỞNG WEBSITE9
+1.1. Lý do chọn đề tài9
+1.1.1. Bối cảnh hình thành ý tưởng9
+1.1.2. Vấn đề đặt ra10
+1.1.3. Lý do lựa chọn đề tài11
+1.2. Mục tiêu dự án12
+1.2.1. Mục tiêu tổng quát12
+1.2.2. Mục tiêu cụ thể12
+1.3. Đối tượng và phạm vi website13
+1.3.1. Đối tượng người dùng hướng tới13
+1.3.2. Phạm vi nội dung website14
+1.3.3. Phạm vi triển khai dự án15
+1.4. Phương pháp thực hiện16
+1.4.1. Phương pháp thu thập thông tin16
+1.4.2. Phương pháp khảo sát người dùng16
+1.4.3. Phương pháp phân tích và so sánh17
+1.4.4. Phương pháp hệ thống hóa và lập kế hoạch18
+CHƯƠNG 2. NGHIÊN CỨU VÀ PHÂN TÍCH NGƯỜI DÙNG19
+2.1. Nghiên cứu chủ đề19
+2.1.1. Tổng quan về sản phẩm thủ công và văn hóa truyền thống19
+2.1.2. Nhu cầu tìm hiểu và tiếp cận sản phẩm20
+2.1.3. Vai trò của website trong việc giới thiệu sản phẩm và giá trị văn hóa20
+2.2. Nghiên cứu đối tượng người dùng21
+2.2.1. Xác định đối tượng người dùng mục tiêu21
+2.2.2. Nhu cầu và mong muốn của người dùng22
+2.2.3. Thói quen tìm kiếm thông tin22
+2.2.4. Những khó khăn và rào cản của người dùng23
+2.3. Khảo sát nhu cầu người dùng23
+2.3.1. Mục tiêu khảo sát23
+2.3.2. Đối tượng và phương pháp khảo sát23
+2.3.3. Xây dựng bảng câu hỏi khảo sát24
+2.3.4. Tổng hợp kết quả khảo sát24
+2.3.5. Phân tích kết quả khảo sát31
+2.3.6. Kết luận và định hướng từ kết quả khảo sát32
+2.4. Nghiên cứu website tham khảo33
+2.4.1. Lựa chọn website tham khảo33
+2.4.2. Phân tích cách tổ chức nội dung và danh mục33
+2.4.3. Phân tích tính năng nổi bật34
+2.4.4. So sánh ưu điểm và hạn chế34
+2.4.5. Bài học rút ra cho dự án Nếp Việt36
+CHƯƠNG 3. XÂY DỰNG DANH SÁCH TÍNH NĂNG WEBSITE37
+3.1. Xác định yêu cầu website.37
+3.1.1. Yêu cầu từ nhu cầu người dùng.37
+3.1.2. Yêu cầu về nội dung và thông tin.38
+3.1.3. Yêu cầu về khả năng sử dụng và điều hướng.39
+3.2. Xây dụng danh sách tính năng.39
+3.2.1. Nguyên tắc xác định tính năng.39
+3.2.2. Danh sách tính năng tổng quan.40
+3.2.3. Mô tả chi tiết từng tính năng40
+3.2.4. Phân nhóm tính năng theo từng trang.42
+3.3. Đối chiếu và hoàn thiện danh sách tính năng43
+3.3.1. Đối chiếu tính năng với kểt quả khảo sát43
+3.3.2. Đối chiếu tính năng với website tham khảo43
+3.3.3. Danh sách tính năng đề xuất cho dự án43
+CHƯƠNG 4: XÂY DỰNG SƠ ĐỒ PHÂN CẤP WEBSITE45
+4.1. Cơ sở xây dựng sơ đồ phân cấp45
+4.1.1. Khái niệm sơ đồ phân cấp website45
+4.1.2. Vai trò của sơ đồ phân cấp45
+4.1.3. Nguyên tắc tổ chức cấu trúc website45
+4.2. Xác định hệ thống trang website46
+4.2.1. Xác định trang chủ46
+4.2.2. Xác định các trang chính46
+4.2.3. Xác định các trang con47
+4.2.4. Phân nhóm nội dung và danh mục sản phẩm47
+4.3. Xây dựng sơ đồ phân cấp website48
+4.3.1. Sơ đồ phân cấp tổng thể48
+4.3.2. Giải thích cấu trúc phân cấp49
+4.3.3. Mối liên hệ giữa các trang49
+4.3.4. Đối chiếu sơ đồ với danh sách tính năng (Function List)50
+CHƯƠNG 5. TỔNG KẾT VÀ ĐỊNH HƯỚNG TRIỂN KHAI51
+5.1. Tổng kết kết quả nghiên cứu51
+5.1.1. Kết quả hình thành ý tưởng51
+5.1.2. Kết quả nghiên cứu người dùng51
+5.1.3. Kết quả xác định tính năng52
+5.1.4. Kết quả xây dựng sơ đồ phân cấp53
+5.2. Đánh giá tính phù hợp của phương án đề xuất53
+5.2.1. Mức độ đáp ứng nhu cầu người dùng53
+5.2.2. Sự thống nhất giữa ý tưởng, tính năng và cấu trúc website54
+5.2.3. Những vấn đề cần tiếp tục hoàn thiện54
+5.3. Định hướng triển khai tiếp theo55
+5.3.1. Định hướng thiết kế giao diện55
+5.3.2. Định hướng xây dựng website56
+5.3.3. Định hướng kiểm tra và hoàn thiện website56
+LỜI KẾT58
+TÀI LIỆU THAM KHẢO59
+BẢNG ĐÁNH GIÁ THÀNH VIÊN
+Điểm
+Thành viên
+Nội dung công việc được phân công
+Đánh giá %
+100%
+Nguyễn Ngọc Thảo Vy
+Phụ trách Lời cảm ơn, Lời mở đầu, Chương 1 – Xây dựng ý tưởng website và Lời kết. Nội dung gồm lý do chọn đề tài, mục tiêu dự án, đối tượng và phạm vi website, phương pháp thực hiện.
+100%
+100%
+Lục Phương Thảo Chi
+Phụ trách Chương 2 – Nghiên cứu và phân tích người dùng. Tổng hợp, thống kê kết quả khảo sát, phân tích nhu cầu và xác định đặc điểm người dùng mục tiêu.
+100%
+100%
+Phạm Minh Anh
+Phụ trách Chương 3 – Danh sách tính năng. Xác định, phân loại và mô tả các tính năng dự kiến của website dựa trên mục tiêu dự án và kết quả khảo sát.
+100%
+100%
+Bùi Thị Mai Anh
+Phụ trách Chương 4 – Sơ đồ phân cấp website. Xây dựng sơ đồ cấu trúc website, sắp xếp các trang và danh mục sản phẩm theo thứ bậc hợp lý.
+100%
+100%
+Dương Yến Nhi
+Phụ trách tổng hợp, rà soát và hoàn thiện báo cáo; kiểm tra sự thống nhất giữa các phần, định dạng văn bản và chuẩn bị bản báo cáo hoàn chỉnh.
+100%
+LỜI MỞ ĐẦU
+Trong kỷ nguyên kinh tế số và sự bùng nổ của truyền thông đa phương tiện, các nền tảng trực tuyến đã trở thành cầu nối thiết yếu giúp các tổ chức, cá nhân giới thiệu sản phẩm, lan tỏa giá trị văn hóa và thiết lập mối liên kết bền chặt với người tiêu dùng. Việt Nam sở hữu kho tàng di sản thủ công mỹ nghệ và ẩm thực dân gian đồ sộ, kết tinh từ tri thức bản địa, sự tài hoa của các nghệ nhân làng nghề và chiều sâu biểu tượng được bồi đắp qua nhiều thế hệ. Tuy nhiên, trước sức ép của làn sóng công nghiệp hóa và thói quen tiêu dùng nhanh, các sản phẩm thủ công truyền thống đang đối mặt với nguy cơ suy thoái và thu hẹp thị trường tiêu thụ. Phương thức phân phối hiện nay vẫn phụ thuộc nặng nề vào các không gian chợ truyền thống hoặc các mùa lễ hội ngắn hạn, kết hợp với tình trạng thiếu vắng thông tin kiểm chứng và sự phân tán của thị trường đã tạo ra một khoảng cách lớn giữa di sản với thế hệ công chúng trẻ. Xuất phát từ trăn trở đó, dự án xây dựng website Nếp Việt được hình thành như một giải pháp số chuyên biệt, kết hợp hài hòa giữa hoạt động thương mại điện tử và nghệ thuật kể chuyện di sản, nhằm đưa các sản phẩm thủ công và hương vị cổ truyền hòa nhịp vào đời sống đương đại một cách bền vững.
+Bài báo cáo này được thực hiện nhằm hệ thống hóa toàn bộ quy trình nghiên cứu, lập kế hoạch và định hình giải pháp kiến trúc cho website Nếp Việt trong khuôn khổ học phần Ứng dụng thiết kế web. Mục đích cốt lõi của báo cáo là vận dụng phương pháp luận nghiên cứu người dùng và nguyên lý tổ chức cấu trúc thông tin để chuyển hóa một ý tưởng văn hóa trừu tượng thành một mô hình giải pháp kỹ thuật cụ thể, khả thi và giàu giá trị thực tiễn. Thông qua việc phân tích thực chứng thị hiếu, hành vi và các rào cản tâm lý của nhóm khách hàng mục tiêu, đối sánh với các nền tảng đi trước trên thị trường và xây dựng hệ thống tính năng cùng sơ đồ phân cấp trang chuẩn mực, bài báo cáo hướng đến việc thiết lập một bản thiết kế định hướng hoàn chỉnh, đóng vai trò là cơ sở khoa học phục vụ trực tiếp cho các giai đoạn thiết kế giao diện tương tác và phát triển kỹ thuật tiếp theo.
+Về phạm vi nội dung, bài báo cáo tập trung nghiên cứu hành vi khách hàng, xây dựng cấu trúc thông tin và định hình trải nghiệm người dùng đối với các nhóm sản phẩm văn hóa thủ công Việt Nam, trọng tâm bao gồm đồ handmade và quà tặng thủ công, ẩm thực truyền thống bốn mùa, phụ kiện trang trí và trang phục mang cảm hứng văn hóa dân tộc. Trong giới hạn của một bài tập học phần, báo cáo không đặt mục tiêu xây dựng ngay một hệ thống thương mại điện tử quy mô lớn có tích hợp chuỗi cung ứng phức tạp trên môi trường thực tế, mà ưu tiên làm sáng tỏ sự thống nhất hữu cơ giữa nhu cầu người dùng, danh mục tính năng và sơ đồ phân cấp website. Toàn bộ nội dung báo cáo được cấu trúc chặt chẽ thành năm chương chuyên sâu, lần lượt dẫn dắt từ cơ sở hình thành ý tưởng, kết quả khảo sát thực nghiệm người dùng, xây dựng danh mục tính năng theo cấp độ ưu tiên, thiết lập sơ đồ phân cấp sitemap, cho đến đánh giá tính phù hợp của giải pháp và vạch ra lộ trình triển khai chi tiết cho giai đoạn thiết kế giao diện và hoàn thiện hệ thống.
+CHƯƠNG 1. XÂY DỰNG Ý TƯỞNG WEBSITE
+1.1. Lý do chọn đề tài
+1.1.1. Bối cảnh hình thành ý tưởng
+Văn hóa truyền thống Việt Nam được thể hiện qua nhiều khía cạnh của đời sống, trong đó có các sản phẩm thủ công, đồ dùng sinh hoạt, trang phục, ẩm thực và những vật phẩm gắn với phong tục, lễ hội. Mỗi sản phẩm có thể mang những đặc điểm riêng về chất liệu, kiểu dáng, kỹ thuật chế tác và câu chuyện hình thành. Đây không chỉ là những sản phẩm phục vụ nhu cầu sử dụng mà còn có thể trở thành phương tiện giúp người dùng tìm hiểu và tiếp cận các giá trị văn hóa.
+Trong đời sống hiện đại, nhu cầu tìm kiếm những sản phẩm có tính thẩm mỹ, tính cá nhân hóa và ý nghĩa riêng cũng mở ra cơ hội để các sản phẩm thủ công tiếp cận nhiều nhóm khách hàng. Bên cạnh việc mua để sử dụng, người tiêu dùng có thể lựa chọn các sản phẩm này làm quà tặng, trang trí không gian sống hoặc thể hiện sở thích và phong cách cá nhân.
+Tuy nhiên, các sản phẩm thủ công và văn hóa truyền thống có đặc điểm khá đa dạng, được giới thiệu qua nhiều cửa hàng và nền tảng khác nhau. Người dùng có thể phải tìm kiếm từ nhiều nguồn để so sánh mẫu mã, giá cả, chất liệu và thông tin về nguồn gốc. Đối với những sản phẩm mang giá trị văn hóa, việc thiếu thông tin về ý nghĩa, quy trình chế tác hoặc câu chuyện phía sau cũng có thể khiến người mua chưa hiểu rõ giá trị của sản phẩm.
+Từ thực tế đó, nhóm nhận thấy việc xây dựng một website tập hợp sản phẩm theo từng danh mục, kết hợp hình ảnh trực quan với thông tin cụ thể và nội dung giới thiệu văn hóa có thể giúp quá trình tìm hiểu sản phẩm trở nên thuận tiện hơn. Đây là cơ sở để nhóm hình thành ý tưởng website Nếp Việt.
+1.1.2. Vấn đề đặt ra
+Từ định hướng ban đầu, nhóm xác định một số vấn đề cần quan tâm khi xây dựng website giới thiệu và kinh doanh sản phẩm thủ công gắn với văn hóa truyền thống.
+Thứ nhất, thông tin sản phẩm cần được trình bày rõ ràng và trực quan. Người dùng cần có khả năng quan sát hình ảnh, tham khảo giá bán, kích thước, chất liệu và công dụng trước khi cân nhắc lựa chọn sản phẩm. Đối với những sản phẩm được chế tác thủ công, hình ảnh thực tế và thông tin chi tiết càng có vai trò quan trọng trong việc giúp người mua hình dung sản phẩm.
+Thứ hai, việc phân loại sản phẩm cần hợp lý. Các sản phẩm thủ công và văn hóa truyền thống có thể thuộc nhiều nhóm khác nhau, từ đồ handmade, đồ trang trí đến ẩm thực và phụ kiện. Nếu nội dung không được sắp xếp rõ ràng, người dùng sẽ gặp khó khăn khi tìm kiếm sản phẩm phù hợp với nhu cầu.
+Thứ ba, giá trị văn hóa cần được thể hiện bên cạnh giá trị thương mại. Nếu website chỉ tập trung vào hình ảnh và giá bán, người dùng có thể chưa nhận thấy điểm khác biệt của những sản phẩm gắn với văn hóa truyền thống. Vì vậy, việc giới thiệu nguồn gốc, ý nghĩa, chất liệu và quá trình chế tác là một hướng nội dung cần được cân nhắc.
+Thứ tư, website cần phù hợp với nhu cầu và thói quen của người dùng hiện đại. Giao diện cần dễ sử dụng, thông tin dễ tìm kiếm và cách trình bày đủ hấp dẫn để khuyến khích người dùng khám phá sản phẩm. Đồng thời, giá cả, độ tin cậy của thông tin và sự thuận tiện trong quá trình mua sắm cũng là những yếu tố cần quan tâm.
+Những vấn đề trên là cơ sở để nhóm xác định mục tiêu và định hướng thiết kế website Nếp Việt theo hướng kết hợp giữa tính tiện dụng, giá trị thẩm mỹ và nội dung văn hóa.
+1.1.3. Lý do lựa chọn đề tài
+Nhóm lựa chọn đề tài xây dựng website Nếp Việt vì ba lý do chính:
+Thứ nhất, đề tài có nội dung đa dạng và gắn với giá trị văn hóa Việt Nam. Các sản phẩm thủ công, ẩm thực, phụ kiện và đồ trang trí truyền thống đều có thể trở thành chất liệu để xây dựng nội dung website. Việc giới thiệu sản phẩm theo hướng này giúp website không chỉ có chức năng cung cấp thông tin mà còn tạo cơ hội để người dùng tìm hiểu những nét đặc trưng của văn hóa Việt Nam.
+Thứ hai, đề tài có khả năng kết hợp giữa nhu cầu mua sắm và trải nghiệm khám phá. Người dùng có thể truy cập website để tìm sản phẩm phục vụ nhu cầu cá nhân, lựa chọn quà tặng hoặc đơn giản là tìm hiểu về một sản phẩm có nguồn gốc và ý nghĩa văn hóa đặc biệt. Điều này tạo điều kiện để nhóm xây dựng nội dung theo hướng gần gũi với nhu cầu thực tế, thay vì chỉ giới thiệu sản phẩm một cách đơn thuần.
+Thứ ba, đề tài phù hợp với mục tiêu học phần Ứng dụng thiết kế web. Việc triển khai ý tưởng đòi hỏi nhóm phải nghiên cứu người dùng, xây dựng cấu trúc thông tin, phân loại sản phẩm, xác định tính năng và lựa chọn phong cách giao diện. Đây là cơ hội để nhóm vận dụng kiến thức về thiết kế website vào một dự án cụ thể.
+Tên gọi Nếp Việt được lựa chọn nhằm thể hiện tinh thần của dự án. “Nếp” gợi liên tưởng đến nếp sống, phong tục và những giá trị được gìn giữ qua nhiều thế hệ; “Việt” thể hiện bản sắc dân tộc và nguồn cảm hứng văn hóa mà website hướng đến. Tên gọi này góp phần định hình hình ảnh một website gần gũi với văn hóa Việt Nam nhưng vẫn hướng đến cách tiếp cận phù hợp với đời sống hiện đại.
+Thông qua Nếp Việt, nhóm mong muốn xây dựng một không gian trực tuyến nơi người dùng có thể tìm kiếm sản phẩm, khám phá câu chuyện văn hóa và tiếp cận các giá trị truyền thống bằng hình thức trực quan, thuận tiện.
+1.2. Mục tiêu dự án
+1.2.1. Mục tiêu tổng quát
+Xây dựng ý tưởng và định hướng thiết kế website Nếp Việt nhằm giới thiệu, phân loại và hỗ trợ người dùng tìm hiểu các sản phẩm thủ công gắn với văn hóa truyền thống Việt Nam. Website hướng đến việc kết hợp giữa thông tin sản phẩm, hình ảnh trực quan và nội dung giới thiệu giá trị văn hóa, qua đó giúp người dùng dễ dàng khám phá các sản phẩm phù hợp với nhu cầu cá nhân.
+Bên cạnh mục tiêu giới thiệu sản phẩm, dự án còn hướng đến việc xây dựng trải nghiệm sử dụng website rõ ràng, thuận tiện và có tính thẩm mỹ. Các quyết định về nội dung, cấu trúc và giao diện sẽ được cân nhắc dựa trên kết quả nghiên cứu người dùng cũng như yêu cầu của học phần.
+1.2.2. Mục tiêu cụ thể
+Để triển khai mục tiêu tổng quát, nhóm xác định các mục tiêu cụ thể như sau:
+Xác định đối tượng người dùng mục tiêu: Tìm hiểu độ tuổi, nghề nghiệp, sở thích, thói quen mua sắm và nhu cầu của những người có khả năng quan tâm đến các sản phẩm thủ công và văn hóa truyền thống.
+Xây dựng hệ thống danh mục sản phẩm: Phân loại nội dung thành các nhóm dễ nhận biết như đồ handmade và quà tặng thủ công, phụ kiện và đồ trang trí truyền thống, ẩm thực truyền thống, trang phục và phụ kiện mang cảm hứng văn hóa Việt, đồ thủ công mỹ nghệ.
+Cung cấp thông tin sản phẩm đầy đủ: Định hướng trình bày hình ảnh, giá bán, chất liệu, kích thước, công dụng và những thông tin cần thiết để người dùng có cơ sở tìm hiểu, so sánh sản phẩm.
+Lồng ghép nội dung văn hóa: Xây dựng phần giới thiệu nguồn gốc, ý nghĩa văn hóa và quá trình chế tác đối với những sản phẩm có thông tin phù hợp, giúp người dùng hiểu thêm về giá trị phía sau sản phẩm.
+Định hướng giao diện dễ sử dụng: Lựa chọn phong cách thiết kế có sự kết hợp giữa yếu tố truyền thống và cách trình bày hiện đại; chú trọng khả năng đọc, điều hướng và tìm kiếm thông tin.
+Xác định các tính năng phù hợp: Cân nhắc những tính năng như phân loại sản phẩm, tìm kiếm và lọc theo nhu cầu, xem thông tin chi tiết, tham khảo gợi ý quà tặng và đánh giá của khách hàng tùy theo phạm vi triển khai của dự án.
+Vận dụng kiến thức học phần: Thực hành các bước nghiên cứu, lập kế hoạch và xây dựng định hướng thiết kế website dựa trên nhu cầu người dùng và mục tiêu đã xác định.
+Các mục tiêu trên là căn cứ để nhóm triển khai những bước tiếp theo. Việc lựa chọn tính năng và phong cách giao diện cụ thể sẽ được xem xét dựa trên kết quả khảo sát và điều kiện thực hiện bài tập.
+1.3. Đối tượng và phạm vi website
+1.3.1. Đối tượng người dùng hướng tới
+Đối tượng người dùng của Nếp Việt là những người có nhu cầu tìm hiểu, tham khảo hoặc mua các sản phẩm thủ công và sản phẩm mang giá trị văn hóa truyền thống Việt Nam. Đây có thể là người quan tâm đến đồ handmade, quà tặng, sản phẩm trang trí, ẩm thực truyền thống, phụ kiện hoặc đồ thủ công mỹ nghệ.
+Dựa trên kết quả khảo sát 31 người tham gia, nhóm tuổi từ 18 - 25 chiếm 90,3% (28 người). Về nghề nghiệp, học sinh/sinh viên chiếm 80,6% (25 người). Đây là nhóm chiếm tỷ trọng lớn trong mẫu khảo sát, vì vậy nhóm dự kiến ưu tiên xây dựng trải nghiệm phù hợp với người trẻ, đặc biệt là sinh viên và những người thường xuyên sử dụng nền tảng số để tìm kiếm thông tin.
+Tuy nhiên, kết quả trên phản ánh đặc điểm của nhóm người đã tham gia khảo sát, không đại diện cho toàn bộ thị trường. Vì vậy, nhóm vẫn xem những người thuộc độ tuổi và nghề nghiệp khác có nhu cầu tìm hiểu hoặc mua sản phẩm là đối tượng người dùng tiềm năng của website.
+Về sở thích, 15 người (48,4%) cho biết họ quan tâm đến sản phẩm thủ công và văn hóa truyền thống, trong khi 7 người (22,6%) cho biết rất quan tâm. Tổng cộng, 22/31 người (71,0%) thể hiện mức độ quan tâm từ “Quan tâm” trở lên. Kết quả này cho thấy trong phạm vi khảo sát, phần lớn người tham gia có sự quan tâm nhất định đến chủ đề mà website hướng tới.
+Bên cạnh đó, 19 người (61,3%) cho biết họ có thể truy cập website nếu giao diện đẹp và sản phẩm bắt mắt; 11 người (35,5%) khẳng định muốn truy cập vì ý tưởng độc đáo và tiện lợi. Chỉ có 1 người (3,2%) cho biết không có nhu cầu. Những phản hồi này gợi ý rằng hình thức trình bày và sức hấp dẫn của sản phẩm là những yếu tố cần được chú ý khi xây dựng website.
+Từ những kết quả trên, nhóm xác định người trẻ, đặc biệt là học sinh/sinh viên có quan tâm đến sản phẩm thủ công, quà tặng và văn hóa truyền thống, là nhóm người dùng ưu tiên trong giai đoạn đầu. Website vẫn được định hướng để những người dùng khác có thể tiếp cận và tìm kiếm sản phẩm theo nhu cầu riêng.
+1.3.2. Phạm vi nội dung website
+Nếp Việt được định hướng là website giới thiệu và kinh doanh các sản phẩm thủ công gắn liền với văn hóa truyền thống Việt Nam. Nội dung website dự kiến được chia thành các nhóm chính sau:
+Thứ nhất, đồ handmade và quà tặng thủ công. Đây là nhóm sản phẩm dành cho người dùng yêu thích các sản phẩm được làm thủ công, có tính thẩm mỹ hoặc mang dấu ấn riêng. Website có thể giới thiệu thông tin, hình ảnh và mức giá để người dùng tham khảo trước khi lựa chọn.
+Thứ hai, phụ kiện và đồ trang trí truyền thống. Nhóm này có thể bao gồm đèn lồng, đèn ông sao và các vật phẩm trang trí gắn với không gian sống hoặc những dịp lễ, Tết. Nội dung cần thể hiện được đặc điểm sản phẩm và bối cảnh sử dụng phù hợp.
+Thứ ba, ẩm thực truyền thống. Danh mục có thể giới thiệu bánh Trung Thu, bánh dân gian và đặc sản vùng miền. Với nhóm sản phẩm này, thông tin cần được lựa chọn phù hợp với đặc điểm hàng hóa, chẳng hạn như thành phần, quy cách, thời hạn sử dụng hoặc cách bảo quản khi có dữ liệu đáng tin cậy.
+Thứ tư, trang phục và phụ kiện mang cảm hứng văn hóa Việt. Danh mục tập trung vào các sản phẩm thể hiện cảm hứng từ họa tiết, chất liệu hoặc phong cách văn hóa Việt Nam, đáp ứng nhu cầu sử dụng cá nhân và làm quà tặng.
+Thứ năm, đồ thủ công mỹ nghệ. Nhóm này có thể bao gồm sản phẩm gốm, mây tre đan, thêu dệt và những vật phẩm được chế tác bằng kỹ thuật thủ công. Nội dung giới thiệu có thể làm rõ chất liệu, đặc điểm chế tác và giá trị văn hóa của sản phẩm khi có đủ thông tin.
+Bên cạnh các danh mục sản phẩm, website dự kiến có những nội dung hỗ trợ như trang giới thiệu Nếp Việt, thông tin chi tiết sản phẩm và phần câu chuyện văn hóa. Các nội dung này nhằm giúp người dùng không chỉ tìm kiếm sản phẩm mà còn hiểu rõ hơn về nguồn gốc và ý nghĩa của chúng.
+Phạm vi nội dung được xây dựng theo hướng linh hoạt, có thể điều chỉnh trong quá trình triển khai để phù hợp với nguồn tư liệu, sản phẩm mẫu và yêu cầu thực tế của bài tập.
+1.3.3. Phạm vi triển khai dự án
+Dự án Nếp Việt được thực hiện trong khuôn khổ học phần Ứng dụng thiết kế web. Vì vậy, nhóm tập trung vào việc nghiên cứu nhu cầu người dùng, xác định mục tiêu website, xây dựng cấu trúc nội dung và định hướng các thành phần giao diện, tính năng phù hợp.
+Trong phạm vi bài tập, nhóm ưu tiên làm rõ những yếu tố cơ bản gồm đối tượng người dùng, hệ thống danh mục sản phẩm, cách trình bày thông tin, phong cách thiết kế và khả năng điều hướng trên website. Những nội dung này đóng vai trò nền tảng cho việc triển khai giao diện và các trang chức năng ở những bước tiếp theo.
+Đối với chức năng kinh doanh, website được định hướng hỗ trợ người dùng tìm hiểu và tham khảo sản phẩm, đồng thời xác định các tính năng có thể phục vụ quá trình mua hàng. Việc tích hợp thanh toán trực tuyến, quản lý đơn hàng, vận chuyển hoặc các hệ thống vận hành thương mại điện tử thực tế chỉ được xem xét nếu phù hợp với yêu cầu và nguồn lực của dự án.
+Nhóm không đặt mục tiêu xây dựng một hệ thống thương mại điện tử hoàn chỉnh ở giai đoạn xác định ý tưởng. Thay vào đó, dự án hướng đến việc hình thành một website có cấu trúc hợp lý, nội dung rõ ràng và định hướng trải nghiệm phù hợp với người dùng mục tiêu.
+1.4. Phương pháp thực hiện
+1.4.1. Phương pháp thu thập thông tin
+Nhóm sử dụng phương pháp thu thập và tổng hợp thông tin nhằm tìm hiểu đặc điểm của các sản phẩm thủ công, những giá trị văn hóa có liên quan và cách thức tổ chức nội dung trên website. Thông tin được sử dụng để hình thành ý tưởng ban đầu, xác định các nhóm sản phẩm và lựa chọn những nội dung cần ưu tiên giới thiệu.
+Trong quá trình thực hiện, nhóm cần chú ý đến độ phù hợp và độ tin cậy của thông tin, đặc biệt là các nội dung liên quan đến nguồn gốc, chất liệu, kỹ thuật chế tác và ý nghĩa văn hóa. Những thông tin này chỉ nên được đưa vào website khi có cơ sở kiểm chứng, tránh sử dụng nội dung chưa rõ nguồn gốc hoặc diễn giải quá mức giá trị của sản phẩm.
+Phương pháp thu thập thông tin giúp nhóm có cơ sở để xây dựng nội dung website theo hướng thống nhất, đồng thời xác định những thông tin cần thiết để người dùng tham khảo khi tìm hiểu sản phẩm.
+1.4.2. Phương pháp khảo sát người dùng
+Khảo sát người dùng được thực hiện thông qua biểu mẫu trực tuyến nhằm tìm hiểu độ tuổi, nghề nghiệp, mức độ quan tâm đến sản phẩm thủ công và văn hóa truyền thống, thói quen mua sắm, mức chi tiêu và kỳ vọng đối với website.
+Phiếu khảo sát thu thập 31 câu trả lời. Nội dung khảo sát gồm các nhóm câu hỏi chính: đặc điểm người tham gia; sở thích đối với các nhóm sản phẩm; tần suất mua sắm và mức chi trả; yếu tố ảnh hưởng đến quyết định mua hàng; những trở ngại khi mua sản phẩm; mức độ sẵn sàng truy cập website; phong cách thiết kế và các tính năng mong muốn.
+Sau khi thu thập, nhóm tổng hợp câu trả lời, thống kê số lượng và tỷ lệ phần trăm của các phương án. Đối với câu hỏi cho phép chọn nhiều đáp án, mỗi phương án được tính dựa trên số người lựa chọn phương án đó, do vậy tổng tỷ lệ của các phương án có thể lớn hơn 100%.
+Một số kết quả nổi bật được sử dụng để định hướng dự án như sau:
+Về nhóm người tham gia: 28/31 người (90,3%) thuộc nhóm tuổi 18 - 25; 25/31 người (80,6%) là học sinh/sinh viên.
+Về mức độ quan tâm: 22/31 người (71,0%) cho biết họ quan tâm hoặc rất quan tâm đến sản phẩm thủ công và văn hóa truyền thống.
+Về nhóm sản phẩm: 23/31 người (74,2%) lựa chọn đồ handmade và quà tặng thủ công; 21/31 người (67,7%) quan tâm đến trang phục và phụ kiện mang cảm hứng văn hóa Việt; 16/31 người (51,6%) lựa chọn ẩm thực truyền thống.
+Về mức chi tiêu: 16/31 người (51,6%) cho biết họ thường sẵn sàng chi từ 100.000 đến dưới 200.000 đồng cho một sản phẩm. Đây là khoảng chi trả được lựa chọn nhiều nhất trong mẫu khảo sát.
+Về trở ngại khi mua hàng: 22/31 người (71,0%) cho biết giá thành cao so với ngân sách là một yếu tố khiến họ ngần ngại; 13/31 người (41,9%) quan tâm đến sự phù hợp của mẫu mã với sở thích hoặc nhu cầu.
+Về thiết kế website: 17/31 người (54,8%) lựa chọn phong cách kết hợp chất liệu, họa tiết truyền thống với thiết kế đương đại; 14/31 người (45,2%) lựa chọn phong cách tối giản, hiện đại nhưng vẫn có nét truyền thống.
+Về tính năng: 23/31 người (74,2%) mong muốn có hình ảnh sản phẩm trực quan, chi tiết; 19/31 người (61,3%) mong muốn thông tin cụ thể về chất liệu, kích thước, giá cả và cách sử dụng; 18/31 người (58,1%) quan tâm đến câu chuyện nguồn gốc, ý nghĩa văn hóa và quá trình chế tác.
+Kết quả khảo sát cho thấy người tham gia không chỉ quan tâm đến hình thức sản phẩm mà còn chú ý đến giá cả, thông tin chi tiết và câu chuyện văn hóa. Vì vậy, nhóm sử dụng những kết quả này làm căn cứ ban đầu để lựa chọn danh mục, định hướng giao diện và xác định các tính năng cần ưu tiên cho Nếp Việt.
+Tuy nhiên, do số lượng người tham gia khảo sát còn hạn chế và phần lớn thuộc nhóm 18–25 tuổi, kết quả chỉ phản ánh ý kiến của mẫu khảo sát tại thời điểm thực hiện. Nhóm không sử dụng những số liệu này để khẳng định xu hướng của toàn bộ thị trường.
+1.4.3. Phương pháp phân tích và so sánh
+Sau khi thu thập thông tin và tổng hợp kết quả khảo sát, nhóm tiến hành phân tích nhằm xác định những nhu cầu nổi bật và các vấn đề cần ưu tiên giải quyết khi xây dựng website.
+Đối với dữ liệu khảo sát, nhóm xem xét sự phân bố của các nhóm tuổi, nghề nghiệp, sở thích sản phẩm, mức chi tiêu và tính năng mong muốn. Việc phân tích giúp nhóm nhận diện nhóm người dùng chiếm tỷ trọng lớn trong mẫu khảo sát, đồng thời tìm ra những yếu tố có khả năng ảnh hưởng đến trải nghiệm tìm hiểu và lựa chọn sản phẩm.
+Chẳng hạn, việc có 23/31 người (74,2%) lựa chọn hình ảnh sản phẩm trực quan cho thấy hình ảnh là một nội dung cần được ưu tiên. Bên cạnh đó, 19/31 người (61,3%) mong muốn thông tin sản phẩm chi tiết và 18/31 người (58,1%) quan tâm đến câu chuyện văn hóa phía sau sản phẩm. Những kết quả này gợi ý rằng website nên kết hợp hình ảnh, thông tin thực tế và nội dung giới thiệu văn hóa thay vì chỉ tập trung vào giá bán.
+Nhóm cũng xem xét sự khác biệt giữa các phong cách thiết kế được lựa chọn. Kết quả cho thấy phong cách kết hợp họa tiết truyền thống với thiết kế đương đại nhận được nhiều lựa chọn nhất, với 17/31 người (54,8%). Từ đó, nhóm có cơ sở để cân nhắc hướng thiết kế vừa thể hiện bản sắc Việt Nam, vừa giữ được sự rõ ràng và dễ sử dụng.
+Phương pháp phân tích và so sánh giúp nhóm chuyển các phản hồi thu thập được thành những định hướng ban đầu cho website. Các quyết định cuối cùng vẫn cần được cân nhắc cùng yêu cầu học phần, khả năng triển khai và sự thống nhất trong toàn bộ thiết kế.
+1.4.4. Phương pháp hệ thống hóa và lập kế hoạch
+Từ những thông tin đã thu thập và phân tích, nhóm tiến hành hệ thống hóa nội dung theo các nhóm công việc chính, bao gồm xác định mục tiêu, xác định đối tượng người dùng, xây dựng danh mục sản phẩm, lựa chọn thông tin cần hiển thị và định hướng tính năng.
+Việc hệ thống hóa giúp nhóm hạn chế tình trạng triển khai nội dung rời rạc hoặc lựa chọn tính năng chỉ dựa trên sở thích cá nhân. Thay vào đó, mỗi quyết định được xem xét trong mối liên hệ với mục tiêu của website và nhu cầu thể hiện qua khảo sát.
+Trên cơ sở đó, nhóm lập kế hoạch triển khai theo từng bước. Trước hết, nhóm xác định ý tưởng và định hướng nội dung; tiếp theo là tổ chức cấu trúc website, xây dựng các nhóm danh mục và xác định thông tin cần có trên từng trang; sau đó mới xem xét cách trình bày giao diện và các chức năng phù hợp với phạm vi bài tập.
+Trong quá trình thực hiện, kế hoạch có thể được điều chỉnh khi nhóm nhận thấy nội dung chưa hợp lý, tính năng chưa phù hợp hoặc nguồn tư liệu chưa đáp ứng yêu cầu. Việc duy trì sự liên kết giữa nghiên cứu người dùng, nội dung và thiết kế sẽ giúp website Nếp Việt có định hướng rõ ràng hơn, đồng thời hỗ trợ nhóm triển khai dự án một cách có hệ thống.
+CHƯƠNG 2. NGHIÊN CỨU VÀ PHÂN TÍCH NGƯỜI DÙNG
+2.1. Nghiên cứu chủ đề
+2.1.1. Tổng quan về sản phẩm thủ công và văn hóa truyền thống
+Sản phẩm thủ công truyền thống của Việt Nam là kết tinh của tri thức bản địa, kỹ nghệ dân gian và hệ giá trị thẩm mỹ được bồi đắp qua nhiều thế hệ. Khác với các mặt hàng sản xuất công nghiệp hàng loạt mang tính đồng nhất cơ học, nhóm sản phẩm này sở hữu hai giá trị cốt lõi là tính độc bản và chiều sâu văn hóa biểu tượng. Tính độc bản được định hình từ bàn tay tài hoa, sự tỉ mỉ và tâm huyết của người nghệ nhân trong từng đường nét của chiếc đèn ông sao nan tre, khuôn mặt nạ giấy bồi, hay kỹ thuật ủ bột, đóng khuôn bánh nướng, bánh dẻo. Song song với đó, chiều sâu biểu tượng thể hiện ở mối liên kết chặt chẽ với các nghi lễ, hội hè và phong tục tập quán dân tộc, tiêu biểu như hình tượng vầng trăng tròn đầy, sắc đỏ may mắn hay triết lý cân bằng âm dương trong nghệ thuật ẩm thực cổ truyền.
+Tuy nhiên, dưới tác động mạnh mẽ của quá trình công nghiệp hóa và làn sóng tiêu dùng nhanh, các làng nghề và sản phẩm thủ công đang đối diện với nguy cơ suy thoái. Phương thức phân phối truyền thống vốn phụ thuộc chặt chẽ vào không gian địa lý làng nghề hoặc các chợ dân sinh nhỏ lẻ, kết hợp với việc chậm đổi mới bao bì và thiếu chiến lược truyền thông bài bản, đã tạo ra một khoảng cách vô hình giữa di sản văn hóa với thế hệ công chúng trẻ hiện đại.
+2.1.2. Nhu cầu tìm hiểu và tiếp cận sản phẩm
+Những năm gần đây, sự dịch chuyển trong tâm lý người tiêu dùng Việt Nam, đặc biệt là thế hệ Gen Z và Millennials, cho thấy xu hướng tìm về các giá trị cội nguồn và phong cách sống hoài niệm đang trỗi dậy mạnh mẽ. Hành vi tiêu dùng của giới trẻ có sự chuyển biến rõ rệt từ tiêu dùng thuần túy vì công năng sang tiêu dùng biểu tượng và trải nghiệm. Người trẻ không chỉ mua một vật phẩm để sử dụng, mà còn thông qua đó để khẳng định phong cách cá nhân, tìm kiếm ý nghĩa tinh thần và kết nối với bản sắc dân tộc. Nhu cầu này hiện tập trung vào ba xu hướng chính: ứng dụng sản phẩm thủ công vào trang trí không gian sống hiện đại; lựa chọn quà tặng có hàm lượng văn hóa tinh tế; và thưởng thức ẩm thực cổ truyền chuẩn vị.
+Mặc dù nhu cầu thực tế rất lớn, khả năng tiếp cận của người tiêu dùng lại bị hạn chế nghiêm trọng bởi tính phân mảnh của thị trường và tính thời vụ khắt khe. Các mặt hàng như đồ chơi dân gian hay bánh kẹo truyền thống thường chỉ xuất hiện ồ ạt vào các dịp lễ hội ngắn ngày trong năm rồi nhanh chóng vắng bóng, gây khó khăn cho những cá nhân có nhu cầu sưu tầm, thưởng thức hoặc biếu tặng quanh năm.
+2.1.3. Vai trò của website trong việc giới thiệu sản phẩm và giá trị văn hóa
+Chuyển đổi số thông qua việc thiết lập một website chuyên biệt như Nếp Việt giữ vai trò then chốt trong việc giải quyết bài toán kết nối giữa di sản truyền thống và đời sống đương đại. Nền tảng này không chỉ vận hành như một kênh bán hàng đơn thuần, mà còn đảm nhiệm các chức năng nền tảng trong hệ sinh thái văn hóa số.
+Trước hết, website giúp phá vỡ giới hạn không gian địa lý và chu kỳ mùa vụ nhờ cơ chế cung ứng trực tuyến liên tục 24/7 trên phạm vi toàn quốc. Thêm vào đó, nền tảng cho phép thực thi mô hình thương mại định hướng nội dung (Content-driven Commerce), kết hợp hài hòa giữa hoạt động thương mại với nghệ thuật kể chuyện (Storytelling) về lịch sử làng nghề và quy trình chế tác, từ đó nâng cao giá trị cảm nhận cho sản phẩm. Cuối cùng, website đóng vai trò chuẩn hóa thông tin và tạo lập niềm tin số thông qua việc công khai minh bạch các thông số kỹ thuật, nguồn gốc xuất xứ, chứng nhận an toàn và đánh giá thực tế từ cộng đồng người mua.
+2.2. Nghiên cứu đối tượng người dùng
+2.2.1. Xác định đối tượng người dùng mục tiêu
+Dựa trên đặc thù sản phẩm và mục tiêu dự án, đối tượng người dùng của website được xác định gồm hai nhóm chính: nhóm khách hàng cốt lõi và nhóm khách hàng tiềm năng mở rộng.
+Nhóm khách hàng cốt lõi tập trung vào người trẻ trong độ tuổi từ 18 đến 25, phần lớn là học sinh, sinh viên và người mới đi làm. Đây là nhóm công chúng có tần suất sử dụng Internet cao, nhạy bén với thẩm mỹ, yêu thích lối sống hoài niệm và có xu hướng ủng hộ sản phẩm Việt Nam, song khả năng tài chính còn phụ thuộc vào mức thu nhập hoặc phụ cấp trung bình. Trong khi đó, nhóm khách hàng tiềm năng mở rộng hướng đến độ tuổi từ 26 đến 35, bao gồm nhân viên văn phòng và các gia đình trẻ có thu nhập ổn định. Nhóm này đặt ưu tiên hàng đầu vào chất lượng, an toàn thực phẩm và sẵn sàng chi trả cho các sản phẩm thủ công cao cấp để làm quà biếu đối tác hoặc giáo dục văn hóa truyền thống cho con cái.
+Để cụ thể hóa chân dung đối tượng, đề tài xây dựng hai hồ sơ người dùng điển hình:
+Hồ sơ thứ nhất đại diện cho nhóm người dùng trẻ là bạn Nguyễn Thùy Linh, 21 tuổi, sinh viên ngành Truyền thông tại Hà Nội. Linh có thói quen sử dụng điện thoại thông minh để tìm kiếm các món đồ thủ công độc đáo, phụ kiện trang trí phòng và quà tặng bạn bè. Rào cản lớn nhất của Linh là ngân sách tài chính có hạn và nỗi lo sợ chất lượng thực tế không đúng với hình ảnh quảng cáo trên mạng. Kỳ vọng của Linh đối với website là giao diện hiện đại, hình ảnh trực quan, thông tin rõ ràng và giá thành hợp lý dưới 200.000 VNĐ.
+Hồ sơ thứ hai đại diện cho nhóm người đi làm là anh Trần Minh Hoàng, 28 tuổi, chuyên viên Marketing tại TP. Hồ Chí Minh. Anh Hoàng có sở thích thưởng trà và nghiên cứu văn hóa dân gian, thường xuyên tìm kiếm các hộp quà bánh truyền thống chuẩn vị và đồ mỹ nghệ tinh xảo để biếu tặng vào các dịp đặc biệt. Nỗi băn khoăn của anh là nguy cơ hư hỏng, đổ vỡ trong quá trình giao hàng đường xa và sự khan hiếm của các mẻ bánh ngon ngoài mùa lễ hội. Anh kỳ vọng website phải đảm bảo độ tươi mới của sản phẩm, đóng gói chuyên nghiệp chống sốc và cung cấp dịch vụ viết thiệp chúc mừng theo yêu cầu.
+2.2.2. Nhu cầu và mong muốn của người dùng
+Phân tích hành vi cho thấy người tiêu dùng đặt ra các yêu cầu khắt khe trên cả phương diện lý tính lẫn cảm tính khi tiếp cận sản phẩm văn hóa trên môi trường số.
+Về công năng và chất lượng, người dùng đòi hỏi sản phẩm thủ công phải có độ hoàn thiện tỉ mỉ, vật liệu an toàn, nguồn gốc tự nhiên và có tính ứng dụng linh hoạt trong đời sống thường nhật chứ không chỉ mang tính trưng bày. Đối với các sản phẩm ẩm thực, yếu tố vệ sinh an toàn thực phẩm, thông tin dinh dưỡng, ngày sản xuất và hạn bảo quản là những điều kiện tiên quyết.
+Về thẩm mỹ và cảm xúc, người dùng mong muốn giao diện website và hình ảnh trình bày phải toát lên nét đẹp trang nhã, ấm cúng của văn hóa truyền thống nhưng được thể hiện bằng ngôn ngữ đồ họa đương đại, tươi sáng và chỉn chu. Bên cạnh đó, người mua kỳ vọng nhận được các dịch vụ gia tăng chuyên nghiệp như đóng gói quà tặng theo yêu cầu, viết thiệp chúc mừng và nhận được sự hỗ trợ tư vấn kịp thời từ đội ngũ chăm sóc khách hàng.
+2.2.3. Thói quen tìm kiếm thông tin
+Hành vi tiếp nhận thông tin của người dùng hiện đại chịu sự dẫn dắt mạnh mẽ bởi các yếu tố thị giác. Khách hàng có xu hướng lướt xem nhanh các hình ảnh chụp thực tế có độ phân giải cao, ảnh chụp cận cảnh chi tiết chất liệu và các đoạn video ngắn trước khi đọc đến phần văn bản mô tả.
+Đồng thời, cơ chế kiểm chứng xã hội đóng vai trò đặc biệt quan trọng trong việc thúc đẩy quyết định mua hàng. Người tiêu dùng hình thành thói quen kiểm tra mục đánh giá, đọc phản hồi và xem ảnh chụp thực tế từ những người mua trước nhằm loại bỏ tâm lý hoài nghi. Quá trình tìm kiếm và duyệt sản phẩm chủ yếu diễn ra trên thiết bị di động trong các khoảng thời gian rảnh rỗi, đòi hỏi nền tảng website phải được tối ưu hóa giao diện di động và có tốc độ tải trang nhanh chóng.
+2.2.4. Những khó khăn và rào cản của người dùng
+Nghiên cứu nhận diện bốn rào cản cốt lõi cản trở quá trình đưa ra quyết định mua hàng của người tiêu dùng trên không gian mạng:
+Rào cản đầu tiên xuất phát từ vấn đề tài chính. Các sản phẩm thủ công được làm tỉ mỉ thường có chi phí chế tác cao hơn hàng sản xuất công nghiệp, dễ tạo tâm lý e ngại cho nhóm học sinh, sinh viên có ngân sách giới hạn.
+Rào cản thứ hai liên quan đến tình trạng bất cân xứng thông tin. Việc thiếu hụt dữ liệu về chất liệu, quy trình sản xuất và sự khan hiếm của các hình ảnh thực tế khiến người mua phân vân về độ bền và chất lượng thực sự của hiện vật.
+Rào cản thứ ba bắt nguồn từ rủi ro vận chuyển và bảo quản. Khách hàng luôn thường trực nỗi lo các sản phẩm gốm sứ, mây tre hoặc đồ chơi nan tre dễ bị biến dạng, đổ vỡ, cũng như các mặt hàng bánh tươi dễ bị dập nát, mốc hỏng trong quá trình giao hàng đường dài.
+Rào cản cuối cùng là sự phân tán của thị trường. Việc thiếu vắng một nền tảng trực tuyến uy tín tổng hợp đầy đủ các danh mục sản phẩm truyền thống khiến người dùng tốn nhiều thời gian tìm kiếm từ các nguồn nhỏ lẻ, thiếu đồng bộ về dịch vụ.
+2.3. Khảo sát nhu cầu người dùng
+2.3.1. Mục tiêu khảo sát
+Hoạt động khảo sát định lượng được triển khai nhằm thu thập các căn cứ thực tiễn phục vụ cho việc định hình giải pháp tính năng và thiết kế giao diện cho website Nếp Việt. Mục tiêu khảo sát tập trung vào việc xác định cơ cấu nhân khẩu học của nhóm khách hàng mục tiêu, đo lường mức độ quan tâm đối với các nhóm sản phẩm văn hóa, nhận diện hành vi chi tiêu cùng các rào cản tâm lý chủ đạo, đồng thời xác lập các định hướng ưu tiên về phong cách thiết kế và hệ thống tính năng kỹ thuật trên nền tảng.
+2.3.2. Đối tượng và phương pháp khảo sát
+Nghiên cứu sử dụng phương pháp khảo sát định lượng qua bảng hỏi trực tuyến được xây dựng trên nền tảng Google Forms, kết hợp phương pháp chọn mẫu thuận tiện trong cộng đồng người trẻ đô thị. Quá trình thu thập dữ liệu ghi nhận 31 mẫu phản hồi hợp lệ (N=31) tính đến ngày 15/10/2026. Dữ liệu sau đó được xử lý bằng phương pháp thống kê mô tả nhằm tính toán tần số và tỷ lệ phần trăm phân bố theo từng tiêu chí nghiên cứu. Đối với các câu hỏi cho phép chọn nhiều phương án, tỷ lệ phần trăm được tính toán dựa trên tổng số người tham gia khảo sát (N=31).
+2.3.3. Xây dựng bảng câu hỏi khảo sát
+Bảng hỏi được cấu trúc chặt chẽ thành bốn phần nội dung chính nhằm bảo đảm tính logic và độ bao phủ của nghiên cứu:
+Nhóm câu hỏi nhân khẩu học nhằm xác định độ tuổi và nghề nghiệp của người tham gia.
+Nhóm câu hỏi về nhận thức và sở thích nhằm đo lường mức độ quan tâm đến sản phẩm thủ công truyền thống và xác định các nhóm danh mục sản phẩm thu hút nhất.
+Nhóm câu hỏi về hành vi và rào cản tiêu dùng nhằm tìm hiểu tần suất mua hàng, tiêu chí đánh giá quan trọng, mức chi trả sẵn sàng và các nguyên nhân gây ngần ngại khi mua sắm.
+Nhóm câu hỏi về kỳ vọng đối với website nhằm đánh giá mức độ sẵn sàng truy cập, sở thích về phong cách thị giác và thứ tự ưu tiên đối với các tính năng công nghệ trên hệ thống.
+2.3.4. Tổng hợp kết quả khảo sát
+Bảng 2.1: Đặc điểm nhân khẩu học của mẫu khảo sát (N=31)
+Tiêu chí phân loại
+Nhóm phân loại
+Số lượng (n)
+Tỷ lệ (%)
+Độ tuổi
+Từ 18 đến 25 tuổi
+28
+90,3%
+Khác (Dưới 18 hoặc trên 25 tuổi)
+3
+9,7%
+Nghề nghiệp
+Học sinh / Sinh viên
+25
+80,6%
+Đã đi làm / Nhóm nghề nghiệp khác
+6
+19,4%
+Bảng 2.2: Mức độ quan tâm đối với sản phẩm thủ công và văn hóa truyền thống
+Mức độ đánh giá
+Số lượng (n)
+Tỷ lệ (%)
+Rất quan tâm
+7
+22,6%
+Quan tâm
+15
+48,4%
+Bình thường
+9
+29,0%
+Không quan tâm
+0
+0,0%
+Tổng mức độ quan tâm từ mức Quan tâm trở lên
+22
+71,0%
+Bảng 2.3: Mức độ quan tâm đối với các nhóm sản phẩm (Đa lựa chọn)
+Nhóm danh mục sản phẩm
+Số lượt chọn
+Tỷ lệ (%)
+Đồ handmade và quà tặng thủ công
+23
+74,2%
+Trang phục, phụ kiện mang cảm hứng văn hóa Việt
+21
+67,7%
+Ẩm thực truyền thống (Bánh Trung Thu, bánh dân gian, đặc sản vùng miền)
+16
+51,6%
+Phụ kiện và đồ trang trí truyền thống (Đèn lồng, đèn ông sao...)
+15
+48,4%
+Đồ thủ công mỹ nghệ (Gốm sứ, mây tre đan, thêu dệt...)
+14
+45,2%
+Bảng 2.4: Tần suất mua sắm sản phẩm thủ công và văn hóa truyền thống
+Tần suất mua sắm
+Số lượng (n)
+Tỷ lệ (%)
+Chỉ khi có dịp đặc biệt (Lễ, Tết, tặng quà)
+16
+51,6%
+Thỉnh thoảng
+12
+38,7%
+Hiếm khi
+3
+9,7%
+Thường xuyên
+0
+0,0%
+Bảng 2.5: Tiêu chí quan trọng nhất khi lựa chọn mua sản phẩm (Đa lựa chọn)
+Tiêu chí lựa chọn
+Số lượt chọn
+Tỷ lệ (%)
+Thiết kế đẹp, độc đáo và có tính thẩm mỹ
+26
+83,9%
+Giá cả hợp lý
+23
+74,2%
+Chất lượng và độ an toàn của sản phẩm
+21
+67,7%
+Tính thủ công, sự tỉ mỉ và tính độc bản
+18
+58,1%
+Giá trị văn hóa và câu chuyện phía sau sản phẩm
+16
+51,6%
+Phù hợp để làm quà tặng
+16
+51,6%
+Thương hiệu uy tín và nguồn gốc rõ ràng
+11
+35,5%
+Bảng 2.6: Ngưỡng chi trả sẵn sàng cho một sản phẩm
+Khoảng giá sẵn sàng chi trả
+Số lượng (n)
+Tỷ lệ (%)
+Dưới 100.000 VNĐ
+3
+9,7%
+Từ 100.000 đến dưới 200.000 VNĐ
+16
+51,6%
+Từ 200.000 đến dưới 500.000 VNĐ
+7
+22,6%
+Tùy thuộc vào loại sản phẩm và mục đích mua hàng
+5
+16,1%
+Từ 500.000 VNĐ trở lên
+0
+0,0%
+Bảng 2.7: Những yếu tố khiến người dùng ngần ngại khi mua hàng (Đa lựa chọn)
+Yếu tố rào cản
+Số lượt chọn
+Tỷ lệ (%)
+Giá thành cao so với ngân sách
+22
+71,0%
+Mẫu mã chưa phù hợp với sở thích hoặc nhu cầu sử dụng
+13
+41,9%
+Thiếu thông tin hoặc hình ảnh thực tế để đánh giá
+13
+41,9%
+Phí vận chuyển cao hoặc lo ngại sản phẩm bị hư hỏng khi giao hàng
+11
+35,5%
+Lo ngại về chất lượng hoặc độ bền của sản phẩm
+10
+32,3%
+Khó tìm hiểu nguồn gốc, chất liệu và quy trình sản xuất
+8
+25,8%
+Bảng 2.8: Mức độ sẵn sàng truy cập website tổng hợp
+Trạng thái phản hồi
+Số lượng (n)
+Tỷ lệ (%)
+Có thể, nếu giao diện website đẹp và sản phẩm bắt mắt
+19
+61,3%
+Chắc chắn có, ý tưởng này rất độc đáo và tiện lợi
+11
+35,5%
+Không có nhu cầu
+1
+3,2%
+Bảng 2.9: Phong cách thiết kế website mong muốn (Đa lựa chọn)
+Phong cách thiết kế
+Số lượt chọn
+Tỷ lệ (%)
+Kết hợp chất liệu, họa tiết truyền thống với phong cách thiết kế đương đại
+17
+54,8%
+Tối giản, hiện đại nhưng vẫn có nét truyền thống
+14
+45,2%
+Tươi sáng, sáng tạo và trẻ trung (có hình ảnh sinh động)
+12
+38,7%
+Hoài cổ, đậm bản sắc văn hóa Việt
+9
+29,0%
+Bảng 2.10: Tính năng người dùng mong muốn nhất khi truy cập website (Đa lựa chọn)
+Tính năng kỳ vọng
+Số lượt chọn
+Tỷ lệ (%)
+Hình ảnh sản phẩm trực quan, chi tiết từng góc cạnh (ảnh thực tế)
+23
+74,2%
+Thông tin chi tiết về sản phẩm như chất liệu, kích thước, giá cả, cách sử dụng
+19
+61,3%
+Câu chuyện về nguồn gốc, ý nghĩa văn hóa và quá trình chế tác sản phẩm
+18
+58,1%
+Phân loại sản phẩm khoa học theo từng danh mục
+17
+54,8%
+Gợi ý quà tặng theo dịp đặc biệt và ngân sách
+16
+51,6%
+Tìm kiếm và lọc sản phẩm theo giá, loại sản phẩm hoặc nhu cầu sử dụng
+15
+48,4%
+Quy trình đặt hàng và thanh toán nhanh chóng, thuận tiện
+15
+48,4%
+Đánh giá và nhận xét từ khách hàng đã mua (kèm ảnh chụp thật)
+14
+45,2%
+2.3.5. Phân tích kết quả khảo sát
+Từ dữ liệu định lượng thu thập được, nghiên cứu rút ra những kết luận quan trọng về tâm lý và hành vi của nhóm người dùng mục tiêu.
+Trước hết, kết quả khảo sát bác bỏ giả thuyết cho rằng người trẻ thờ ơ với văn hóa truyền thống khi có tới 71,0% người tham gia thể hiện sự quan tâm tích cực. Đáng chú ý, các nhóm sản phẩm dẫn đầu về mức độ yêu thích là đồ handmade (74,2%) và trang phục, phụ kiện mang cảm hứng văn hóa Việt (67,7%). Điều này phản ánh rõ nét thị hiếu của thế hệ trẻ: họ ưu tiên các sản phẩm có tính ứng dụng cao, dễ dàng đồng hành trong đời sống thường nhật và thể hiện cá tính riêng biệt hơn là những tác phẩm mỹ nghệ trưng bày cố định có kích thước cồng kềnh.
+Thứ hai, mối tương quan giữa cơ cấu nhân khẩu học và độ nhạy cảm về giá được thể hiện rất rõ ràng. Việc mẫu khảo sát có 80,6% là học sinh, sinh viên lý giải nguyên nhân vì sao giá thành cao là rào cản lớn nhất đối với 71,0% người được hỏi, và khoảng giá từ 100.000 đến dưới 200.000 VNĐ là mức chi trả phổ biến nhất với 51,6% lựa chọn. Dữ liệu này chứng minh tính nhạy cảm về giá của tệp khách hàng trẻ là rất cao, đòi hỏi các giải pháp sản phẩm phải được định giá vừa vặn với khả năng chi trả của sinh viên hoặc được đóng gói thành các đơn vị sản phẩm nhỏ gọn.
+Thứ ba, khảo sát làm nổi bật vai trò quyết định của yếu tố thẩm mỹ giao diện đối với hành vi truy cập. Tỷ lệ 61,3% người dùng trả lời có thể truy cập nếu giao diện đẹp và sản phẩm bắt mắt khẳng định thiết kế thị giác chính là yếu tố đầu tiên quyết định việc giữ chân người dùng trên trang.
+Cuối cùng, sự đồng thuận cao đối với các tính năng như hiển thị hình ảnh thực tế chi tiết (74,2%), minh bạch thông số kỹ thuật (61,3%) và truyền tải câu chuyện văn hóa (58,1%) cho thấy kỳ vọng của người dùng không dừng lại ở việc xem hàng đơn thuần. Họ đang tìm kiếm một trải nghiệm mua sắm đáng tin cậy, nơi tính chân thực của hiện vật được bảo chứng và giá trị tinh thần của sản phẩm được tôn vinh xứng đáng.
+2.3.6. Kết luận và định hướng từ kết quả khảo sát
+Dựa trên kết quả phân tích dữ liệu, nhóm nghiên cứu xác lập các định hướng phát triển mang tính chiến lược cho dự án Nếp Việt trên ba phương diện chính.
+Về danh mục và định giá, dự án ưu tiên phát triển bốn dòng sản phẩm chủ lực gồm quà tặng handmade, bánh truyền thống bốn mùa, phụ kiện mang cảm hứng văn hóa và đồ trang trí không gian sống. Phân khúc giá chủ đạo được định vị trong khoảng từ 80.000 đến 250.000 VNĐ nhằm đáp ứng khả năng tài chính của đại đa số người dùng trẻ, đồng thời phát triển thêm các combo quà tặng trang trọng từ 300.000 đến 600.000 VNĐ phục vụ nhu cầu biếu tặng của nhóm khách hàng đã đi làm.
+Về định hướng giao diện thị giác, dự án bác bỏ lối thiết kế hoài cổ đơn điệu, trầm tối để theo đuổi phong cách Di sản đương đại (Modern Heritage). Phong cách này kết hợp tinh tế giữa các họa tiết truyền thống Việt Nam với bố cục tối giản, thoáng đãng của thiết kế web hiện đại. Bảng màu chủ đạo sử dụng các sắc độ ấm áp như đỏ son, vàng nghệ, nâu trầm của đất và gỗ trên nền trắng kem, mang lại cảm xúc vừa thân thuộc vừa tinh tế và trẻ trung.
+Về cấu trúc tính năng kỹ thuật, hệ thống tập trung hoàn thiện các tính năng cốt lõi được người dùng đánh giá cao nhất. Nổi bật là tính năng hiển thị ảnh thực tế độ phân giải cao kết hợp nhãn chứng nhận sản phẩm mẻ mới ra lò; chuyên trang kể chuyện nghệ nhân liên kết trực tiếp với sản phẩm thương mại; bộ lọc thông minh phân loại theo tầm giá và dịp tặng quà; cùng dịch vụ tùy chọn gói quà và viết thiệp chúc mừng theo yêu cầu.
+2.4. Nghiên cứu website tham khảo
+Nhằm học hỏi kinh nghiệm thực tiễn và nhận diện khoảng trống thị trường, nghiên cứu tiến hành phân tích điển hình ba nền tảng thương mại điện tử chuyên biệt tại Việt Nam gồm TiredCity, Tòhe và Hanoia.
+2.4.1. Lựa chọn website tham khảo
+TiredCity (tiredcity.com) là thương hiệu thương mại điện tử tiêu biểu trong việc đưa văn hóa dân gian Việt Nam vào đời sống đương đại thông qua sự hợp tác với các nghệ sĩ trẻ, sở hữu tệp khách hàng chủ yếu là thế hệ Gen Z và khách du lịch. Tòhe (tohe.vn) là doanh nghiệp xã hội nổi tiếng với việc biến tranh vẽ của trẻ em có hoàn cảnh đặc biệt thành các sản phẩm thời trang và quà tặng thủ công, sở hữu thế mạnh vượt trội trong việc xây dựng thương hiệu dựa trên giá trị nhân văn và câu chuyện cảm xúc. Hanoia (hanoia.com) là thương hiệu chế tác thủ công cao cấp hàng đầu Việt Nam, đại diện cho chuẩn mực quốc tế về nghệ thuật sơn mài, mang đậm tính sang trọng và độ hoàn thiện tinh xảo.
+2.4.2. Phân tích cách tổ chức nội dung và danh mục
+Tại TiredCity, nội dung được tổ chức theo cấu trúc đa chiều linh hoạt, phân tách rõ ràng theo dòng sản phẩm, bộ sưu tập chủ đề và tên tác giả minh họa. Trang chủ của nền tảng thể hiện tính trực quan cao, ưu tiên giới thiệu ngay các sản phẩm mới và các mặt hàng bán chạy nhất nhằm kích thích hành vi khám phá của giới trẻ.
+Đối với Tòhe, hệ thống thông tin được phân nhánh song song giữa không gian mua sắm và câu chuyện cộng đồng. Danh mục sản phẩm được sắp xếp tinh gọn theo công năng sử dụng, với điểm nhấn đặc biệt là mỗi sản phẩm đều gắn liền với câu chuyện và thông tin về tác giả nhí sáng tạo ra họa tiết đó.
+Trong khi đó, Hanoia áp dụng cấu trúc phân tầng tối giản theo phong cách của các thương hiệu xa xỉ quốc tế. Danh mục sản phẩm được chia theo không gian bài trí như trang trí nội thất, trà đạo, bàn ăn và trang sức, dành phần lớn diện tích trang để giới thiệu lịch sử làng nghề và kỹ thuật chế tác sơn mài đỉnh cao.
+2.4.3. Phân tích tính năng nổi bật
+Cả ba nền tảng tham khảo đều chú trọng đầu tư mạnh mẽ vào hệ thống thị giác thông qua việc sử dụng hình ảnh sản phẩm trong bối cảnh thực tế kết hợp với các góc chụp cận cảnh chất liệu, giúp người dùng cảm nhận rõ nét bề mặt sản phẩm dù không được tiếp xúc trực tiếp.
+Bên cạnh đó, TiredCity sở hữu hệ thống tìm kiếm và bộ lọc nâng cao hiệu quả, cho phép lọc nhanh theo kích thước, mức giá và phong cách nghệ sĩ. Tòhe tạo dựng dấu ấn riêng bằng tính năng cá nhân hóa đơn hàng quà tặng, cho phép khách hàng yêu cầu đóng gói thủ công và gửi kèm thiệp viết tay. Về mặt vận hành, các website đều tích hợp đầy đủ các cổng thanh toán số phổ biến tại Việt Nam, mang lại sự thuận tiện tối đa cho người mua.
+2.4.4. So sánh ưu điểm và hạn chế
+Bảng 2.11: Ma trận đối sánh các website tham khảo
+Tiêu chí đối sánh
+TiredCity
+Tòhe
+Hanoia
+Giao diện (UI)
+Trẻ trung, màu sắc sinh động, thu hút mạnh mẽ giới trẻ.
+Thân thiện, ấm áp, đậm tính nhân văn và tối giản.
+Sang trọng, chuẩn mực quốc tế, độ hoàn thiện tinh tế.
+Trải nghiệm (UX)
+Tốc độ tải trang nhanh, điều hướng mạch lạc, dễ thao tác mua hàng.
+Cấu trúc phân luồng rõ ràng, dễ dàng theo dõi mạch câu chuyện.
+Trình diễn thị giác xuất sắc nhưng quy trình thanh toán còn nhiều bước.
+Nghệ thuật kể chuyện (Storytelling)
+Thể hiện sinh động qua các tác phẩm đồ họa dân gian đương đại.
+Kể chuyện nhân văn xuất sắc, tạo sự gắn kết cảm xúc sâu sắc.
+Khắc họa sâu sắc bề dày di sản sơn mài và kỹ nghệ chế tác thủ công.
+Khả năng tiếp cận người trẻ
+Rất cao nhờ dải giá vừa vặn với túi tiền học sinh, sinh viên (100k - 350k).
+Khá tốt, phù hợp với đối tượng yêu thích quà tặng mang ý nghĩa xã hội.
+Thấp do định vị thuộc phân khúc xa xỉ với giá thành từ vài triệu đồng trở lên.
+Hạn chế đối với dự án
+Chưa kinh doanh mảng ẩm thực truyền thống và đồ chơi dân gian.
+Chủng loại sản phẩm thủ công còn tương đối đơn điệu.
+Giá thành quá cao so với ngân sách sinh viên; thiếu các kênh hỗ trợ nhanh.
+2.4.5. Bài học rút ra cho dự án Nếp Việt
+Thông qua quá trình khảo sát và phân tích đối sánh các mô hình đi trước, dự án Nếp Việt đúc kết ba bài học kinh nghiệm quan trọng để hoàn thiện giải pháp thiết kế cho hệ thống.
+Bài học thứ nhất là nghệ thuật tích hợp liền mạch giữa thương mại điện tử và kể chuyện di sản từ mô hình của Tòhe và Hanoia. Nền tảng Nếp Việt không tách rời hoạt động bán hàng khỏi không gian văn hóa, mà khéo léo lồng ghép tư liệu làng nghề, hình ảnh nghệ nhân và ý nghĩa biểu tượng vào ngay trong trang chi tiết sản phẩm, biến mỗi lần mua sắm thành một hành trình khám phá văn hóa.
+Bài học thứ hai là việc kế thừa phong cách thị giác tươi mới và chiến lược định giá tiếp cận từ TiredCity. Để thu hút 90,3% tệp người dùng trẻ tuổi, Nếp Việt áp dụng ngôn ngữ thiết kế năng động, cấu trúc danh mục tinh gọn và định vị mức giá sản phẩm chủ đạo trong khoảng 100.000 đến dưới 200.000 VNĐ, bảo đảm tính khả thi thương mại đối với nhóm học sinh, sinh viên.
+Bài học thứ ba là tập trung khai thác và lấp đầy các khoảng trống thị trường mà các website đối thủ chưa giải quyết trọn vẹn. Nếp Việt tạo dựng lợi thế cạnh tranh riêng biệt bằng cách cung cấp các dòng bánh truyền thống và đồ chơi dân gian bán liên tục bốn mùa trong năm nhằm xóa bỏ tính mùa vụ; thiết lập cơ chế kiểm soát chất lượng nghiêm ngặt thông qua việc công khai ngày ra lò của từng mẻ bánh; đồng thời chuẩn hóa dịch vụ gói quà cá nhân hóa kết hợp viết thiệp tay điện tử, đáp ứng nhu cầu biếu tặng của khách hàng hiện đại.
+CHƯƠNG 3. XÂY DỰNG DANH SÁCH TÍNH NĂNG WEBSITE
+3.1. Xác định yêu cầu website.
+3.1.1. Yêu cầu từ nhu cầu người dùng.
+Dựa trên kết quả khảo sát hành vi và tâm lí của nhóm khách hàng mục tiêu là người trẻ tuổi từ 18 đến 35 tuổi có sự quan tâm đặc biệt đến văn hóa truyền thống và phong cách sống hoài niệm, website cần đáp ứng các nhu cầu thiết thực của người tiêu dùng hiện đại. Hệ thống cần giải quyết bài toán phá vỡ tính thời vụ của sản phẩm thủ công. Khách hàng ngày nay có xu hướng muốn thưởng thức hương vị bánh nướng, bánh dẻo truyền thống hoặc tìm mua các món đồ chơi thủ công như đèn ông sao, mặt nạ giấy bồi, trống cầm tay vào bất kì thời điểm nào trong năm để làm quà tặng, trang trí không gian sống hoặc phục vụ các sự kiện văn hóa cá nhân. Vì thế, website phải đảm bảo khả năng cung ứng xuyên suốt quanh năm thay vì chỉ tập trung vào các dịp lễ hội ngắn hạn.
+Bên cạnh đó, đối với các sản phẩm ẩm thực thủ công và quà tặng văn hóa, người dùng đòi hỏi mức độ minh bạch cực kỳ cao về thông tin nguyên liệu, hạn sử dụng, nguồn gốc làng nghề cũng như quy trình chế biến thủ công an toàn. Trải nghiệm cảm xúc và thẩm mỹ cũng đóng vai trò cốt lõi khi khách hàng trẻ không chỉ mua sản phẩm đơn thuần mà đang tìm kiếm những giá trị tinh thần, câu chuyện văn hóa phía sau mỗi hiện vật. Giao diện trang web vì thế phải mang lại cảm giác ấm cúng, sang trọng, tôn vinh công sức của các nghệ nhân truyền thống thông qua ngôn ngữ kể chuyện bằng hình ảnh và từ ngữ giàu cảm xúc. Cuối cùng, các thao tác mua sắm trên nền tảng phải đảm bảo sự nhanh chóng, mượtmà từ việc quan sát sản phẩm trực quan cho đến các bước thanh toán trực tuyến đa dạng.
+3.1.2. Yêu cầu về nội dung và thông tin.
+Để xây dựng niềm tin vững chãi với khách hàng và truyền tải trọn vẹn tinh thần của dự án, hệ thống nội dung cần được cấu trúc chặt chẽ và chuẩn hóa. Cấu trúc danh mục sản phẩm cần được phân tầng rõ ràng thành hai nhóm chính gồm nhóm hương vị bốn mùa chuyên cung cấp các dòng bánh nướng, bánh dẻo truyền thống hoặc một số loại bánh truyền thống khác với đầy đủ thông tin về trọng lượng, nhân bánh, bảng nguyên liệu, giá bán và hướng dẫn bảo quản; kết hợp cùng nhóm góc thủ công truyền thống bao gồm đèn lồng, đèn ông sao, mặt nạ giấy bồi, tò he, trống cầm tay với các thông tin chi tiết về chất liệu tre, giấy vó, vải lụa cùng ý nghĩa biểu tượng văn hóa.
+Bên cạnh thông tin sản phẩm, website cần phát triển chuyên mục kể chuyện thương hiệu riêng biệt nhằm trình bày hành trình giữ lửa nghề làm bánh và đồ chơi truyền thống của các nghệ nhân làng nghề thông qua các bài viết tạp chí điện tử và thước phim tài liệu ngắn. Ngoài ra, các thông tin chính sách của cửa hàng như chính sách đổi trả, chính sách vận chuyển hàng dễ vỡ đối với đồ thủ công, chính sách bảo mật thông tin và hướng dẫn đặt hàng sỉ, quà tặng doanh nghiệp phải được công khai rõ ràng, minh bạch tại chân trang web để người dùng dễ tiếp cận.
+3.1.3. Yêu cầu về khả năng sử dụng và điều hướng.
+Khả năng sử dụng và điều hướng của website đóng vai trò quyết định trong việc giữ chân người dùng và tối ưu hóa tỷ lệ chuyển đổi đơn hàng, Giao diện trang web phải áp dụng triết lý thiết kế tương thích hoàn hảo trên đa nền tảng, ưu tiên trải nghiệm trên thiết bị di động bởi phần lớn người trẻ truy cập qua điện thoại thông minh. Hệ thống điều hướng cần trực quan, tinh gọn với cấu trúc thực đơn tối đa từ hai đến ba cấp nhấp chuột giúp người dùng không bị rối mắt.
+Thanh tìm kiếm thông minh tích hợp tính năng gợi ý từ khóa ngay khi gõ sẽ giúp khách hàng nhanh chóng tìm thấy sản phẩm mong muốn như bánh nướng thập cẩm hay đèn lồng truyền thống kèm theo hình ảnh thu nhỏ minh họa. Hơn thế nữa, tốc độ trang cần được tối ưu hóa ở mức cao nhất thông qua việc nén định dạng hình ảnh sản phẩm thủ công sắc nét nhưng dung lượng nhẹ, đảm bảo thời gian hiển thị nội dung dưới hai giây nhằm tránh mọi sự gián đoạn trong trải nghiệm của khách hàng.
+3.2. Xây dụng danh sách tính năng.
+3.2.1. Nguyên tắc xác định tính năng.
+Quá trình xây dựng danh sách tính năng cho website thương mại điện tử kết hợp văn hóa thủ công được định hướng bởi các nguyên tắc cốt lõi nhằm đảm bảo hiệu quả vận hành thực tế. Nguyên tắc lấy người dùng làm trung tâm đòi hỏi mọi chức năng được thiết kế phải phục vụ trực tiếp cho mục đích tìm kiếm thông tin, thấu hiểu giá trị văn hóa, đặt hàng nhanh chóng và nhận sự hỗ trợ kịp thời. Nguyên tắc tính khả thi và đồng bộ đảm bảo các giải pháp công nghệ lựa chọn phù hợp với mô hình kinh doanh đặc thù vừa bán lẻ thương mại điện tử vừa gìn giữ giá trị di sản thủ công truyền thống. Bên cạnh đó, tính năng hệ thống cũng phải đảm bảo khả năng mở rộng trong tương lai để dễ dàng tích hợp thêm các chiến dịch khuyến mãi lớn, không gian cộng đồng hoặc mở rộng danh mục sản phẩm mới mà không làm gián đoạn cấu trúc nền tảng ban đầu.
+3.2.2. Danh sách tính năng tổng quan.
+Hệ thống tính năng tổng quan của website được phân chia thành sáu nhóm chức năng chính phục vụ toàn diện cho khách hàng lẫn nhà quản trị. Nhóm thứ nhất là hệ thống quản lý tài khoản và xác thực người dùng giúp đăng nhập, đăng ký và lưu trữ thông tin cá nhân an toàn. Nhóm thứ hai gồm các tính năng khám phá sản phẩm và tìm kiếm thông minh hỗ trợ khách hàng duyệt qua danh mục phong phú. Nhóm thứ ba tập trung vào trải nghiệm nội dung văn hóa và câu chuyện thương hiệu thông qua các bài viết chuyên sâu. Nhóm thứ tư bao gồm toàn bộ chu trình mua sắm từ giỏ hàng đến thanh toán điện tử tiện lợi. Nhóm thứ năm là hệ thống đánh giá, tương tác và khảo sát ý kiến người tiêu dùng nhằm xây dựng cộng đồng gắn kết. Cuối cùng là nhóm tính năng quản trị hệ thống dành cho đội ngũ vận hành nội bộ để quản lý sản phẩm, đơn hàng và nội dung website.
+3.2.3. Mô tả chi tiết từng tính năng
+Đầu tiên là nhóm tính năngg quản lý tài khoản và xác thực, được thiết kế nhằm xây dựng cơ sở dữ liệu khách hàng thân thiết và tối ưu hóa quy trình mua sắm. Hệ thống cho phép người dùng đăng ký tài khoản nhanh chóng thông qua số điện thoại hoặc email với lớp bảo mật mã OTP, đồng thời hỗ trợ đăng nhập tiện lợi qua các nền tảngliên kết phổ biến như Google hoặc Facebook. Khi truy cập vào khu vực quản lý cá nhân, người dùng có thể dễ dàng lưu trữ số địa chi giao hàng, theo dõi lịch sử đơn hàng chi tiết và quản lý điểm tích lũy thành viên. Tính năng này không chỉ giúp cá nhân hóa trải nghiệm mua sắm mà còn rút ngắn đáng kể thời gian điền thông tin trong những lần giao dịch tiếp theo.
+Thứ hai là hệ thống tìm kiếm và bộ lọc nâng cao, được tối ưu hóa riêng cho hành vi của nhóm khách hàng trẻ tuổi. Thay vì phải dò dẫm qua các danh mục phức tạp, thanh tìm kiếm thông minh trên đầu trang có khả năng tự động gợi ý từ khóa và hiện thị hình ảnh thu nhỏ của sản phẩm ngay khi người dùng vừa gõ. Đi kèm với đó là bộ lọc đa chiều giúp khách hàng dễ dàng thu hẹp phạm vi lựa chọn theo danh mục cụ thể, theo khoảng giá mong muốn, theo hương vị nhân bánh hoặc phân loại theo mục đích sử dụng như mua làm quà biếu, trang trí không gian sống hay phục vụ sự kiện. Sự kết hợp này giúp tiết kiệm tối đa thời gian tìm kiếm và nâng cao tỷ lệ chuyển đôi đơn hàng.
+Thứ ba, trang chi tiết sản phẩm đóng vai trò là cửa sổ trưng bày trực quan và minh bạch nhất. Giao diện sản phẩm cung cấp hình ảnh độ phân giải cao, hỗ trợ góc nhìn chi tiết để khách hàng có thể quan sảt rõ nét từng đường nét thủ công tỉ mỉ của sản phẩm. Đặc biệt, để giải quyểt tâm lý e ngại của người tiêu dùng về chất lượng sản phẩm thủ công và an toàn thực phẩm, trang chi tiết luôn công khai minh bạch bảng thành phần nguyên liệu, định lượng, hạn sử dụng và hướng dẫn bảo quản cụ thể. Bên cạnh đó, các nhãn trạng thái độc bản như “Đèn lồng thủ công 100%” hay “Mẻ bánh mới ra lò” kết hợp với các nút tương tác trực quan như “Thêm vào giỏ hàng”, “Mua ngay” và tính năng gợi ý sản phẩm đi kèm sẽ kích thích khách hàng khám phá và gia tăng giá trị giỏ hàng một cách tự nhiên.
+Thứ tư, để tạo chiều sâu cảm xúc và ghi điểm tuyệt đối về mặt nội dung, website tích hợp không gian câu chuyện nghệ nhân. Thay vì chỉ hiểnthị sản phẩm để bán hàng, chuyên mục này trình bày các bài viết dưới dạng tạp chí điện tử cao cấp với bố cục trình bày nghệ thuật, kết hợp hài hòa giữa hình ảnh tư liệu và video ngắn về hành trình giữ lửa của các nghệ nhân làng nghề truyền thống. Các bài viết được phân loại theo các chủ đề hấp dẫn như “Giữ lửa làng nghề”, “Đằng sau chiếc đèn ông sao” hay “Hương vị truyền thống bốn mùa”, đồng thời cho phép người dùng chuyển hướng trực tiếp đến các sản phẩm liên quan xuất hiện trong bài viết, vừa mang lại giá trị văn hóa cao vừa thúc đẩy nhu cầu trải nghiệm thực tế.
+Thứ năm là giỏ hàng thông minh và quy trình thanh toán một bước. Giỏ hàng được thiết kế trực quan, cho phép người dùng dễ dàng kiểm tra, thay đổi số lượng, xóa sản phẩm hoặc tạm lưu vào danh sách yêu thích. Điểm sáng của quy trình này là cơ chế thanh toán tối giản trên một trang duy nhất, kết hợp tính năng độc đáo cho phép khách hàng tự gói quà theo yêu cầu và viết thiệp tay điện tử để gửi gắm lời chúc khi mua sản phẩm làm quà biếu tặng. Hệ thống cũng tích hợp đa dạng các cổng thanh toán hiện đại như thanh toán khi nhận hàng (COD), chuyển khảon ngân hàng qua mã QR động và các loại ví điện tử phổ biến, giúp giảm thiểu tối đa tỷ lệ bỏ giỏ hàng giữa chừng.
+Thứ sau, hệ thống đánh giá và phản hồi thực tế tạo nên một không gian tương tác minh bạch và đáng tin cậy. Sau khi hoàn tất đơn hàng, khách hàng có thể gửi đánh giá bằng hệ thống từ 1 đến 5 sao, viết nhận xét chi tiết và đặc biệt là tải lên hình ảnh thực tế sản phẩm do chính khách hàng chụp. Hệ thống cung cấp bộ lọc thông minh giúp người mua sau dễ dàng xem các đánh giá có hình ảnh thực tế hoặc lọc theo mức độ hài lòng của sản phẩm, qua đó củng cố uy tín thương hiệu thông qua tiếng nói chân thực từ cộng đồng người tiêu dùng.
+Cuối cùng, trợ lý ảo và hỗ trợ trực tuyến hoạt động như một kênh chăm sóc khách hàng hoạt động 24/7. Khung chat được bố trí gọn gàng ở góc màn hình, tự động giâỉ đáp các thắc mắc thường gặp liên quan đến thời hạn bảo quản bánh, chính sách vận chuyển hàng dễ vỡ đối với đồ thủ công hoặc hỗ trợ tư vấn đặt hàng sỉ cho doanh nghiệp. Trong trường hợp gặp các yêu cầu phức tạp vượt ngoài khả nằn xử lý của hệ thống, chatbot sẽ ngay lập tức chuyển tiếp đoạn hội thoại cho đội ngũ chăm sóc khách hàng túc trực, đảm bảo mọi thắc mắc của người dùng được giải quyết kịp thời để giữ chân khách hàng ở lại với website.
+3.2.4. Phân nhóm tính năng theo từng trang.
+Các tính năng của website được phân bố hợp lý theo từng trang thành phần để tạo nên một luồng trải nghiệm liền mạch cho người dùng. Trang chủ đóng vai trò là mặt tiền số của dự án, tích hợp các khối banner động giới thiệu thông điệp văn hóa, khối danh mục nhanh chuyển hướng đến không gian ẩm thực bốn mùa và đồ chơi thủ công, các sản phẩm tiêu biểu cùng trích dẫn ngắn về câu chuyện nghệ nhân. Trang danh mục sản phẩm hiển thị thanh bộ lock ở khu vực bên trái kết hợp lưới sản phẩm trực quan có gắn nhãn trạng thái độc bản.
+Trang chi tiết sản phẩm tập trung vào khu vực hình ảnh đa chiều, bảng thông tin dinh dưỡng, hướng dẫn bảo quản, phần đánh giá thực tế từ người dùng và các sản phẩm tương tự. Trang câu chuyện thương hiệu là kho lưu trữ các bài viết và thước phim tài liệu dài về văn hóa thủ công. Trang giỏ hàng và thanh toán tổng hợp danh sách mặt hàng, tính toán tổng chi phí đơn hàng bao gồm phí vẩn chuyển, đi kèm biểu mẫu nhập địa chỉ nhận hàng và lựa chọn phương thức thanh toán bảo mật.
+3.2.5. Phân loại tính năng theo mức độ ưu tiên.
+Để đảm bảo lộ trình triển khai dự án đạt hiệu quả tối ưu về thời gian và nguồn lực, các tính năng được phân chia theo mô hình ưu tiên ba cấp độ rõ rệt. Nhóm bắt buộc phải có trong giai đoạn đầu tiên bao gồm hệ thống danh mục sản phẩm cơ bản, trang chi tiết sản phẩm, giỏ hàng, quy trình thanh toán trực tuyến và trang giới thiệu câu chuyện nghệ nhân cốt lõi nhằm đưa website đi vào hoạt động ổn định. Nhóm nên có được triển khai ở giai đoạn tiếp theo bao gồm hệ thống bộ lọc nâng cao, tính năng viết đánh giá kèm hình ảnh thực tế và trang quản lý tài khoản cá nhân. Nhóm tính năng mở rộng có thể phát triển trong tương lai bao gồm dịch vụ gói quà theo yêu cầu kết hợp viết thiệp điện tử, hệ thống khách hàng thân thiết tích điểm đổi quà và trợ lý ảo thông minh tư vấn chọn quà theo ngân sách.
+3.3. Đối chiếu và hoàn thiện danh sách tính năng
+3.3.1. Đối chiếu tính năng với kểt quả khảo sát
+Kết quả khảo sát thực tế từ nhóm người tiêu dùng trẻ cho thấy một rào cản tâm lý lớn là nỗi lo ngại mua phải các sản phẩm bánh trung thu hoặc đồ chơi thủ công bị tồn kho lâu ngày, kém chất lượng hoặc không rõ nguồn gốc nguyên liệu khi mua sắm ngoài mùa vụ lễ hội. Để giải quyết triệt để vấn đề này, dự án tiến hành bổ sung tính năng hiển thị ngày sản xuất rõ ràng cùng cam kết mẻ bánh mới ra lò mỗi tuần ngay trên trang chi tiết sản phẩm, kết hợp với các nhãn dán trực quan nhấn mạnh tính độc bản của sản phẩm thủ công nhằm tạo dựng niềm tin tuyệt đối cho người tiêu dùng.
+3.3.2. Đối chiếu tính năng với website tham khảo
+Việc nghiên cứu các website thương mại điện tử hiện tại trên thị trường cho thấy phần lớn các nền tảng bán hàng thông thường thường mang tính chất công nghiệp nặng nề, thiếu đi sự kết nối cảm xúc và không gian văn hóa nghệ thuật, dẫn đến thời gian lưu lại trang của khách hàng ngắn và tỷ lệ chuyển đổi thấp. Để khắc phục điểm yếu này, dự án học hỏi cách trình bày trực quan từ các tạp chí thiết kế hiện đại, lồng ghép không gian kể chuyện thương hiệu đan xen ngay trong khu vực trưng bày sản phẩm, qua đó vừa kích thích trải nghiệm khám phá văn hóa, vừa thúc đẩy quyết định mua sắm tự nhiên của khách hàng trẻ tuổi.
+3.3.3. Danh sách tính năng đề xuất cho dự án
+Dựa trên quá trình đối chiếu toàn diện với nhu cầu thực tế và các mô hình tham khảo, dự án quyết định bổ sung thêm ba nhóm tính năng đột phá để nâng tầm trải nghiệm website đạt mức độ hoàn hảo cao nhất. Thứ nhất là tính năng gói quà theo yêu cầu kết hợp dịch vụ viết thiệp tay hoặc thiệp điện tử đính kèm, cho phép khách hàng tự do tùy chỉnh hộp quà gồm sự kết hợp giữa bánh truyền thống và đèn lồng theo mức ngân sách riêng biệt. Thứ hai là hệ thống lọc thông minh dựa trên gu thưởng thức và ý nghĩa món quà để giúp người dùng dễ dàng tìm kiếm sản phẩm phù hợp cho từng đối tượng nhận quà cụ thể như người lớn tuổi, đối tác kinh doanh hoặc mua để tự trải nghiệm. Thứ ba là góc trải nghiệm hình ảnh ba mươi sáu độ cho phép quan sát chi tiết các sản phẩm thủ công mỹ nghệ tinh xảo như mặt nạ giấy bồi hay đèn lồng truyền thống nhằm mang lại trải nghiệm thị giác sống động như khi mua sắm tại cửa hàng truyền thống.
+CHƯƠNG 4: XÂY DỰNG SƠ ĐỒ PHÂN CẤP WEBSITE
+4.1. Cơ sở xây dựng sơ đồ phân cấp
+4.1.1. Khái niệm sơ đồ phân cấp website
+Sơ đồ phân cấp website (thường được gọi là Sitemap) là một biểu đồ trực quan thể hiện cấu trúc logic, cách tổ chức nội dung và hệ thống các trang bên trong một website. Sơ đồ này phác thảo mối quan hệ phân bậc giữa trang chủ (Home), các trang chính (Main pages) và các trang con (Sub-pages), đồng thời định hình luồng điều hướng (Navigation Flow) giúp người dùng di chuyển giữa các khu vực thông tin một cách mượt mà và logic.
+4.1.2. Vai trò của sơ đồ phân cấp
+Đối với đội ngũ thiết kế và phát triển: Giúp hình dung toàn bộ quy mô dự án, phân chia rõ ràng các module chức năng, tránh tình trạng chồng chéo nội dung hoặc thiếu sót tính năng khi lập trình giao diện (UI) và trải nghiệm người dùng (UX).
+Đối với người dùng: Tạo ra cấu trúc thông tin minh bạch, trực quan, hỗ trợ người dùng tìm kiếm sản phẩm thủ công hoặc tra cứu thông tin văn hóa truyền thống một cách nhanh chóng, giảm thiểu số lần nhấp chuột không cần thiết.
+Đối với quản trị viên (Admin): Tạo cơ sở phân quyền rõ ràng trong hệ thống quản lý nội dung (CMS), quản lý danh mục sản phẩm, đơn hàng và bài viết văn hóa.
+4.1.3. Nguyên tắc tổ chức cấu trúc website
+Nguyên tắc phân cấp từ tổng quát đến chi tiết (Top-Down): Đi từ trang chủ tổng quan đến các danh mục lớn, sau đó thu hẹp dần vào danh mục con và trang chi tiết sản phẩm hoặc bài viết chuyên đề.
+Nguyên tắc tối ưu số lần nhấp chuột (3-Click Rule): Đảm bảo người dùng có thể tiếp cận bất kỳ sản phẩm thủ công hoặc nội dung văn hóa nào trong vòng tối đa 3 đến 4 lần click chuột từ trang chủ.
+Nguyên tắc phân nhóm logic: Các sản phẩm thủ công được phân chia theo chất liệu, làng nghề hoặc mục đích sử dụng; các nội dung văn hóa được phân loại theo câu chuyện nghệ nhân, tri thức bản địa và các kỳ quan di sản để tạo sự thuận tiện tối đa.
+Tính mở rộng linh hoạt: Cấu trúc được thiết kế sẵn sàng cho việc bổ sung các danh mục sản phẩm mới hoặc các bộ sưu tập văn hóa theo chiến dịch mà không làm phá vỡ hệ thống điều hướng hiện tại.
+4.2. Xác định hệ thống trang website
+4.2.1. Xác định trang chủ
+Trang chủ đóng vai trò là "bộ mặt" của website, nơi truyền tải thông điệp cốt lõi về giá trị thủ công và văn hóa truyền thống. Các thành phần chính trên trang chủ bao gồm:
+Banner chính vinh danh nghệ nhân, sản phẩm tiêu biểu hoặc các bộ sưu tập theo mùa lễ hội.
+Thanh tìm kiếm nhanh sản phẩm và bài viết văn hóa.
+Khối danh mục sản phẩm nổi bật (Gốm sứ, Mây tre đan, Dệt lụa, Tranh dân gian...).
+Góc nhìn văn hóa / Câu chuyện nghệ nhân tiêu biểu trong tuần.
+Đánh giá từ khách hàng và chân trang (Footer) chứa thông tin liên hệ, chính sách bảo hành, đổi trả.
+4.2.2. Xác định các trang chính
+Trang Giới thiệu (About Us): Trình bày sứ mệnh bảo tồn và phát triển làng nghề truyền thống, giới thiệu đội ngũ sáng lập và mạng lưới nghệ nhân hợp tác.
+Trang Sản phẩm (Products): Trưng bày toàn bộ các dòng sản phẩm thủ công truyền thống tích hợp hệ thống bộ lọc thông minh theo danh mục, mức giá, chất liệu và địa phương xuất xứ.
+Trang Văn hóa & Làng nghề (Culture & Heritage): Cung cấp các bài viết chuyên sâu, e-magazine, video tài liệu về lịch sử các làng nghề, quy trình chế tác thủ công và ý nghĩa biểu tượng của sản phẩm.
+Trang Giỏ hàng & Thanh toán (Cart & Checkout): Hỗ trợ khách hàng quản lý giỏ hàng, áp dụng mã ưu đãi và thực hiện quy trình đặt hàng trực tuyến.
+Trang Hỗ trợ & Liên hệ (Support & Contact): Cung cấp giải đáp thắc mắc (FAQ), chính sách vận chuyển hàng thủ công dễ vỡ, và biểu mẫu gửi yêu cầu tư vấn riêng.
+4.2.3. Xác định các trang con
+Thuộc trang Sản phẩm:
+Trang danh mục con (Gốm Bát Tràng, Lụa Vạn Phúc, Mây tre đan Phú Vinh, Tranh Đông Hồ...).
+Trang chi tiết sản phẩm (Hình ảnh đa góc độ, mô tả chất liệu, kích thước, nghệ nhân chế tác, giá bán, hướng dẫn bảo quản sản phẩm thủ công và nút "Thêm vào giỏ hàng").
+Thuộc trang Văn hóa:
+Trang chi tiết bài viết / Câu chuyện nghệ nhân.
+Thư viện video phóng sự làng nghề.
+Thuộc mục Tài khoản cá nhân:
+Trang thông tin cá nhân & Địa chỉ nhận hàng.
+Lịch sử đơn hàng.
+Danh sách sản phẩm yêu thích (Wishlist).
+4.2.4. Phân nhóm nội dung và danh mục sản phẩm
+Hệ thống được tổ chức dựa trên sự kết hợp hài hòa giữa Thương mại điện tử (Mua sắm sản phẩm thủ công) và Nội dung giáo dục cộng đồng (Bảo tồn văn hóa truyền thống):
+Nhóm Sản phẩm thương mại: Phân loại theo chất liệu (Đất/Gốm, Sợi/Dệt, Gỗ/Tre nứa, Giấy/Tranh) nhằm phục vụ trực tiếp nhu cầu mua sắm và làm quà tặng.
+Nhóm Tri thức & Văn hóa: Phân loại theo không gian làng nghề, chuyên mục nghệ nhân và cẩm nang gìn giữ đồ thủ công, giúp nâng cao giá trị gia tăng cho sản phẩm và trải nghiệm của người dùng.
+4.3. Xây dựng sơ đồ phân cấp website
+4.3.1. Sơ đồ phân cấp tổng thể
+Sơ đồ phân cấp được thiết kế theo mô hình hình cây (Tree Structure), phân tách rõ ràng thành 3 luồng chính tương ứng với các nhóm đối tượng sử dụng:
+Luồng Khách hàng / Người mua sắm: Tập trung vào khám phá sản phẩm, tìm hiểu văn hóa, mua hàng và quản lý tài khoản.
+Luồng Nghệ nhân / Đối tác cung cấp: Quản lý thông tin sản phẩm cá nhân, theo dõi đơn hàng và tương tác với khách hàng yêu mến sản phẩm thủ công.
+Luồng Quản trị viên hệ thống (Admin): Quản lý tài khoản người dùng, kiểm duyệt sản phẩm thủ công, đăng tải và quản lý bài viết văn hóa, xử lý đơn hàng và vận hành hệ thống.
+4.3.2. Giải thích cấu trúc phân cấp
+Cấp 0 (Trang chủ ngoài): Cổng đón tiếp chung dành cho khách vãng lai chưa đăng nhập, cung cấp cái nhìn tổng quan về sứ mệnh website, nút Đăng nhập và Đăng ký.
+Cấp 1 (Các trang chính): Gồm Trang chủ trong (Dashboard cá nhân hóa), Trang Sản phẩm, Trang Văn hóa & Làng nghề, Trang Giới thiệu, và Trang Hỗ trợ.
+Cấp 2 (Các trang con & Chi tiết): Gồm danh mục chi tiết theo chất liệu/làng nghề, trang chi tiết sản phẩm, bài viết chuyên đề văn hóa, giỏ hàng, thanh toán và các giao diện quản trị dành riêng cho Admin.
+4.3.3. Mối liên hệ giữa các trang
+Liên hệ dọc (Hierarchical Links): Liên kết từ Trang chủ \rightarrow Danh mục sản phẩm \rightarrow Trang chi tiết sản phẩm. Người dùng có thể dễ dàng quay lại cấp trên thông qua thanh điều hướng Breadcrumbs.
+Liên hệ ngang (Cross-links): Tại trang chi tiết sản phẩm thủ công, hệ thống bố trí phần liên kết chéo đến "Câu chuyện nghệ nhân" hoặc "Bài liệu làng nghề" tương ứng, tạo sự liên kết chặt chẽ giữa thương mại và giá trị văn hóa (Content-driven Commerce).
+Điều hướng toàn cục (Global Navigation): Thanh Menu chính (Header) và Chân trang (Footer) hiện diện xuyên suốt trên mọi trang, giúp người dùng chuyển đổi nhanh chóng giữa các module mà không cần quay về trang chủ.
+4.3.4. Đối chiếu sơ đồ với danh sách tính năng (Function List)
+Sau khi xây dựng xong Sitemap, nhóm tiến hành đối chiếu chéo với danh sách tính năng (Function List) để đảm bảo độ bao phủ và tính đồng bộ:
+Mọi tính năng tìm kiếm, lọc sản phẩm theo giá và chất liệu đều được định vị chính xác tại trang Sản phẩm.
+Các tính năng đặt hàng, quản lý giỏ hàng, xem lịch sử đơn hàng đều ánh xạ hoàn hảo vào nhóm trang Tài khoản cá nhân và Thanh toán.
+Các tính năng kiểm duyệt sản phẩm, quản lý bài viết văn hóa và phân quyền người dùng của Quản trị viên đều khớp tuyệt đối với các nhánh quản trị trong sơ đồ phân cấp.
+CHƯƠNG 5. TỔNG KẾT VÀ ĐỊNH HƯỚNG TRIỂN KHAI
+5.1. Tổng kết kết quả nghiên cứu
+5.1.1. Kết quả hình thành ý tưởng
+Quá trình hình thành ý tưởng dự án Nếp Việt xuất phát từ việc nhận diện khoảng trống lớn trên thị trường thương mại điện tử hiện nay đối với các mặt hàng thủ công và di sản văn hóa Việt Nam. Trước thực trạng các sản phẩm làng nghề truyền thống và ẩm thực dân gian đang bị thu hẹp không gian tiếp cận, phụ thuộc nặng nề vào các mùa lễ hội ngắn hạn và thiếu vắng phương thức truyền thông số bài bản, ý tưởng xây dựng website Nếp Việt đã được định hình với tư cách là một nền tảng chuyên biệt kết hợp hài hòa giữa thương mại số và bảo tồn văn hóa.
+Dự án xác lập mục tiêu kép rõ rệt: vừa cung cấp một không gian mua sắm trực tuyến thuận tiện, minh bạch phục vụ nhu cầu tiêu dùng và biếu tặng quanh năm, vừa trở thành cổng thông tin văn hóa truyền tải những giá trị nhân văn, tri thức bản địa và câu chuyện gìn giữ ngọn lửa nghề của các nghệ nhân. Tên gọi Nếp Việt được lựa chọn như một thông điệp cốt lõi, gợi nhắc đến nếp sống, nếp nghĩ và thuần phong mỹ tục được trao truyền qua nhiều thế hệ, đồng thời khẳng định bản sắc dân tộc trong dòng chảy hiện đại. Hệ thống danh mục sản phẩm chủ đạo cũng được phân định rõ ràng thành các nhóm đồ handmade, phụ kiện trang trí truyền thống, ẩm thực bốn mùa, thời trang cảm hứng Việt và đồ thủ công mỹ nghệ, tạo nền móng vững chắc cho các bước nghiên cứu chuyên sâu tiếp theo.
+5.1.2. Kết quả nghiên cứu người dùng
+Thông qua việc triển khai khảo sát định lượng với 31 phiếu phản hồi hợp lệ kết hợp phương pháp nghiên cứu đối sánh các nền tảng đi trước, đề tài đã thu thập được hệ thống dữ liệu thực chứng có giá trị khoa học và tính ứng dụng cao. Về mặt nhân khẩu học, nhóm đối tượng khảo sát tập trung chủ yếu vào thế hệ trẻ với 90,3% thuộc độ tuổi từ 18 đến 25 và 80,6% là học sinh, sinh viên. Đây là tệp khách hàng tiềm năng có mức độ quan tâm tích cực đến văn hóa dân tộc đạt tới 71,0%, đặc biệt ưa chuộng các nhóm sản phẩm có tính ứng dụng cao như đồ handmade (74,2%) và trang phục, phụ kiện mang dấu ấn văn hóa (67,7%).
+Đồng thời, nghiên cứu đã nhận diện chính xác các rào cản hành vi then chốt của người tiêu dùng trẻ. Rào cản tài chính đứng đầu danh sách khi có tới 71,0% người tham gia thừa nhận sự ngần ngại trước giá thành sản phẩm thủ công, tương ứng với ngưỡng chi trả sẵn sàng phổ biến nhất tập trung ở phân khúc từ 100.000 đến dưới 200.000 VNĐ (51,6%). Bên cạnh đó, các lo ngại về tình trạng thiếu hụt thông tin kiểm chứng, nguy cơ hàng tồn kho kém chất lượng và rủi ro hư hỏng trong quá trình vận chuyển cũng được làm rõ.
+Từ góc độ công nghệ và thị giác, kết quả chỉ ra rằng yếu tố thẩm mỹ giao diện giữ vai trò tiên quyết khi có đến 61,3% người dùng quyết định truy cập dựa trên vẻ đẹp của trang web, với xu hướng ưa chuộng phong cách thiết kế kết hợp hoa văn truyền thống trên nền tảng bố cục đương đại (54,8%). Cuối cùng, việc đối sánh thực tiễn với các mô hình TiredCity, Tòhe và Hanoia đã mang lại những bài học kinh nghiệm sâu sắc về nghệ thuật kể chuyện thương hiệu, phương thức tổ chức danh mục tinh gọn và định vị dải giá phù hợp cho Nếp Việt.
+5.1.3. Kết quả xác định tính năng
+Dựa trên nền tảng dữ liệu người dùng và phân tích cạnh tranh, đề tài đã xây dựng thành công danh mục tính năng toàn diện cho website Nếp Việt, bao quát sáu phân hệ chức năng từ quản lý tài khoản, khám phá sản phẩm, không gian kể chuyện thương hiệu, chu trình giỏ hàng và thanh toán, cho đến hệ thống đánh giá thực tế và quản trị nội bộ.
+Nhằm tối ưu hóa nguồn lực thực hiện trong khuôn khổ học phần, các tính năng đã được phân tầng khoa học theo ba cấp độ ưu tiên. Nhóm tính năng bắt buộc phải có tập trung hoàn thiện các cấu phần cốt lõi của một website thương mại định hướng nội dung, bao gồm danh mục sản phẩm phân tầng, trang chi tiết tích hợp thông số kỹ thuật minh bạch, quy trình mua hàng một bước và chuyên trang giới thiệu nghệ nhân. Nhóm tính năng nên có tiếp tục bổ sung bộ lọc đa tiêu chí, cơ chế đăng tải nhận xét kèm hình ảnh chụp thực tế và quản lý hồ sơ cá nhân. Nhóm tính năng mở rộng hướng tới các giải pháp tạo sự khác biệt như dịch vụ đóng gói quà tặng cá nhân hóa, viết thiệp chúc mừng điện tử và tích hợp nhãn trạng thái độc bản như "Mẻ bánh mới ra lò" hay "Thủ công 100%".
+Sự phân bổ tính năng tương ứng với từng trang thành phần bảo đảm tạo ra luồng trải nghiệm người dùng liền mạch, giải quyết triệt để sự thiếu hụt xúc giác khi mua hàng trực tuyến và kích thích quyết định chuyển đổi một cách tự nhiên.
+5.1.4. Kết quả xây dựng sơ đồ phân cấp
+Kết quả xây dựng sơ đồ phân cấp website (Sitemap) đã hình thành nên một kiến trúc thông tin logic, chặt chẽ theo mô hình phân cấp hình cây, đáp ứng trọn vẹn nguyên tắc tối ưu hóa số lần nhấp chuột không quá ba đến bốn cấp độ từ trang chủ. Hệ thống trang được quy hoạch rành mạch từ Trang chủ ngoài đón tiếp khách vãng lai đến hệ thống năm trang chính gồm Trang chủ trong, Trang Sản phẩm, Trang Văn hóa & Làng nghề, Trang Giới thiệu và Trang Hỗ trợ liên hệ, cùng các trang con chuyên sâu về chi tiết vật phẩm và quản lý tài khoản.
+Điểm nổi bật trong kiến trúc phân cấp của Nếp Việt là việc phân định rõ ba luồng người dùng chuyên biệt gồm luồng Khách hàng mua sắm, luồng Nghệ nhân đối tác cung cấp và luồng Quản trị viên hệ thống. Đồng thời, cấu trúc website bảo đảm sự đan xen chặt chẽ giữa các liên kết dọc theo cấp bậc điều hướng breadcrumbs và các liên kết ngang liên kết chéo giữa sản phẩm thương mại với bài viết tư liệu làng nghề tương ứng. Quá trình đối chiếu chéo giữa sơ đồ phân cấp và bảng danh sách tính năng xác nhận độ bao phủ tuyệt đối, bảo đảm mọi chức năng được đề xuất đều có vị trí hiển thị chuẩn xác trong hệ thống trang, không xảy ra hiện tượng chồng chéo hay gián đoạn luồng truy cập.
+5.2. Đánh giá tính phù hợp của phương án đề xuất
+5.2.1. Mức độ đáp ứng nhu cầu người dùng
+Phương án đề xuất cho website Nếp Việt thể hiện mức độ tương thích cao với các nhu cầu thực tế và giải quyết trực diện những rào cản tâm lý của đối tượng công chúng mục tiêu đã được chỉ ra trong quá trình nghiên cứu:
+Thứ nhất, đối với rào cản tài chính và tính nhạy cảm về giá của nhóm khách hàng trẻ tuổi, phương án đề xuất đã định hình chiến lược sản phẩm tập trung vào dải giá vừa túi tiền sinh viên từ 100.000 đến dưới 200.000 VNĐ cho các vật phẩm handmade và phụ kiện thường nhật, đồng thời linh hoạt tách nhỏ các set quà tặng hoặc triển khai các gói combo linh hoạt. Điều này cho phép khách hàng chủ động cân đối ngân sách cá nhân mà vẫn tiếp cận được sản phẩm ưng ý.
+Thứ hai, đối với nỗi lo ngại về chất lượng, nguồn gốc và sự tươi mới của thực phẩm, hệ thống đã đáp ứng thông qua giải pháp minh bạch hóa toàn bộ thông số kỹ thuật, bảng thành phần dinh dưỡng, quy trình chế tác an toàn cùng cam kết ngày sản xuất theo từng mẻ bánh mới. Việc bổ sung cơ chế đánh giá kèm hình ảnh thực tế từ cộng đồng người mua đóng vai trò như một bằng chứng xã hội xác thực, giải tỏa tâm lý ngờ vực của khách hàng mới.
+Thứ ba, nhu cầu thưởng thức văn hóa và trải nghiệm cảm xúc được đáp ứng trọn vẹn thông qua chuyên mục Kể chuyện thương hiệu và các bài viết e-magazine giàu chất liệu hình ảnh. Người dùng không chỉ tiếp cận hiện vật với tư cách một người mua hàng đơn thuần, mà còn được trải nghiệm hành trình văn hóa, thấu hiểu giá trị của di sản dân tộc, qua đó gia tăng sự gắn kết lâu dài với nền tảng.
+5.2.2. Sự thống nhất giữa ý tưởng, tính năng và cấu trúc website
+Một trong những ưu điểm nổi bật của dự án là tính logic và tính nhất quán xuyên suốt giữa các giai đoạn triển khai, từ khâu định hình ý tưởng tại Chương 1, phân tích hành vi người dùng tại Chương 2, cụ thể hóa danh mục tính năng tại Chương 3 cho đến thiết lập kiến trúc phân cấp tại Chương 4.
+Ý tưởng chủ đạo về việc kết hợp giữa thương mại điện tử và lan tỏa giá trị văn hóa không tồn tại dưới dạng khẩu hiệu trừu tượng mà được chuyển hóa trực tiếp thành các phân hệ tính năng cụ thể trên website. Điển hình là tính năng liên kết chéo giữa bài viết tôn vinh nghệ nhân và nút mua sản phẩm liên quan. Tương tự, kết quả nghiên cứu khảo sát về rào cản tính mùa vụ của bánh trung thu và đồ chơi dân gian đã dẫn dắt trực tiếp đến việc thiết lập danh mục ẩm thực bốn mùa và đồ chơi thủ công hoạt động quanh năm trong sơ đồ phân cấp.
+Cấu trúc cây của website phản ánh trung thực toàn bộ yêu cầu về khả năng điều hướng tinh gọn và phân nhóm danh mục đã được xác định từ trước. Không có bất kỳ tính năng thừa thãi nào xuất hiện ngoài phạm vi phục vụ trải nghiệm người dùng, và ngược lại, không có nhu cầu bức thiết nào của khách hàng bị bỏ sót trong cấu trúc sitemap tổng thể.
+5.2.3. Những vấn đề cần tiếp tục hoàn thiện
+Bên cạnh những kết quả đạt được, nhóm nghiên cứu thẳng thắn nhìn nhận một số hạn chế khách quan cần tiếp tục bổ sung và hoàn thiện trong các giai đoạn phát triển tiếp theo của dự án:
+Hạn chế trước hết nằm ở quy mô mẫu khảo sát. Với dung lượng mẫu dừng lại ở 31 quan sát và tập trung phần lớn vào nhóm học sinh, sinh viên tại các đô thị lớn, các số liệu thống kê chủ yếu phản ánh thị hiếu của người trẻ mà chưa đại diện đầy đủ cho toàn bộ các phân khúc khách hàng tiềm năng khác ngoài xã hội, đặc biệt là nhóm khách hàng trung niên có thu nhập cao hoặc các tổ chức, doanh nghiệp có nhu cầu đặt hàng quà biếu số lượng lớn.
+Hạn chế thứ hai liên quan đến tính thẩm định của nguồn tư liệu văn hóa. Các dữ liệu về lịch sử làng nghề, kỹ thuật đan lát, làm gốm hay công thức làm bánh cổ truyền hiện mới chỉ được tổng hợp qua các tài liệu mở trên mạng Internet và báo chí. Trong quá trình phát triển nội dung thực tế, dự án cần có sự tham vấn, kiểm chứng chuyên môn từ các nghệ nhân gạo cội hoặc các nhà nghiên cứu văn hóa dân gian để đảm bảo tính chuẩn xác và chiều sâu học thuật.
+Hạn chế cuối cùng là các bài toán thực tiễn về chuỗi cung ứng và vận hành thương mại điện tử. Các vấn đề phức tạp như chính sách bảo hiểm vận chuyển hàng thủ công dễ vỡ, chi phí logistics đường dài, kiểm soát chất lượng mẻ bánh tươi theo thời gian thực và tích hợp cổng thanh toán trực tuyến bảo mật cao mới chỉ dừng lại ở mức độ định hướng giải pháp, đòi hỏi phải được giải quyết cụ thể khi đưa website vào thử nghiệm thực tế.
+5.3. Định hướng triển khai tiếp theo
+5.3.1. Định hướng thiết kế giao diện
+Giai đoạn tiếp theo của dự án sẽ tập trung vào việc hiện thực hóa các cấu trúc thông tin thành các giao diện thị giác trực quan thông qua quy trình thiết kế UI/UX bài bản trên phần mềm Figma, bám sát các định hướng thẩm mỹ đã được xác lập:
+Đầu tiên, nhóm tiến hành xây dựng hệ thống khung xương định hình (Wireframe) từ dạng độ phân giải thấp (Low-fidelity) đến độ phân giải cao (High-fidelity). Quá trình này giúp kiểm tra sự phân bố hợp lý của các khối thông tin, khoảng trắng và các điểm nhấn thị giác trên từng trang, ưu tiên áp dụng triết lý thiết kế hướng tới thiết bị di động (Mobile-First Design) nhằm phục vụ thói quen lướt web trên điện thoại của hơn 80% người dùng mục tiêu.
+Tiếp theo, nhóm xây dựng bộ quy chuẩn thiết kế hoàn chỉnh (Design System) đồng bộ cho toàn bộ dự án. Bảng màu chủ đạo sẽ khai thác phong cách Di sản đương đại với các tông màu truyền thống như đỏ chu sa, vàng hoàng cúc, nâu gốm đất trên nền trắng ngà trang nhã. Hệ thống kiểu chữ (Typography) kết hợp hài hòa giữa các phông chữ có chân mang nét đẹp cổ điển cho tiêu đề chính và phông chữ không chân hiện đại, dễ đọc cho phần văn bản mô tả.
+Cuối cùng, nhóm sẽ hoàn thiện bản mẫu tương tác động (Interactive Prototype), mô phỏng đầy đủ luồng nhấp chuột của người dùng từ bước duyệt sản phẩm, xem chi tiết câu chuyện nghệ nhân cho đến quy trình điền thông tin giỏ hàng và đặt hàng thử nghiệm, tạo cơ sở trực quan phục vụ công đoạn lập trình giao diện.
+5.3.2. Định hướng xây dựng website
+Sau khi hoàn thiện bản mẫu thiết kế giao diện, dự án sẽ bước vào giai đoạn hiện thực hóa kỹ thuật thông qua việc xây dựng hệ thống mã nguồn và cơ sở dữ liệu:
+Về mặt công nghệ giao diện phía người dùng (Front-end), hệ thống ưu tiên sử dụng các tiêu chuẩn web hiện đại gồm HTML5, CSS3 và ngôn ngữ JavaScript kết hợp các thư viện hỗ trợ tối ưu giao diện co giãn linh hoạt (Responsive Web Design). Mã nguồn phía giao diện cần được tinh giản, tối ưu hóa kích thước các tệp đồ họa và áp dụng kỹ thuật tải chậm hình ảnh (Lazy Loading) nhằm đảm bảo tốc độ tải trang đạt dưới hai giây, không gây ức chế cho người dùng.
+Về mặt cấu trúc dữ liệu và quản trị nội dung (Back-end / CMS), dự án cân nhắc triển khai trên nền tảng quản trị mã nguồn mở phù hợp cho thương mại điện tử như WordPress kết hợp WooCommerce hoặc các framework phát triển web hiện đại. Hệ thống quản trị cơ sở dữ liệu cần được thiết kế khoa học để quản lý danh mục sản phẩm đa biến thể (theo hương vị bánh, kích thước, chất liệu), theo dõi tình trạng kho hàng theo từng mẻ sản xuất, và quản lý các bài viết tạp chí điện tử một cách thuận tiện.
+Đồng thời, giai đoạn này sẽ tiến hành tích hợp thử nghiệm các giao diện lập trình ứng dụng (API) phục vụ hoạt động mua sắm, bao gồm cổng tạo mã thanh toán chuyển khoản nhanh qua VietQR, ví điện tử MoMo, và kết nối hệ thống tính toán phí giao hàng tự động với các đơn vị vận chuyển uy tín tại Việt Nam.
+5.3.3. Định hướng kiểm tra và hoàn thiện website
+Giai đoạn cuối cùng trong vòng đời phát triển dự án trước khi nghiệm thu là công tác kiểm thử chất lượng và tối ưu hóa toàn diện, được tiến hành qua ba bước nghiêm ngặt:
+Bước thứ nhất là kiểm thử chức năng (Functional Testing). Nhóm tiến hành rà soát chi tiết từng tính năng đã được thiết lập, đảm bảo thanh tìm kiếm thông minh, bộ lọc phân loại sản phẩm, giỏ hàng, quy trình tính tổng chi phí đơn hàng và biểu mẫu liên hệ hoạt động chính xác, không xuất hiện các lỗi liên kết gãy hoặc lỗi hiển thị dữ liệu.
+Bước thứ hai là kiểm thử tính tương thích và hiệu năng (Compatibility & Performance Testing). Website được chạy thử nghiệm trên nhiều trình duyệt phổ biến như Google Chrome, Safari, Microsoft Edge và trên các màn hình có kích thước khác nhau từ điện thoại thông minh, máy tính bảng đến máy tính xách tay. Các chỉ số về tốc độ phản hồi máy chủ, dung lượng trang và mức độ thân thiện với công cụ tìm kiếm (SEO On-page) sẽ được đánh giá qua các công cụ đo lường tiêu chuẩn nhằm bảo đảm tính ổn định tuyệt đối khi có lượng truy cập đồng thời.
+Bước thứ ba là tổ chức đánh giá trải nghiệm người dùng thực tế (Usability Testing). Nhóm sẽ mời một nhóm nhỏ người dùng thuộc độ tuổi 18 đến 25 trải nghiệm trực tiếp trên bản thử nghiệm, giao cho họ các nhiệm vụ mua sắm cụ thể và ghi nhận các khó khăn, vướng mắc trong thao tác điều hướng. Những ý kiến đóng góp chân thực từ người dùng thử nghiệm sẽ là căn cứ cuối cùng để nhóm tinh chỉnh giao diện, khắc phục các điểm nghẽn trải nghiệm và hoàn thiện bản báo cáo đồ án đạt chuẩn mực học thuật cao nhất.
+LỜI KẾT
+Trong giai đoạn xây dựng ý tưởng, nhóm đã xác định định hướng cho Nếp Việt - website giới thiệu và kinh doanh các sản phẩm thủ công gắn liền với văn hóa truyền thống Việt Nam. Thông qua việc tìm hiểu đề tài, xác định mục tiêu, phạm vi nội dung và đối tượng người dùng, nhóm bước đầu hình thành cơ sở để triển khai các bước tiếp theo của dự án.
+Đặc biệt, kết quả khảo sát 31 người tham gia đã cung cấp những thông tin ban đầu về sở thích sản phẩm, thói quen mua sắm, mức chi tiêu và mong muốn đối với website. Các kết quả như tỷ lệ quan tâm đến đồ handmade và quà tặng thủ công, nhu cầu về hình ảnh sản phẩm thực tế, thông tin chi tiết và câu chuyện văn hóa giúp nhóm có thêm căn cứ để xác định những nội dung cần ưu tiên.
+Từ những cơ sở đó, Nếp Việt được định hướng theo hướng kết hợp giữa trải nghiệm tìm hiểu sản phẩm thuận tiện và việc giới thiệu những giá trị văn hóa được gửi gắm trong từng sản phẩm. Đây là định hướng xuyên suốt để nhóm tiếp tục phát triển cấu trúc website, xây dựng nội dung và lựa chọn phong cách thiết kế phù hợp.
+Do dự án được thực hiện trong khuôn khổ học phần, định hướng hiện tại vẫn cần được hoàn thiện trong quá trình triển khai. Nhóm sẽ tiếp tục xem xét tính hợp lý của cấu trúc thông tin, mức độ phù hợp của các tính năng và sự thống nhất giữa giao diện với mục tiêu dự án. Qua đó, nhóm kỳ vọng có thể vận dụng hiệu quả kiến thức đã học và hoàn thiện website Nếp Việt theo đúng yêu cầu của bài tập.
+TÀI LIỆU THAM KHẢO
+1. Tài liệu phục vụ nghiên cứu thương mại điện tử
+Bộ Công Thương (2025), Thương mại điện tử Việt Nam năm 2024: Những bước tiến và thách thức. Truy cập tại: https://moit.gov.vn/khoa-hoc-va-cong-nghe/thuong-mai-dien-tu-viet-nam-nam-2024-nhung-buoc-tien-va-thach-thuc.html
+2. Tài liệu về sản phẩm thủ công và văn hóa truyền thống
+UNESCO, Craft of making Đông Hồ Folk woodblock printings. Truy cập tại: https://ich.unesco.org/en/USL/craft-of-making-ong-h-folk-woodblock-printings-01737
+3. Dữ liệu khảo sát của nhóm
+Nhóm thực hiện (2026), Phiếu khảo sát nhu cầu và trải nghiệm người dùng đối với website sản phẩm thủ công và văn hóa truyền thống Việt Nam, dữ liệu khảo sát trực tuyến, 31 câu trả lời.

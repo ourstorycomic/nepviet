@@ -103,7 +103,7 @@ export default function AboutPage() {
             href="/san-pham"
             className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#A82B1D] hover:bg-[#8E2216] text-white rounded-xl font-bold text-xs sm:text-sm shadow-lg shadow-black/40 border border-[#D4AF37]/30 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
           >
-            <span>Khám phá các sản phẩm thủ công ngay</span>
+            <span>Khám phá các sản phẩm văn hóa & ẩm thực ngay</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

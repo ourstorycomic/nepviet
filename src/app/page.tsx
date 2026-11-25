@@ -303,31 +303,32 @@ export default function HomePage() {
                 { name: 'Tranh Dân Gian Truyền Thống', slug: 'do-choi-qua-tang', desc: 'Bản sắc nghệ thuật hội họa Việt', img: '/showcase/tranh-dan-gian-dong-ho.jpg' },
                 { name: 'Ẩm Thực & Trà Cổ Truyền', slug: 'am-thuc', desc: 'Trà sen Quảng Bá, bánh cốm dẻo', img: '/showcase/am-thuc-tra-co-truyen.jpg' },
               ].map((cat, i) => (
-                <Link
-                  key={i}
-                  href={`/san-pham?category=${cat.slug}`}
-                  className="group relative overflow-hidden rounded-[22px] bg-[#1A0609]/90 backdrop-blur-sm border border-[#4A161E]/70 hover:border-[#7A2430] hover:bg-[#25090E] transition-[border-color,background-color,box-shadow] duration-400 ease-out p-3.5 sm:p-4 flex items-center gap-3.5 shadow-md hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.8),0_0_18px_-3px_rgba(212,175,55,0.18)]"
-                >
-                  <div className="relative w-16 h-16 rounded-[16px] overflow-hidden bg-[#24080B] flex-shrink-0 shadow-inner">
-                    <Image
-                      src={cat.img}
-                      alt={cat.name}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <h4 className="font-headline font-bold text-xs sm:text-sm text-white group-hover:text-[#E2CA9E] transition-colors truncate">
-                      {cat.name}
-                    </h4>
-                    <p className="text-[11px] text-[#C5B8A8] truncate mt-0.5">{cat.desc}</p>
-                  </div>
-                </Link>
+                <div key={i} className="group py-1">
+                  <Link
+                    href={`/san-pham?category=${cat.slug}`}
+                    className="relative overflow-hidden rounded-[22px] bg-[#1A0609]/90 backdrop-blur-sm border border-[#4A161E]/70 group-hover:border-[#D4AF37] group-hover:bg-[#25090E] group-hover:-translate-y-1.5 transition-all duration-400 ease-out p-3.5 sm:p-4 flex items-center gap-3.5 shadow-md group-hover:shadow-[0_16px_35px_-8px_rgba(0,0,0,0.85),0_0_22px_-3px_rgba(212,175,55,0.3)] block"
+                  >
+                    <div className="relative w-16 h-16 rounded-[16px] overflow-hidden bg-[#24080B] flex-shrink-0 shadow-inner">
+                      <Image
+                        src={cat.img}
+                        alt={cat.name}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                      />
+                    </div>
+                    <div className="min-w-0">
+                      <h4 className="font-headline font-bold text-xs sm:text-sm text-white group-hover:text-[#D4AF37] transition-colors truncate">
+                        {cat.name}
+                      </h4>
+                      <p className="text-[11px] text-[#C5B8A8] truncate mt-0.5">{cat.desc}</p>
+                    </div>
+                  </Link>
+                </div>
               ))}
             </div>
 
             {/* Right Large Spotlight Card (5 cols) */}
-            <div className="lg:col-span-5 relative rounded-[28px] overflow-hidden bg-[#180507] border border-[#52121A] hover:border-[#7A2430] min-h-[300px] flex flex-col justify-end p-6 sm:p-8 group shadow-xl hover:shadow-[0_20px_45px_-10px_rgba(0,0,0,0.9),0_0_25px_-5px_rgba(212,175,55,0.18)] transition-[border-color,box-shadow] duration-500 ease-out">
+            <div className="lg:col-span-5 relative rounded-[28px] overflow-hidden bg-[#180507] border border-[#52121A] hover:border-[#D4AF37] min-h-[300px] flex flex-col justify-end p-6 sm:p-8 group shadow-xl hover:shadow-[0_20px_45px_-10px_rgba(0,0,0,0.9),0_0_30px_-5px_rgba(212,175,55,0.25)] transition-all duration-500 ease-out">
               <Image
                 src="/products/bo-am-chen-men-lam-bat-trang.jpg"
                 alt="Bộ sưu tập Tiêu Điểm Nếp Việt"

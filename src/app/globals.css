@@ -5,12 +5,16 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 237, 228, 216; /* #EDE4D8 warm ivory/parchment */
-  --background-rgb: 20, 16, 14;     /* #14100E deep lacquer dark */
+  --foreground-rgb: 237, 228, 216;
+  /* #EDE4D8 warm ivory/parchment */
+  --background-rgb: 20, 16, 14;
+  /* #14100E deep lacquer dark */
 }
 
 /* Force Lining Figures globally across all fonts so numbers NEVER jump up and down */
-*, html, body {
+*,
+html,
+body {
   font-variant-numeric: lining-nums tabular-nums;
   -webkit-font-feature-settings: "lnum" 1, "tnum" 1;
   font-feature-settings: "lnum" 1, "tnum" 1;
@@ -26,7 +30,14 @@ body {
 }
 
 /* 1. Tiêu đề chính (Headline & Serif): Playfair Display / Lora - Mỹ thuật sơn mài di sản, khoảng cách thoáng đãng tuyệt đối không dính dấu */
-h1, h2, h3, h4, h5, h6, .font-headline, .font-serif {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-headline,
+.font-serif {
   font-family: var(--font-headline), 'Playfair Display', var(--font-accent), 'Lora', Georgia, serif;
   font-weight: 700;
   line-height: 1.55;
@@ -35,13 +46,23 @@ h1, h2, h3, h4, h5, h6, .font-headline, .font-serif {
 }
 
 /* 2. Phụ đề & nội dung thân (Subtext & Body): Be Vietnam Pro - Tối ưu 100% chuẩn xác cho dấu tiếng Việt */
-p, span, a, input, select, textarea, button, .font-subtext, .font-sans {
+p,
+span,
+a,
+input,
+select,
+textarea,
+button,
+.font-subtext,
+.font-sans {
   font-family: var(--font-sans), 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
   letter-spacing: normal;
 }
 
 /* 3. Font trang trí nghệ thuật & trích dẫn (Display/Accent): Playfair Display & Lora */
-.font-display, .font-accent, blockquote {
+.font-display,
+.font-accent,
+blockquote {
   font-family: var(--font-headline), 'Playfair Display', var(--font-accent), 'Lora', Georgia, serif;
   line-height: 1.5;
   letter-spacing: 0.02em;
@@ -61,7 +82,11 @@ p, span, a, input, select, textarea, button, .font-subtext, .font-sans {
 }
 
 /* Custom smooth transitions */
-a, button, input, select, textarea {
+a,
+button,
+input,
+select,
+textarea {
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -69,13 +94,16 @@ a, button, input, select, textarea {
 ::-webkit-scrollbar {
   width: 7px;
 }
+
 ::-webkit-scrollbar-track {
   background: #1A1412;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #3D2D26;
   border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #C5A880;
 }
@@ -85,6 +113,7 @@ a, button, input, select, textarea {
   0% {
     background-position-x: 0px;
   }
+
   100% {
     background-position-x: 750px;
   }
@@ -96,9 +125,12 @@ a, button, input, select, textarea {
 
 /* Organic breathing / gentle float for cultural emblems */
 @keyframes softFloat {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0) scale(1);
   }
+
   50% {
     transform: translateY(-6px) scale(1.015);
   }
@@ -110,9 +142,12 @@ a, button, input, select, textarea {
 
 /* Shimmering gold aura */
 @keyframes shimmerGoldAura {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.6), 0 0 15px -3px rgba(212, 175, 55, 0.15);
   }
+
   50% {
     box-shadow: 0 14px 40px -8px rgba(0, 0, 0, 0.75), 0 0 35px 2px rgba(212, 175, 55, 0.35);
   }
@@ -124,9 +159,12 @@ a, button, input, select, textarea {
 
 /* Animation utilities */
 @keyframes bounceShort {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-5px);
   }
@@ -141,6 +179,7 @@ a, button, input, select, textarea {
     opacity: 0;
     transform: scale(0.96);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -152,6 +191,7 @@ a, button, input, select, textarea {
     opacity: 0;
     transform: translateX(25px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -228,10 +268,13 @@ a, button, input, select, textarea {
 
 /* Smooth luxury animation utilities */
 @keyframes gentlePulseGlow {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.35;
     filter: drop-shadow(0 0 3px rgba(212, 175, 55, 0.25));
   }
+
   50% {
     opacity: 0.7;
     filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.6));

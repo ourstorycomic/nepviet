@@ -80,48 +80,47 @@ export default function CultureHeritagePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {CRAFT_VILLAGES.map((village) => (
-              <div
-                key={village.id}
-                className="group bg-[#1C1614] rounded-[28px] overflow-hidden border border-[#3E2F29] hover:border-[#6B4E3D] shadow-xl hover:shadow-[0_20px_45px_-10px_rgba(0,0,0,0.85),0_0_25px_-5px_rgba(212,175,55,0.18)] transition-[border-color,box-shadow] duration-500 ease-out flex flex-col justify-between"
-              >
-                <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#14100E] rounded-t-[27px]">
-                  <Image
-                    src={village.image}
-                    alt={village.name}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover group-hover:scale-106 transition-transform duration-700 ease-out filter brightness-[0.8]"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1C1614] via-transparent to-black/30 pointer-events-none" />
-                  <div className="absolute top-3.5 left-3.5 z-10">
-                    <span className="px-3 py-1 bg-[#A82B1D] text-white text-[11px] font-bold rounded-full shadow-md border border-[#D4AF37]/30">
-                      {village.history}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="p-6 flex-1 flex flex-col justify-between space-y-5">
-                  <div className="space-y-2.5">
-                    <div className="flex items-center gap-1.5 text-xs text-[#C5A880] font-semibold">
-                      <MapPin className="w-3.5 h-3.5 text-[#C5A880]" />
-                      <span>{village.location}</span>
+              <div key={village.id} className="group py-2">
+                <div className="h-full bg-[#1C1614] rounded-[28px] overflow-hidden border border-[#3E2F29] group-hover:border-[#D4AF37] shadow-xl group-hover:shadow-[0_25px_55px_-12px_rgba(0,0,0,0.95),0_0_35px_-4px_rgba(212,175,55,0.35)] transition-all duration-500 ease-out group-hover:-translate-y-2.5 flex flex-col justify-between">
+                  <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#14100E] rounded-t-[27px]">
+                    <Image
+                      src={village.image}
+                      alt={village.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover group-hover:scale-110 group-hover:brightness-[0.95] transition-all duration-700 ease-out filter brightness-[0.8]"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#1C1614] via-transparent to-black/30 pointer-events-none" />
+                    <div className="absolute top-3.5 left-3.5 z-10">
+                      <span className="px-3 py-1 bg-[#A82B1D] text-white text-[11px] font-bold rounded-full shadow-md border border-[#D4AF37]/30 group-hover:border-[#D4AF37] group-hover:shadow-[0_0_12px_rgba(212,175,55,0.5)] transition-all">
+                        {village.history}
+                      </span>
                     </div>
-                    <h3 className="font-headline font-bold text-xl text-[#FAF6F0] group-hover:text-[#C5A880] transition-colors leading-snug">
-                      {village.name}
-                    </h3>
-                    <p className="text-xs text-[#EDE4D8]/80 leading-relaxed font-subtext">
-                      {village.highlight}
-                    </p>
                   </div>
 
-                  <div className="pt-4 border-t border-[#362924]">
-                    <Link
-                      href="/san-pham"
-                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-[14px] bg-[#251D1A] hover:bg-[#8B1E2B] text-xs font-semibold text-[#EDE4D8] hover:text-white border border-[#3E2D26] hover:border-[#C5A880]/50 transition-colors duration-300"
-                    >
-                      <span>Xem sản phẩm từ làng nghề</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-[#C5A880] group-hover:translate-x-1 transition-transform" />
-                    </Link>
+                  <div className="p-6 flex-1 flex flex-col justify-between space-y-5">
+                    <div className="space-y-2.5">
+                      <div className="flex items-center gap-1.5 text-xs text-[#C5A880] font-semibold">
+                        <MapPin className="w-3.5 h-3.5 text-[#C5A880]" />
+                        <span>{village.location}</span>
+                      </div>
+                      <h3 className="font-headline font-bold text-xl text-[#FAF6F0] group-hover:text-[#D4AF37] transition-colors leading-snug">
+                        {village.name}
+                      </h3>
+                      <p className="text-xs text-[#EDE4D8]/80 leading-relaxed font-subtext">
+                        {village.highlight}
+                      </p>
+                    </div>
+
+                    <div className="pt-4 border-t border-[#362924] group-hover:border-[#4A3830] transition-colors">
+                      <Link
+                        href="/san-pham"
+                        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-[14px] bg-[#251D1A] group-hover:bg-[#8B1E2B] text-xs font-semibold text-[#EDE4D8] group-hover:text-white border border-[#3E2D26] group-hover:border-[#D4AF37]/60 group-hover:shadow-md transition-all duration-300"
+                      >
+                        <span>Xem sản phẩm từ làng nghề</span>
+                        <ArrowRight className="w-3.5 h-3.5 text-[#C5A880] group-hover:text-white group-hover:translate-x-1.5 transition-all" />
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>

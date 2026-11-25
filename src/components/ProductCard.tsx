@@ -22,18 +22,18 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <div className="group bg-[#1C1614] rounded-[24px] overflow-hidden border border-[#362924] hover:border-[#D4AF37]/60 shadow-lg hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.8),0_0_25px_-5px_rgba(212,175,55,0.22)] hover:-translate-y-1.5 transition-all duration-400 ease-out flex flex-col text-[#EDE4D8]">
+    <div className="group bg-[#1C1614] rounded-[26px] overflow-hidden border border-[#382B26] hover:border-[#5C4336] shadow-lg hover:shadow-[0_20px_45px_-10px_rgba(0,0,0,0.85),0_0_25px_-5px_rgba(212,175,55,0.18)] transition-[border-color,box-shadow] duration-500 ease-out flex flex-col text-[#EDE4D8]">
       {/* Product Image Container */}
       <Link
         href={`/san-pham/${product.slug}`}
-        className="relative aspect-square w-full overflow-hidden bg-[#241C1A] block"
+        className="relative aspect-square w-full overflow-hidden bg-[#241C1A] rounded-t-[25px] block"
       >
         <Image
           src={product.images[0]}
           alt={product.name}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-          className="object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
+          className="object-cover object-center group-hover:scale-106 transition-transform duration-700 ease-out"
           loading="lazy"
         />
 

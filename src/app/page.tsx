@@ -306,7 +306,7 @@ export default function HomePage() {
                 <Link
                   key={i}
                   href={`/san-pham?category=${cat.slug}`}
-                  className="group relative overflow-hidden rounded-[22px] bg-[#1A0609]/90 backdrop-blur-sm border border-[#4A161E]/70 hover:border-[#D4AF37] hover:bg-[#25090E] hover:-translate-y-1.5 transition-all duration-400 ease-out p-3.5 sm:p-4 flex items-center gap-3.5 shadow-md hover:shadow-[0_15px_30px_-8px_rgba(0,0,0,0.8),0_0_20px_-3px_rgba(212,175,55,0.25)]"
+                  className="group relative overflow-hidden rounded-[22px] bg-[#1A0609]/90 backdrop-blur-sm border border-[#4A161E]/70 hover:border-[#7A2430] hover:bg-[#25090E] transition-[border-color,background-color,box-shadow] duration-400 ease-out p-3.5 sm:p-4 flex items-center gap-3.5 shadow-md hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.8),0_0_18px_-3px_rgba(212,175,55,0.18)]"
                 >
                   <div className="relative w-16 h-16 rounded-[16px] overflow-hidden bg-[#24080B] flex-shrink-0 shadow-inner">
                     <Image
@@ -327,7 +327,7 @@ export default function HomePage() {
             </div>
 
             {/* Right Large Spotlight Card (5 cols) */}
-            <div className="lg:col-span-5 relative rounded-[28px] overflow-hidden bg-[#180507] border border-[#52121A] hover:border-[#D4AF37]/70 min-h-[300px] flex flex-col justify-end p-6 sm:p-8 group shadow-xl hover:shadow-[0_20px_45px_-10px_rgba(0,0,0,0.9),0_0_30px_-5px_rgba(212,175,55,0.25)] transition-all duration-500 ease-out">
+            <div className="lg:col-span-5 relative rounded-[28px] overflow-hidden bg-[#180507] border border-[#52121A] hover:border-[#7A2430] min-h-[300px] flex flex-col justify-end p-6 sm:p-8 group shadow-xl hover:shadow-[0_20px_45px_-10px_rgba(0,0,0,0.9),0_0_25px_-5px_rgba(212,175,55,0.18)] transition-[border-color,box-shadow] duration-500 ease-out">
               <Image
                 src="/products/bo-am-chen-men-lam-bat-trang.jpg"
                 alt="Bộ sưu tập Tiêu Điểm Nếp Việt"

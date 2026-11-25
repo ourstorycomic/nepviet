@@ -218,13 +218,12 @@ a, button, input, select, textarea {
   border: 1px solid rgba(197, 168, 128, 0.25);
   border-radius: 28px;
   box-shadow: 0 12px 35px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: border-color 0.4s ease-out, box-shadow 0.4s ease-out;
 }
 
 .card-lacquer-soft:hover {
-  border-color: rgba(212, 175, 55, 0.6);
-  transform: translateY(-4px);
-  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.8), 0 0 35px -4px rgba(212, 175, 55, 0.25);
+  border-color: rgba(197, 168, 128, 0.45);
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.8), 0 0 30px -4px rgba(212, 175, 55, 0.18);
 }
 
 /* Smooth luxury animation utilities */

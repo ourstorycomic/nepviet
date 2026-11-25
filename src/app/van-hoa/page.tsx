@@ -82,18 +82,18 @@ export default function CultureHeritagePage() {
             {CRAFT_VILLAGES.map((village) => (
               <div
                 key={village.id}
-                className="group bg-[#1C1614] rounded-[28px] overflow-hidden border border-[#382B26]/80 hover:border-[#D4AF37]/70 shadow-xl hover:-translate-y-2 hover:shadow-[0_22px_45px_-10px_rgba(0,0,0,0.85),0_0_25px_-5px_rgba(212,175,55,0.22)] transition-all duration-400 ease-out flex flex-col justify-between"
+                className="group bg-[#1C1614] rounded-[28px] overflow-hidden border border-[#3E2F29] hover:border-[#6B4E3D] shadow-xl hover:shadow-[0_20px_45px_-10px_rgba(0,0,0,0.85),0_0_25px_-5px_rgba(212,175,55,0.18)] transition-[border-color,box-shadow] duration-500 ease-out flex flex-col justify-between"
               >
-                <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#14100E]">
+                <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#14100E] rounded-t-[27px]">
                   <Image
                     src={village.image}
                     alt={village.name}
                     fill
                     sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out filter brightness-[0.8]"
+                    className="object-cover group-hover:scale-106 transition-transform duration-700 ease-out filter brightness-[0.8]"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1C1614] via-transparent to-black/30" />
-                  <div className="absolute top-3.5 left-3.5">
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1C1614] via-transparent to-black/30 pointer-events-none" />
+                  <div className="absolute top-3.5 left-3.5 z-10">
                     <span className="px-3 py-1 bg-[#A82B1D] text-white text-[11px] font-bold rounded-full shadow-md border border-[#D4AF37]/30">
                       {village.history}
                     </span>
@@ -117,7 +117,7 @@ export default function CultureHeritagePage() {
                   <div className="pt-4 border-t border-[#362924]">
                     <Link
                       href="/san-pham"
-                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-[14px] bg-[#251D1A] hover:bg-[#8B1E2B] text-xs font-semibold text-[#EDE4D8] hover:text-white border border-[#3E2D26] hover:border-[#D4AF37]/50 transition-all duration-300"
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-[14px] bg-[#251D1A] hover:bg-[#8B1E2B] text-xs font-semibold text-[#EDE4D8] hover:text-white border border-[#3E2D26] hover:border-[#C5A880]/50 transition-colors duration-300"
                     >
                       <span>Xem sản phẩm từ làng nghề</span>
                       <ArrowRight className="w-3.5 h-3.5 text-[#C5A880] group-hover:translate-x-1 transition-transform" />
@@ -155,7 +155,7 @@ export default function CultureHeritagePage() {
             {steps.map((st) => (
               <div
                 key={st.step}
-                className="bg-[#180507]/90 backdrop-blur-md p-6 rounded-[22px] border border-[#3E1015] hover:border-[#D4AF37]/60 shadow-lg hover:-translate-y-1.5 transition-all duration-300 space-y-3 group"
+                className="bg-[#180507]/90 backdrop-blur-md p-6 rounded-[22px] border border-[#3E1015] hover:border-[#6B222B] shadow-lg hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.8),0_0_18px_-3px_rgba(212,175,55,0.15)] transition-[border-color,box-shadow] duration-400 space-y-3 group"
               >
                 <span className="font-headline text-3xl sm:text-4xl font-black text-[#D4AF37] block group-hover:scale-105 transition-transform">
                   {st.step}
